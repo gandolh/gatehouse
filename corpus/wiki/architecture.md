@@ -30,9 +30,9 @@ The tooling is the `house-style` harness with its Astro recipe (brief 01).
 | `/gatehouse` and `/gatehouse/` | The plain 404, like every unknown path |
 | `/gatehouse-api/...` | The API, with the prefix stripped before Fastify sees it |
 
-There is no `public/` folder, so nothing else lands at the root. Whether `assetsPrefix` really puts
-every file under `/gatehouse/` is checked first in brief 01; the fallback is `base: "/gatehouse/"`
-with a setting that keeps the page itself at `/`. vps-deploy's brief 34 adds the route that serves
+There is no `public/` folder, so nothing else lands at the root. Brief 01 first checks that
+`assetsPrefix` puts every file under `/gatehouse/`; the fallback is `base: "/gatehouse/"` with a
+setting that keeps the page itself at `/`. vps-deploy's brief 34 adds the route that serves
 one file at exactly `/`.
 
 ## Ports and settings
