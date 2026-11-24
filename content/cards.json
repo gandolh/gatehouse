@@ -218,6 +218,18 @@
           "more": "Listings arrive with their price history, prices per square metre sit beside them, and a shortlist keeps the ones worth a visit.",
           "docs": null,
           "source": "https://github.com/gandolh/ro-housing"
+        },
+        {
+          "id": "gazette",
+          "name": "Gazette",
+          "href": "/gazette/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "gazette.webp",
+          "blurb": "A monthly social-media report for a friend: edit the slides in the browser, download a PDF or a PowerPoint file.",
+          "more": "A gallery of reports and a slide editor where you click a text or a picture to change it. The PDF and PowerPoint files are made on demand. The page is in Romanian.",
+          "docs": null,
+          "source": null
         }
       ]
     },

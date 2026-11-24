@@ -23,7 +23,7 @@ fields (`updated`, `expandedInSketch`, a note), plus `part`. The schema in `shar
 | Section | `id` | Cards | Public part |
 | --- | --- | --- | --- |
 | Games and toys | `play` | 6 | 6 |
-| Apps for home | `home` | 10 | 10 |
+| Apps for home | `home` | 11 | 11 |
 | Sites for other people | `sites` | 9 | 9 |
 | Behind the scenes | `estate` | 8 | 4 |
 | On GitHub | `github` | 5 | 5 |
@@ -64,9 +64,9 @@ anyway, in the certificate transparency logs; the split keeps them off the page,
 
 | Chip | Labels it shows | Public cards |
 | --- | --- | --- |
-| All | every label | 34 |
+| All | every label | 35 |
 | Open to anyone | `open`, `docs`, `repo` | 22 |
-| Needs sign-in | `sign-in`, `owner` | 12, and 16 once the owner part is in |
+| Needs sign-in | `sign-in`, `owner` | 13, and 17 once the owner part is in |
 
 A section whose cards a filter hides drops out, and so does its link in the section row.
 

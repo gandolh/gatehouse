@@ -127,8 +127,8 @@ mail.
 
 ## The checks, as run on 2026-11-24
 
-- The built HTML: 5 sections, all 34 public cards by id, each `more` text, none of the 4 owner cards.
-- Scripting off (headless Chrome, the preview): 5 sections, 34 cards and 34 See more texts shown; no See more
+- The built HTML: 5 sections, all 35 public cards by id, each `more` text, none of the 4 owner cards.
+- Scripting off (headless Chrome, the preview): 5 sections, 35 cards and 35 See more texts shown; no See more
   button, filter or mode control. The only failed request is `/favicon.ico`: the page links no icon yet.
 - Scripting on, `gatehouse.mode` dark and `gatehouse.look` terminal stored: no console error, Dark chosen.
 - sloplint (`--scope app --url http://localhost:5182/ --render`): clean after one fix (below).

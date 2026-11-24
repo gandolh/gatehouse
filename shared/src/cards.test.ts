@@ -12,9 +12,9 @@ const list = loadCards(cardsFile.pathname);
 const all = list.sections.flatMap((section) => section.cards);
 
 describe("the card list", () => {
-  it("validates and holds 37 cards in 5 sections", () => {
+  it("validates and holds 38 cards in 5 sections", () => {
     expect(list.sections).toHaveLength(5);
-    expect(all).toHaveLength(37);
+    expect(all).toHaveLength(38);
   });
 
   it("has unique ids", () => {
@@ -26,7 +26,7 @@ describe("the card list", () => {
     expect(owner.toSorted()).toEqual(["brief-board", "mail", "vault"]);
     const estate = list.sections.find((section) => section.id === "estate");
     expect(estate?.cards.filter((card) => card.part === "owner")).toHaveLength(3);
-    expect(publicCards(list).flatMap((section) => section.cards)).toHaveLength(34);
+    expect(publicCards(list).flatMap((section) => section.cards)).toHaveLength(35);
   });
 
   it("uses every image file, and every image exists", () => {
