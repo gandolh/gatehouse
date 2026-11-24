@@ -31,8 +31,8 @@ brief-board were registered the same way.
    addresses:
    - redirect URI: `<production origin>/gatehouse-api/auth/ward/callback`
    - sign-out return URI: `<production origin>/`
-5. Grant the role `admin` on the app to your own Ward account. **Do this before your first sign-in**
-   (section 6 says why).
+5. Grant the role `admin` on the app to your own Ward account. Grant `admin` itself, not another
+   role first: section 6 says why.
 
 ## 2. The secrets
 
@@ -108,9 +108,11 @@ There is no seed, no register page and no password: Sign in with Ward is the onl
 makes your Gatehouse user with the role your Ward grant carries (`admin`), and the owner's cards
 appear in Behind the scenes.
 
-- **Grant first.** The role is copied once, when the user is made, and never read from Ward again.
-  Signed in before the grant existed (or with another role), you stay "not the owner" after the
-  grant. To start over, on the box as the services account:
+- **Grant `admin` first.** With no grant at all, Ward refuses the sign-in (`access_denied`; the page
+  says Ward didn't sign you in) and Gatehouse makes no user, so a sign-in after the grant works. But
+  the role is copied once, when your first sign-in makes the user, and never read from Ward again:
+  signed in under a grant with another role, you stay "not the owner" after Ward's grant changes to
+  `admin`. To start over, on the box as the services account:
 
   ```
   export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock

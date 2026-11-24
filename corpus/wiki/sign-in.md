@@ -1,5 +1,5 @@
 ---
-summary: Sign in with Ward on Gatehouse's API, as built on 2026-11-24 (brief 07). Ward only, checked first - the API starts with no user, local sign-in fails for any name, and a first Ward sign-in takes the grant's role (read in ward-auth 1.1.0's userForSignIn, tested through it), copied once and never refreshed, so the grant comes first. The wiring (plugins/auth.ts, db/accounts.ts, the gatehouse_session cookie on /gatehouse-api, the library's routes under /auth, the guard over /v1 and /auth, the library's 401 and 403 bodies kept, cross-site POSTs refused, Ward sessions rechecked every 30 s); the owner route (GET /v1/owner/cards, admin, the card list read once, three cards); the settings (five WARD_OIDC_*, AUTH_TRUSTED_PROXIES, GATEHOUSE_CARDS_FILE); the data file; the vendored copy and its sums; the tests; the container, not built here.
+summary: Sign in with Ward on Gatehouse's API, as built on 2026-11-24 (brief 07). Ward only, checked first - the API starts with no user, local sign-in fails for any name, and a first Ward sign-in takes the grant's role (read in ward-auth 1.1.0's userForSignIn, tested through it), copied once and never refreshed (Ward refuses a user with no grant, so the stuck case is a first sign-in under another role). The wiring (plugins/auth.ts, db/accounts.ts, the gatehouse_session cookie on /gatehouse-api, the library's routes under /auth, the guard over /v1 and /auth, the library's 401 and 403 bodies kept, cross-site POSTs refused, Ward sessions rechecked every 30 s); the owner route (GET /v1/owner/cards, admin, the card list read once, three cards); the settings (five WARD_OIDC_*, AUTH_TRUSTED_PROXIES, GATEHOUSE_CARDS_FILE); the data file; the vendored copy and its sums; the tests; the container, not built here.
 updated: 2026-11-24
 ---
 
@@ -31,9 +31,12 @@ local sign-in off. Two things had to hold, and both do (`server/src/plugins/auth
 What follows from it:
 
 - **The role is copied once.** After the user exists, its row is the only truth; a changed grant at
-  Ward never reaches it. Signed in before the `admin` grant existed, the owner stays "not the owner".
-  There is no seed or admin screen to fix it: stop the container, delete `gatehouse.sqlite` (and its
-  `-wal` and `-shm`), start it, sign in again. `docs/owner-setup.md` says to grant first.
+  Ward never reaches it. With no grant at all, Ward itself refuses the sign-in with `access_denied`
+  (read in the Ward repo's OIDC interaction: an account must hold a grant for the client's app), so
+  no user is made and a later sign-in works. The stuck case is a first sign-in under a grant with
+  another role: the owner then stays "not the owner" after the grant becomes `admin`. There is no
+  seed or admin screen to fix it: stop the container, delete `gatehouse.sqlite` (and its `-wal` and
+  `-shm`), start it, sign in again. `docs/owner-setup.md` says to grant `admin` itself.
 - The local sign-in route stays and always fails, at one scrypt each, under the library's lockout
   (five failures per address, then 429). No account can ever have a password: nothing sets one, and
   setting one from Ward needs a reauthentication the page never offers.
