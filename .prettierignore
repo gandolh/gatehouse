@@ -1,8 +1,9 @@
 # Markdown stays out of Prettier (the estate's call, 2026-11-10).
 *.md
 
-# The generated house-style copy.
+# The generated house-style copy, and the vendored ward-auth build (byte-identical to its release).
 vendor/house-style/
+server/vendor/
 
 # The approved design, kept as exported and read only.
 design/
