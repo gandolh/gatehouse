@@ -123,16 +123,23 @@ mail.
 - Network: only Geist (latin, latin-ext) and Geist Mono (latin) download.
 - sloplint (`--scope app --url http://localhost:5182/ --render`): clean after one fix (below).
 - Shots at 1280 x 800 light and 390 x 844 dark beside `design/shots/`: the light one differs in 0.27% of pixels
-  (the Behind the scenes count and the heading weight); the dark one matches within 0.3% once shifted 6 px, the
-  approved render having been taken with the header 6 px higher than `sketch.html` lays it out today.
+  (the Behind the scenes count and the heading weight). The dark one differs in 13.8%, and in 0.3% once the build is
+  shifted up 6 px: the approved render sits 6 px higher. Measured in Chrome at 390 px, the build's header, section
+  row and first card stand where `sketch.html`'s do (the wordmark's top at 29 px in both).
 
 ## Where it differs from sketch A
 
+- **Headings at a true 650 weight**, the one difference that is a choice: the sketch asks for 650, but Google's
+  fixed weights drew it as 700 in the approved renders. One token switches it: `--font-weight-strong` in the
+  stylesheet (700 draws the renders' weight).
 - Light is chosen on a first visit; the sketch drew System (rule 14, the decisions).
 - Behind the scenes counts 4, not 8: the owner part is off the page until brief 06.
 - No card is drawn open: the sketch opened Solstice to show See more.
-- Headings at a true 650 weight (above).
+- With a stored Dark, the page is dark from the first paint but its mode control shows Light pressed until React
+  hydrates (the HTML is rendered in light).
+- Pictures after the first three load lazily; the sketch loaded all of them at once.
 - A skip link ("Skip to the cards", from sketch B), off screen until focused. sloplint failed it as `sr-only`
   (text under the header), so it sits above the page instead.
 - The title is the wordmark and the description the header's line, as in the sketch; there is no favicon.
 - The mode control and filters are radio groups: one tab stop each, arrows move and choose.
+- At 390 px the approved render sits 6 px higher than the build and `sketch.html` (above).

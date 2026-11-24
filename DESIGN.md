@@ -117,8 +117,10 @@ From `design/sketches/C/tokens.md`. The teal ground stays; the slate ground only
 | primary button / its text | #000080 / #f6f8ff | #3347c4 / #f6f8ff |
 | link / visited | #0000d0 / #551a8b | #9bc0ff / #d9b3ff |
 | Public label face / text | #006400 / #f6f8ff | #1c7f3c / #f6f8ff |
+| sign-in and owner cards: primary button | button face (#c8c8c8), ink text | button face (#2e3b7a), ink text |
 | picture frame | #7a7a7a | #02040f |
 | focus: inner ring, outer ring | #000000, #ffff66 | #ffffff, #ffdd33 |
+| slate ground, not picked (`?ground=slate` in the sketch, light only) | #4f5f6e, shadow #1c2630, drop #2b3640 | n/a |
 
 - Fonts: Pixelify Sans for the wordmark and the section bars only; Arimo for everything else; Cousine for addresses.
 - Access labels are sunken fields (inset bevel, no face, ink text and icon); only Public keeps its green face. Icons:
