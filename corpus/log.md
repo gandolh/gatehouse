@@ -139,3 +139,15 @@ stacked footer stay as built ([open-questions.md](wiki/open-questions.md)). Brie
 the controller: `server/vendor/ward/` joins `CLAUDE.md`'s exceptions to the no-account-names rule, because its
 banners and LICENSE name the library's source repo and its SHA256SUMS keep the copy byte-identical, as in every
 other app that vendors it.
+
+## [2026-11-24] build | Brief 08: the owner part walked end to end against the local Ward
+
+The page and the real API (`npm run dev`) against the local Ward, with three throwaway Ward users: the owner
+(`admin`), a user with another grant, and one with none. Every state brief 06 drew matched in Profile at 1280 x 800:
+signed in with the three owner cards, a reload (the session held; a reload past 30 s made the first real Ward check),
+sign-out, not the owner (403), the no-grant refusal (Ward calls back with `access_denied`), Ward unreachable on a
+fresh sign-in, and no request to `/gatehouse-api` without the hint, even with a session cookie. One difference, fixed:
+with a live session and Ward down, the owner route answers 401 with `reason: ward_unavailable` and keeps the session;
+the page now shows the Ward unreachable words with Try again and Sign out and keeps the hint, where it used to drop
+it without a word. A cancel at Ward reads as the refusal (both arrive as `access_denied`). Ready for deploy with
+vps-deploy's brief 34. Findings in [wiki/sign-in.md](wiki/sign-in.md).

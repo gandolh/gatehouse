@@ -76,3 +76,38 @@ How sign-in works here: `corpus/wiki/sign-in.md` (brief 07 wrote it) and
 - Settled 2026-11-23: the owner part shows only after Sign in with Ward.
 - Settled 2026-11-24 (the plan): Ward-only sign-in, the `admin` role, sign-out ends Gatehouse's
   session only.
+
+## Outcome (2026-11-24)
+
+Walked; on the board at Ready for deploy, waiting for vps-deploy's brief 34. Details in
+[sign-in.md](../../wiki/sign-in.md), "The walk against the local Ward".
+
+- **Step 1 held.** Ward's local seed has the `gatehouse` client (dev page `http://localhost:5182/`, API
+  `/gatehouse-api`); the local Ward answered with the expected issuer; the API logged that Sign in with Ward is on.
+- **The walk** (`npm run dev`, the real API, Profile at 1280 x 800, three throwaway local Ward users: `admin`,
+  `member`, no grant, disabled afterwards). Every state matched brief 06's screens: signed in with the three owner
+  cards; reload (the session held, the checking line a blink, a reload past 30 s made Ward's first real session
+  check); sign out (204, cards gone, Ward's chooser on the next sign-in); not the owner (403); the no-grant refusal
+  (Ward calls back with `access_denied`, the page lands on `/` with the refusal focused); Ward unreachable on a fresh
+  sign-in (the start answers 503).
+- **No hint, no request**: a reload with the hint cleared and the session cookie still set makes no request to
+  `/gatehouse-api`.
+- **One difference, fixed** (01ad87a): with a live session and Ward down, the owner route answers 401 with
+  `reason: ward_unavailable` and keeps the session; the page dropped the hint without a word. It now shows the Ward
+  unreachable words with the failed state's Try again and Sign out, and keeps the hint. Walked live: Try again
+  recovers once Ward is back with no new round trip, and Sign out works while Ward is down. Two hydration cases test
+  it and the plain 401.
+- **Listed, not changed**: a cancel at Ward ("Back to Gatehouse") reads as the refusal; Ward sends `access_denied`
+  for both and the library passes only the code.
+
+Checks: `npm run check` (twice), `npm run build` with `GATEHOUSE_ORIGIN` (the path check and the owner-part guard
+pass) and the corpus lint pass. Not run: the waking note live (the local API answers in milliseconds; it was judged on
+the fake), and the phone and other looks against the real API (outside this brief's walk).
+
+Deviations:
+- `shared/src/api.ts`: `errorBodySchema` takes an optional `reason`, outside the files this brief owned; the page
+  can't read the 401's reason without it.
+- Corpus pages beyond the four named: `owner-part.md` (the new row, its "Against the real API" section) and
+  `architecture.md` (the 401 line).
+- The test users were made by the controller (this session's permission check refused the console login), and only
+  disabled: Ward's console does have `DELETE /console/accounts/:subject`, unlike the run's note.
