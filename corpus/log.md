@@ -165,3 +165,15 @@ accepted exception. Done on the board: nothing deploys before vps-deploy's brief
 The owner chose to tell a cancel at Ward from a refusal (brief 10: Ward's library maps its cancel to `cancelled`,
 version 1.2.0, re-vendored here, a quiet line on the page) and to give Tavi's new site a card in "Sites for other
 people" with its first deploy (brief 11). The owner also kept the stacked footer and the Ward-down state as built.
+
+## [2026-11-24] build | Brief 10: a cancel at Ward reads as a cancel
+
+Back to Gatehouse on Ward's login page used to land as a refusal, because both arrive as `access_denied`. Ward's
+library is now 1.2.0. It compares Ward's description of a cancel with a constant from Ward's own source and answers
+`cancelled`, so Ward's routes stay as they were and its server needs no deploy. Ward has two local commits, not
+pushed. The copy here is re-vendored and its sums check. The footer says "Sign-in cancelled." in the muted style,
+without focus, and drops the hint. Walked against the local Ward: a cancel from the form and from the chooser showed
+the quiet line, a user with no grant still got the refusal, and the owner still signed in. Other apps see a cancel as
+`access_denied` until each re-vendors. The 1.2.0 sums sit with the staged copy, not in a repo, because Ward ignores
+its build folder. Done on the board. Findings in [wiki/owner-part.md](wiki/owner-part.md).
+

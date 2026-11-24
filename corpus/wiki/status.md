@@ -31,12 +31,14 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
   `npm run dev:fake -w @gatehouse/web` ([owner-part.md](owner-part.md)); the owner approved the screens and
   the stacked footer. The API's side built 2026-11-24 (brief 07): Sign in with
   Ward only (checked: no local sign-in, the grant's role copied at the first sign-in), `GET
-  /v1/owner/cards` for `admin` with the three owner cards, the vendored ward-auth 1.1.0, and the
+  /v1/owner/cards` for `admin` with the three owner cards, the vendored ward-auth (1.2.0 since brief 10), and the
   container (`docker compose ... config` parses; the image not built yet) ([sign-in.md](sign-in.md)).
   Walked end to end on 2026-11-24 (brief 08): the real API and the local Ward, an owner, a user with another grant
   and one with none, Ward down with and without a live session. Every state matched brief 06's screens; a 401 whose
   `reason` says Ward couldn't vouch for the session now reads as Ward unreachable with the hint kept
-  ([sign-in.md](sign-in.md)). Ready for deploy, with vps-deploy's brief 34.
+  ([sign-in.md](sign-in.md)). Ready for deploy, with vps-deploy's brief 34. A cancel at Ward reads as a cancel since
+  2026-11-24 (brief 10): ward-auth 1.2.0 re-vendored, "Sign-in cancelled." as a quiet line
+  ([owner-part.md](owner-part.md)).
 - **README and docs**: done 2026-11-24 (brief 09): `README.md`, `docs/` (getting started, architecture, design, an index) and four shots in `docs/images/` taken from the page with the fake API.
 - **Deploy**: vps-deploy's brief 34 serves the page at `/`, its files, the API and checks the card
   list against the stacks. Written 2026-11-24, not built; its spec is `docs/owner-setup.md` (brief 07).
