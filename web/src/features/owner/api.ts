@@ -13,8 +13,11 @@ const API = "/gatehouse-api";
 /** The owner route's answer, as the page acts on it. */
 export type CardsResult =
   | { kind: "cards"; cards: OwnerCard[] }
-  /** 401: no session. The page drops the hint quietly. */
-  | { kind: "signed-out" }
+  /**
+   * 401: no session, or one a check refused. `reason` says why it was refused (`ward_unavailable` keeps the session
+   * for when Ward is back; `ward_session_ended` ended it), and is undefined when there was no session.
+   */
+  | { kind: "signed-out"; reason: string | undefined }
   /** 403: a session, but not the owner's. */
   | { kind: "not-owner" }
   /** No answer in time, a 5xx, or an answer the schema refuses. */
@@ -38,7 +41,7 @@ export async function fetchOwnerCards(timeout: number): Promise<CardsResult> {
     });
     return { kind: "cards", cards };
   } catch (error) {
-    if (error instanceof ApiError && error.status === 401) return { kind: "signed-out" };
+    if (error instanceof ApiError && error.status === 401) return { kind: "signed-out", reason: error.reason };
     if (error instanceof ApiError && error.status === 403) return { kind: "not-owner" };
     return { kind: "failed" };
   }

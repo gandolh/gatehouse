@@ -107,6 +107,33 @@ function headScript(): string {
   return script;
 }
 
+/** Hydrates the page with the owner hint set and the owner route answering `body` with `status`; the page's root. */
+async function hydrateWithHint(body: unknown, status: number): Promise<HTMLElement> {
+  document.head.innerHTML = '<meta name="theme-color" content="#e5e8ee">';
+  document.body.innerHTML = `<div id="root">${renderToString(page(DATA))}</div>`;
+  localStorage.setItem("gatehouse.owner", "1");
+  new Function(headScript())();
+  const fetched = vi.fn(() => Promise.resolve(Response.json(body, { status })));
+  vi.stubGlobal("fetch", fetched);
+  const container = document.getElementById("root");
+  if (container === null) throw new Error("no root");
+
+  await act(async () => {
+    hydrateRoot(container, page(DATA));
+    await Promise.resolve();
+  });
+  await act(async () => {
+    await vi.waitFor(
+      () => {
+        expect(fetched).toHaveBeenCalled();
+      },
+      { timeout: 5000 },
+    );
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  });
+  return container;
+}
+
 beforeAll(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 });
@@ -246,6 +273,26 @@ describe("the page", () => {
     const status = [...container.querySelectorAll('footer [role="status"]')].map((node) => node.textContent);
     expect(status).toEqual(["Signed in as the owner: 2 cards added to Behind the scenes."]);
     expect([...container.querySelectorAll("footer button")].map((node) => node.textContent)).toContain("Sign out");
+  });
+
+  it("says Ward can't be reached when the API refuses a live session for it, and keeps the hint", async () => {
+    const container = await hydrateWithHint({ error: "unauthorized", reason: "ward_unavailable" }, 401);
+
+    const status = [...container.querySelectorAll('footer [role="status"]')].map((node) => node.textContent);
+    expect(status).toEqual(["Ward can't be reached right now. Try again later."]);
+    expect([...container.querySelectorAll("footer button")].map((node) => node.textContent)).toEqual(
+      expect.arrayContaining(["Try again", "Sign out"]),
+    );
+    expect(localStorage.getItem("gatehouse.owner")).toBe("1");
+  });
+
+  it("drops the hint quietly on a 401 with no session", async () => {
+    const container = await hydrateWithHint({ error: "unauthorized" }, 401);
+
+    const status = [...container.querySelectorAll('footer [role="status"]')].map((node) => node.textContent);
+    expect(status).toEqual([""]);
+    expect([...container.querySelectorAll("footer button")].map((node) => node.textContent)).toContain("Owner sign-in");
+    expect(localStorage.getItem("gatehouse.owner")).toBeNull();
   });
 
   it("makes no request without the owner hint", async () => {

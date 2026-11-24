@@ -10,12 +10,15 @@ export class ApiError extends Error {
   /** The HTTP status; 0 when no answer came. */
   readonly status: number;
   readonly code: string;
+  /** Why a 401 refused a live session (`ward_unavailable`, `ward_session_ended`, …), when the server said. */
+  readonly reason: string | undefined;
 
-  constructor(status: number, code: string, message: string) {
+  constructor(status: number, code: string, message: string, reason?: string) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
+    this.reason = reason;
   }
 }
 
@@ -49,7 +52,7 @@ async function send(path: string, { method = "GET", signal }: RequestOptions): P
   if (response.ok) return response;
   const parsed = errorBodySchema.safeParse(await response.json().catch(() => undefined));
   if (!parsed.success) throw new ApiError(response.status, "bad_response", `The API answered ${response.status}.`);
-  throw new ApiError(response.status, parsed.data.error, parsed.data.message ?? parsed.data.error);
+  throw new ApiError(response.status, parsed.data.error, parsed.data.message ?? parsed.data.error, parsed.data.reason);
 }
 
 /** A call whose answer the page reads: resolves to the parsed body. */

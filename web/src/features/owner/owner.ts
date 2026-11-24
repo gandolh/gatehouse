@@ -10,7 +10,8 @@ import { dropHint, hasHint, setHint, takeWardError } from "./hint";
  * - `waking`: the owner route is slow (the API sleeps when idle); Behind the scenes says the cards are on their way.
  * - `owner`: the owner's cards are on the page.
  * - `not-owner`: signed in, but the owner route answered 403.
- * - `failed`: the owner route didn't answer in time, or answered something else.
+ * - `failed`: the owner route didn't answer in time, or answered something else, or refused the session because Ward
+ *   couldn't vouch for it (the footer then says Ward can't be reached).
  * - `signing-out`: the sign-out is on its way.
  */
 export type OwnerStatus =
@@ -44,7 +45,10 @@ const WAKING_AFTER_MS = 1000;
 /** How long the page waits for the owner route before it gives up (a waking API answers in seconds). */
 const GIVE_UP_AFTER_MS = 30_000;
 
-/** Ward's codes for "Ward can't be reached": the page says to try later. Any other code is a refusal. */
+/**
+ * Ward's codes for "Ward can't be reached", in `?ward_error=` and in a 401's `reason`: the page says to try later. Any
+ * other `ward_error` is a refusal, and any other 401 a quiet sign-out.
+ */
 const UNREACHABLE = new Set(["ward_unavailable", "ward_misconfigured"]);
 
 /** The calls, loaded on demand: a visitor never downloads them. */
@@ -77,7 +81,11 @@ function createOwnerStore() {
     if (result.kind === "cards") set({ status: "owner", cards: result.cards });
     else if (result.kind === "not-owner") set({ status: "not-owner" });
     else if (result.kind === "failed") set({ status: "failed" });
-    else {
+    else if (result.reason !== undefined && UNREACHABLE.has(result.reason)) {
+      // The API kept the session for when Ward is back, so the hint stays: Try again asks once more, and Sign out
+      // still ends the session (the sign-out runs no Ward check).
+      set({ status: "failed", notice: "unreachable" });
+    } else {
       dropHint();
       set({ status: "visitor" });
     }

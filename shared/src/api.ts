@@ -35,11 +35,13 @@ export const wardStartSchema = z.object({ url: z.string().min(1) });
 
 /**
  * Every error the API sends. Its own errors carry a `message`; Ward's library answers `{ error }` alone
- * (`unauthorized`, `forbidden`, `ward_unavailable`), so the message is optional.
+ * (`unauthorized`, `forbidden`, `ward_unavailable`), so the message is optional. The library's 401 adds a `reason`
+ * when a live session was refused by a check, such as `ward_unavailable` when Ward couldn't vouch for it.
  */
 export const errorBodySchema = z.object({
   error: z.string().min(1),
   message: z.string().optional(),
+  reason: z.string().optional(),
 });
 
 export type OwnerCard = z.infer<typeof ownerCardSchema>;
