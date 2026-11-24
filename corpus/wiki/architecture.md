@@ -1,5 +1,5 @@
 ---
-summary: How Gatehouse is put together, as planned on 2026-11-24 and re-planned the same day for React; the skeleton was built that day (brief 01). Three npm workspaces (shared card schema and link resolver, a Fastify 5 API, a React 19 page on Vite 8 with Base UI and Tailwind 4); the addresses (the page at exactly /, its files under /gatehouse/ through Vite's base in the build and the preview, checked on a scratch app with the URLs it wrote, the API under /gatehouse-api/, /gatehouse/ itself a 404); the build (client build, SSR build, prerender, path check, guard) and hydration; the commands; the public-only card module; ports 8815, 5182 and 4182 (the preview at /gatehouse/); the settings GATEHOUSE_ORIGIN, HOST, PORT, PUBLIC_ORIGIN, GATEHOUSE_API_PREFIX and GATEHOUSE_DATA_DIR; looks and modes as data-look and data-theme set before first paint, read by React only after mount; fonts per look; the owner part (the owner hint, the API call, the Card component after mount, sign-out); the build guard; the container behind Sablier.
+summary: How Gatehouse is put together, as planned on 2026-11-24 and re-planned the same day for React; the skeleton (brief 01) and the page in Profile with its card module and build guard (brief 03) were built that day. Three npm workspaces (shared card schema and link resolver, a Fastify 5 API, a React 19 page on Vite 8 with Base UI and Tailwind 4); the addresses (the page at exactly /, its files under /gatehouse/ through Vite's base in the build and the preview, checked on a scratch app with the URLs it wrote, the API under /gatehouse-api/, /gatehouse/ itself a 404); the build (client build, SSR build, prerender, path check, guard) and hydration; the commands; the public-only card module; ports 8815, 5182 and 4182 (the preview at /gatehouse/); the settings GATEHOUSE_ORIGIN, HOST, PORT, PUBLIC_ORIGIN, GATEHOUSE_API_PREFIX and GATEHOUSE_DATA_DIR; looks and modes as data-look and data-theme set before first paint, read by React only after mount; fonts per look; the owner part (the owner hint, the API call, the Card component after mount, sign-out); the build guard (web/scripts/check-owner-part.ts, built by brief 03); the container behind Sablier.
 updated: 2026-11-24
 ---
 
@@ -7,8 +7,9 @@ updated: 2026-11-24
 
 Planned on 2026-11-24, and re-planned the same day when the page moved from Astro to React
 ([decisions.md](decisions.md)). Brief 01 built the skeleton the same day: the workspaces, the
-harness, the health route, a placeholder page and its build. The later briefs build the rest. Each point names the brief that settles it, and
-the brief's outcome note wins over this page until the page catches up.
+harness, the health route, a placeholder page and its build. Brief 03 built the page in Profile, the card module
+and the build guard ([page.md](page.md)). The later briefs build the rest. Each point names the brief that settles
+it, and the brief's outcome note wins over this page until the page catches up.
 
 ## Workspaces
 
@@ -84,26 +85,28 @@ dev; `publicDir` is off. `experimental.renderBuiltUrl` wasn't needed. The path c
 4. `web/scripts/prerender.ts` imports `web/dist-ssr/entry-server.js`, calls its `render()`
    (`renderToString`), and puts the HTML in place of the `<!--app-->` placeholder in
    `web/dist/index.html`'s root, failing unless the placeholder is there exactly once.
-5. The path check (`web/scripts/check-paths.ts`) and the build guard (brief 03) read every file in
-   `web/dist/`.
+5. The path check (`web/scripts/check-paths.ts`) and the build guard (`web/scripts/check-owner-part.ts`) read
+   every file in `web/dist/`. The prerender also writes the wordmark as the page's `<title>` and the header's line
+   as its description, from the SSR entry's `head()`.
 
 Node runs the two scripts as TypeScript (type stripping); they import each other with the `.ts`
 suffix, which `web/tsconfig.json` allows.
 
 In the browser, `web/src/main.tsx` hydrates that HTML with `hydrateRoot`. In dev nothing is
-prerendered, so it mounts with `createRoot`. A hydration test in jsdom (brief 03) renders the page
-as the prerender does, then hydrates it with a stored look and mode (and, from brief 06, the owner
-hint) and expects no recoverable error.
+prerendered, so it mounts with `createRoot`. Both entries render `page(cards)` from `web/src/page.tsx`. The
+hydration test (`web/src/page.test.tsx`, jsdom) renders the page as the prerender does, runs index.html's own head
+script with a stored look and mode (and, from brief 06, the owner hint), hydrates, and expects no recoverable
+error.
 
 ## The card module
 
 The page never imports `content/cards.json`: bundling it would ship the owner cards in the scripts.
-A small Vite plugin gives the page a virtual module, in dev and in the build, made through
-`shared`'s loader: the public part only, links resolved against `GATEHOUSE_ORIGIN`, the address as
-`displayAddress` writes it, and each picture imported (so Vite fingerprints it) with the width and
+A small Vite plugin (`cardModule()` in `web/vite.config.ts`) gives the page `virtual:gatehouse-cards`, in dev and
+in the build, made through `shared`'s loader: the public part only, links resolved against `GATEHOUSE_ORIGIN`, the
+address as `displayAddress` writes it, and each picture imported (so Vite fingerprints it) with the width and
 height read from its webp header. Only the two entries, `main.tsx` and `entry-server.tsx`, import
-it; the page takes the cards as props. An ambient declaration types it, so the typecheck passes on
-a fresh clone. Brief 03 builds it.
+it; the page takes the cards as props. `web/src/card-module.d.ts` types it, so the typecheck passes on
+a fresh clone. Built by brief 03; details in [page.md](page.md).
 
 ## Ports and settings
 
@@ -136,8 +139,9 @@ format` and `npm run house-style:sync -- --check`. The root `CLAUDE.md` says wha
 - An inline script in `web/index.html`'s `<head>` reads `gatehouse.look` and `gatehouse.mode` from
   localStorage and sets both attributes before the first paint. A `?look=` or `?mode=` query
   parameter overrides the stored pick for one load without storing it, for shots and sloplint runs.
-  The same script marks `<html>` as scripted, so the stylesheet can show what only works without
-  scripts (the See more text).
+  The same script sets `data-scripted` on `<html>` and colours the `theme-color` meta for the look and mode, so
+  the stylesheet's `scripted:` variant hides See more's text until opened and shows the controls that need
+  scripts. Without scripts the See more text shows and those controls hide.
 - React renders inside the root element, never `<html>`, so the attributes stay the head script's.
   What React reads from localStorage or the address (the stored look and mode, the owner hint) it
   reads after mount, never during render: the HTML was rendered without it, and the first client
@@ -147,8 +151,9 @@ format` and `npm run house-style:sync -- --check`. The root `CLAUDE.md` says wha
   `dark` and one variant per look; a look's skin is those variants on the components' classes.
 - The mode control, the look switcher and the filters are Base UI `RadioGroup`s (rule 16: one is
   always chosen, and nothing is saved to the server).
-- Fonts are self-hosted with `@fontsource`. A browser downloads a font only when rendered text uses
-  it, so a look's fonts load only in that look; checked in the network panel.
+- Fonts are self-hosted from Fontsource's packages (the variable ones for Geist and Geist Mono), imported into
+  the vendor layer. A browser downloads a font only when rendered text uses it, so a look's fonts load only in that
+  look; checked in the network panel for Profile on 2026-11-24.
 
 ## The owner part
 
@@ -169,11 +174,12 @@ accounts and no seed: Sign in with Ward is the only way in.
 
 ## The build guard
 
-After the prerender, `npm run build` fails when any file in `web/dist/` (HTML, scripts, styles, and
-source maps if any are written) holds an owner-part card's link, as written (`host:vault`) or
+After the prerender and the path check, `npm run build` fails when any file in `web/dist/` (HTML, scripts,
+styles, and source maps if any are written) holds an owner-part card's link, as written (`host:vault`) or
 resolved, its blurb, its See more text, or its id in the form the Card component writes it in HTML
-or an object literal writes it in a script. Its test plants a leak in a script as well as in the
-HTML (brief 03).
+(`id="c-vault"`, `id="more-vault"`) or an object literal writes it in a script (any quotes, backticks included).
+Text is matched as written and with HTML's and a script's escapes undone. It is `web/scripts/check-owner-part.ts`;
+its test plants leaks in the HTML, a script and a source map (brief 03).
 
 ## The container
 

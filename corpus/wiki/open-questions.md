@@ -1,5 +1,5 @@
 ---
-summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner when brief 06 reaches Ready for test - the look switcher in the footer and the sign-in entry, neither drawn. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (03), whether Ward's library runs with no local account and the admin role arrives through the grant (07).
+summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner when brief 06 reaches Ready for test - the look switcher in the footer and the sign-in entry, neither drawn. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (answered by 03: no, so See more is a hand-built disclosure), whether Ward's library runs with no local account and the admin role arrives through the grant (07).
 updated: 2026-11-24
 ---
 
@@ -26,11 +26,16 @@ updated: 2026-11-24
   - `vite preview` shows the built page at `http://localhost:4182/gatehouse/` and redirects `/`
     there. Without the base in the preview, the page's files fell through to `index.html`.
 
-  Brief 03 runs the path check again once the page has its own fonts and pictures.
-- **See more with scripting off.** Base UI's `Collapsible` hides a closed panel with the `hidden`
-  attribute, and Tailwind's Preflight makes `[hidden]` `display: none !important`. Brief 03 checks
-  what a closed panel renders on the server; the fallback is a hand-built disclosure (a button with
-  `aria-expanded`, the panel hidden only once the head script has marked the page as scripted).
+  Brief 03 ran the path check again with the page's fonts and pictures in: 66 references, all under
+  `/gatehouse/`, the 11 Geist and Geist Mono files and the 25 pictures among them.
+- **See more with scripting off: answered 2026-11-24 (brief 03).** No. On the server, Base UI
+  1.9.0's `Collapsible` leaves a closed panel out of the HTML by default, and with `keepMounted` or
+  `hiddenUntilFound` writes it with `hidden=""` (the until-found value comes from an effect in the
+  browser). Preflight's `[hidden]` rule is `display: none !important` in the base layer, which no
+  later layer can undo. See more is a hand-built disclosure instead: a button with `aria-expanded`
+  and `aria-controls`, the panel always rendered and hidden by `scripted:not-data-open:hidden` only
+  once the head script has set `data-scripted`. With scripting off the preview shows all 34 See more
+  texts ([page.md](page.md)).
 - **Sign in with Ward and nothing else.** Ward's library has no switch that turns local sign-in
   off. Brief 07 checks that the API runs with no local account and no seed, and that the owner's
   `admin` role arrives through Ward's grant on the first sign-in.
