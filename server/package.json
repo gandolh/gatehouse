@@ -1,7 +1,7 @@
 {
   "name": "@gatehouse/server",
   "version": "0.1.0",
-  "description": "The Gatehouse API (Fastify): its health route now, the owner's cards behind Sign in with Ward later.",
+  "description": "The Gatehouse API (Fastify): its health route, and the owner's cards behind Sign in with Ward.",
   "private": true,
   "type": "module",
   "main": "./dist/server.js",
@@ -13,6 +13,8 @@
   "dependencies": {
     "@fastify/swagger": "9.9.3",
     "@fastify/type-provider-zod": "1.0.3",
+    "@gatehouse/shared": "0.1.0",
+    "better-sqlite3": "13.0.3",
     "close-with-grace": "2.5.0",
     "fastify": "5.12.8",
     "fastify-plugin": "6.0.1",
@@ -20,6 +22,7 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "9.6.0",
     "tsx": "4.23.13"
   }
 }

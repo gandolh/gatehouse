@@ -2,12 +2,19 @@ import { existsSync } from "node:fs";
 import { isAbsolute, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
+import { parseTrustedProxies, wardClientOptionsFromEnv, type WardClientOptions } from "../vendor/ward/ward-auth.js";
 
 /** The repo root. `src/` (tsx) and `dist/` (built) sit at the same depth under `server/`, so this holds for both. */
 const REPO_ROOT = fileURLToPath(new URL("../../", import.meta.url));
 
 /** The repo's `.env`, found from this file, never from the working directory. */
 const ENV_FILE = resolve(REPO_ROOT, ".env");
+
+/** Where Ward's library mounts its routes, as Fastify sees them; the browser reaches them under the API prefix. */
+export const AUTH_ROUTE_PREFIX = "/auth";
+
+/** The Ward callback under the API prefix: `WARD_OIDC_REDIRECT_URI` is the page's origin, the prefix, then this. */
+const WARD_CALLBACK_PATH = `${AUTH_ROUTE_PREFIX}/ward/callback`;
 
 /** The API's settings, parsed once at start. No other file reads the environment. */
 export interface Config {
@@ -21,6 +28,18 @@ export interface Config {
   apiPrefix: string;
   /** `GATEHOUSE_DATA_DIR`, absolute (a relative value is taken from the repo root). Default `data/` at the repo root. */
   dataDir: string;
+  /**
+   * `GATEHOUSE_CARDS_FILE`, absolute (a relative value is taken from the repo root): the card list the owner route reads
+   * once at start. Default `content/cards.json` at the repo root, which is `/app/content/cards.json` in the image.
+   */
+  cardsFile: string;
+  /**
+   * Sign in with Ward, from the five `WARD_OIDC_*` variables, or undefined while `WARD_OIDC_ISSUER` is empty. Gatehouse
+   * has no local accounts, so without it nobody can sign in. `clientKey` is a secret: never log it.
+   */
+  ward: WardClientOptions | undefined;
+  /** `AUTH_TRUSTED_PROXIES`: peers besides loopback whose `X-Forwarded-For` the sign-in lockout believes. */
+  trustedProxies: string[];
 }
 
 /** The environment can't run the API. The message names every variable at fault, never a value. */
@@ -66,7 +85,70 @@ const envSchema = z.object({
       .default("/gatehouse-api"),
   ),
   GATEHOUSE_DATA_DIR: z.preprocess(unset, z.string().trim().default("data")),
+  GATEHOUSE_CARDS_FILE: z.preprocess(unset, z.string().trim().default("content/cards.json")),
+  AUTH_TRUSTED_PROXIES: z.preprocess(
+    unset,
+    z
+      .string()
+      .refine(isProxyList, {
+        error: "AUTH_TRUSTED_PROXIES must be addresses or CIDR ranges, comma-separated, with no /0 among them.",
+      })
+      .optional(),
+  ),
 });
+
+/** Whether the library takes `value` as its trusted proxies: each entry an address or a CIDR range, and no `/0`. */
+function isProxyList(value: string): boolean {
+  try {
+    parseTrustedProxies(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** `AUTH_TRUSTED_PROXIES` as a list, blanks dropped. */
+function proxyList(value: string | undefined): string[] {
+  return (value ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry !== "");
+}
+
+/** A path from the environment, absolute; a relative one is taken from the repo root. */
+function fromRoot(path: string): string {
+  return isAbsolute(path) ? path : resolve(REPO_ROOT, path);
+}
+
+/**
+ * Sign in with Ward's settings, read by the library's own reader so its rules hold (an empty `WARD_OIDC_ISSUER` means
+ * off; with it set, the client id, the key and the redirect URI must be set too). On top: the redirect URI must be the
+ * callback as the browser reaches it, on the page's origin and under the API prefix, where the session cookie lives.
+ * The messages name variables, never a value.
+ */
+function wardSettings(
+  env: NodeJS.ProcessEnv,
+  where: { publicOrigin: string; apiPrefix: string } | undefined,
+  problems: string[],
+): WardClientOptions | undefined {
+  let ward: WardClientOptions | undefined;
+  try {
+    ward = wardClientOptionsFromEnv(env);
+  } catch (error) {
+    problems.push(
+      `${error instanceof Error ? error.message : String(error)}. Set all of them, or leave WARD_OIDC_ISSUER empty to run without Sign in with Ward.`,
+    );
+    return undefined;
+  }
+  if (ward === undefined || where === undefined) return ward;
+  const callback = `${where.publicOrigin}${where.apiPrefix}${WARD_CALLBACK_PATH}`;
+  if (ward.redirectUri !== callback) {
+    problems.push(
+      `WARD_OIDC_REDIRECT_URI must be the callback as the browser reaches it: PUBLIC_ORIGIN, then ${where.apiPrefix}${WARD_CALLBACK_PATH}.`,
+    );
+  }
+  return ward;
+}
 
 /** One line per problem, starting with the variable's name. Never the value. */
 function describeIssue(issue: z.core.$ZodIssue): string {
@@ -76,17 +158,24 @@ function describeIssue(issue: z.core.$ZodIssue): string {
 
 /** The settings from `env`, or a `ConfigError` naming every variable that is wrong. Tests pass their own `env`. */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
+  const problems: string[] = [];
   const parsed = envSchema.safeParse(env);
-  if (!parsed.success) throw new ConfigError(parsed.error.issues.map(describeIssue).join("\n"));
+  if (!parsed.success) problems.push(...parsed.error.issues.map(describeIssue));
+  const where = parsed.success
+    ? { publicOrigin: parsed.data.PUBLIC_ORIGIN, apiPrefix: parsed.data.GATEHOUSE_API_PREFIX }
+    : undefined;
+  const ward = wardSettings(env, where, problems);
+  if (!parsed.success || problems.length > 0) throw new ConfigError(problems.join("\n"));
   const values = parsed.data;
   return {
     host: values.HOST,
     port: values.PORT,
     publicOrigin: values.PUBLIC_ORIGIN,
     apiPrefix: values.GATEHOUSE_API_PREFIX,
-    dataDir: isAbsolute(values.GATEHOUSE_DATA_DIR)
-      ? values.GATEHOUSE_DATA_DIR
-      : resolve(REPO_ROOT, values.GATEHOUSE_DATA_DIR),
+    dataDir: fromRoot(values.GATEHOUSE_DATA_DIR),
+    cardsFile: fromRoot(values.GATEHOUSE_CARDS_FILE),
+    ward,
+    trustedProxies: proxyList(values.AUTH_TRUSTED_PROXIES),
   };
 }
 

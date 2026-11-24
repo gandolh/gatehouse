@@ -11,3 +11,13 @@ export function stripPrefix(url: string, prefix: string): string {
   if (rest.startsWith("?")) return `/${rest}`;
   return url;
 }
+
+/** A URL without its query string. */
+export function pathOf(url: string): string {
+  return url.split("?")[0] ?? url;
+}
+
+/** Whether `path` is `prefix` or sits under it, as a whole path segment. */
+export function isUnder(path: string, prefix: string): boolean {
+  return path === prefix || path.startsWith(`${prefix}/`);
+}

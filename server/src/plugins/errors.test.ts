@@ -3,7 +3,7 @@ import type { FastifyInstance } from "fastify";
 import { afterEach, describe, expect, it } from "vitest";
 import { z } from "zod";
 import { ApiError } from "../lib/api-error.js";
-import { buildTestApp } from "../testing/buildTestApp.js";
+import { buildTestApp, sessionCookie } from "../testing/buildTestApp.js";
 
 /** Routes that fail each way the error handler tells apart, added to the real app. */
 function failingRoutes(built: FastifyInstance): void {
@@ -31,45 +31,52 @@ function failingRoutes(built: FastifyInstance): void {
 }
 
 let app: FastifyInstance;
+/** A signed-in session's cookie: every route under /v1 but health is behind the session guard. */
+let cookie: string;
+async function build(extend?: (app: FastifyInstance) => void): Promise<void> {
+  const built = await buildTestApp(extend === undefined ? {} : { extend });
+  app = built.app;
+  cookie = await sessionCookie(built.accounts, "member");
+}
 afterEach(async () => {
   await app.close();
 });
 
 describe("the error plugin", () => {
   it("answers a request that fails its schema with 400 and every issue", async () => {
-    app = await buildTestApp({ extend: failingRoutes });
-    const res = await app.inject({ method: "GET", url: "/gatehouse-api/v1/test/look?look=neon" });
+    await build(failingRoutes);
+    const res = await app.inject({ method: "GET", url: "/gatehouse-api/v1/test/look?look=neon", headers: { cookie } });
     expect(res.statusCode).toBe(400);
     expect(res.json()).toMatchObject({ error: "validation", issues: [{ path: "querystring/look" }] });
   });
 
   it("answers a reply that breaks its schema with a 500 and no detail", async () => {
-    app = await buildTestApp({ extend: failingRoutes });
-    const res = await app.inject({ method: "GET", url: "/v1/test/wrong-shape" });
+    await build(failingRoutes);
+    const res = await app.inject({ method: "GET", url: "/v1/test/wrong-shape", headers: { cookie } });
     expect(res.statusCode).toBe(500);
     expect(res.json()).toEqual({ error: "internal", message: "Gatehouse's API hit an error; its log says why." });
   });
 
   it("answers an ApiError with its code's status and its message", async () => {
-    app = await buildTestApp({ extend: failingRoutes });
-    const res = await app.inject({ method: "GET", url: "/v1/test/forbidden" });
+    await build(failingRoutes);
+    const res = await app.inject({ method: "GET", url: "/v1/test/forbidden", headers: { cookie } });
     expect(res.statusCode).toBe(403);
     expect(res.json()).toEqual({ error: "forbidden", message: "Only the owner sees these." });
   });
 
   it("keeps a thrown message out of a 500", async () => {
-    app = await buildTestApp({ extend: failingRoutes });
-    const res = await app.inject({ method: "GET", url: "/v1/test/crash" });
+    await build(failingRoutes);
+    const res = await app.inject({ method: "GET", url: "/v1/test/crash", headers: { cookie } });
     expect(res.statusCode).toBe(500);
     expect(res.body).not.toContain("secret");
   });
 
   it("keeps Fastify's 400 for a body that isn't JSON, without quoting the body", async () => {
-    app = await buildTestApp({ extend: failingRoutes });
+    await build(failingRoutes);
     const res = await app.inject({
       method: "POST",
       url: "/v1/test/echo",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", cookie },
       payload: "{ secret",
     });
     expect(res.statusCode).toBe(400);
@@ -78,9 +85,19 @@ describe("the error plugin", () => {
   });
 
   it("answers an unknown route with the same body", async () => {
-    app = await buildTestApp();
-    const res = await app.inject({ method: "GET", url: "/gatehouse-api/v1/nothing" });
+    await build();
+    const res = await app.inject({ method: "GET", url: "/gatehouse-api/v1/nothing", headers: { cookie } });
     expect(res.statusCode).toBe(404);
     expect(res.json()).toEqual({ error: "not_found", message: "There is no route GET /v1/nothing." });
+  });
+
+  it("answers an unknown route outside /v1 and /auth with no session, and one under /v1 only with one", async () => {
+    await build();
+    const outside = await app.inject({ method: "GET", url: "/gatehouse-api/nothing" });
+    expect(outside.statusCode).toBe(404);
+    expect(outside.json()).toEqual({ error: "not_found", message: "There is no route GET /nothing." });
+    const under = await app.inject({ method: "GET", url: "/gatehouse-api/v1/nothing" });
+    expect(under.statusCode).toBe(401);
+    expect(under.json()).toEqual({ error: "unauthorized" });
   });
 });

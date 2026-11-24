@@ -4,7 +4,8 @@ import { ConfigError, loadConfig, readEnvFile, type Config } from "./config.js";
 
 /**
  * Start Gatehouse's API on 127.0.0.1:8815 by default. Locally `npm run dev` runs it beside the page; on the VPS it is
- * the `gatehouse-api` container.
+ * the `gatehouse-api` container. It does work only while answering a request: no timers and no WebSockets, so the
+ * container can sleep when idle.
  *
  * Settings come from the environment, and from the repo root's `.env` for what the environment leaves unset.
  * `config.ts` lists them and stops the start with a message naming any that is wrong.
@@ -24,8 +25,9 @@ try {
 const app = await buildApp(config, {
   server: {
     logger: true,
-    // Only the proxy on the same host is believed about the client's address.
-    trustProxy: ["loopback"],
+    // Loopback and AUTH_TRUSTED_PROXIES are believed about the client's address, so `request.ip` in the log is the
+    // visitor behind Caddy.
+    trustProxy: ["loopback", ...config.trustedProxies],
     // A socket silent this long mid-request is cut: no route here holds a request open.
     connectionTimeout: 30_000,
     // The whole request, body included, must arrive within this.
@@ -37,6 +39,11 @@ const app = await buildApp(config, {
 });
 app.log.info(
   envFile === undefined ? "no .env: settings from the environment" : "settings from .env and the environment",
+);
+app.log.info(
+  config.ward === undefined
+    ? "WARD_OIDC_ISSUER is not set: Sign in with Ward is off, so nobody can sign in"
+    : "Sign in with Ward is on",
 );
 
 // SIGINT, SIGTERM or an uncaught error: stop taking requests, finish those in flight, run the onClose hooks and exit.
