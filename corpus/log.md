@@ -103,3 +103,9 @@ from `@fontsource` (latin and latin-ext only). Ahead of it, brief 03's design-cr
 DESIGN.md's weight line corrected, the switch pressed from the first frame (`pressed` variants and a
 `data-hydrated` mark), a Geist preload and a favicon. The preload is an inline script that adds the link only in
 Profile, so Terminal never fetches Geist. Findings in [wiki/page.md](wiki/page.md).
+
+## [2026-11-24] build | Brief 05: Ninety-six
+
+The third look: tokens under `data-look="ninety-six"`, the skin as the `ninety-six:` variant, bevels as theme shadows
+over colour tokens, Pixelify Sans, Arimo and Cousine from `@fontsource` (latin and latin-ext), a 3 px focus ring.
+Only its own fonts download in it. sloplint clean in light and dark. Findings in [wiki/page.md](wiki/page.md).

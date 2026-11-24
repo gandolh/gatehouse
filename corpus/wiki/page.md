@@ -1,11 +1,11 @@
 ---
-summary: The page as built on 2026-11-24 (briefs 03 and 04), in Profile and Terminal; the look switcher and Terminal's rules. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A and B.
+summary: The page as built on 2026-11-24 (briefs 03 to 05), in Profile, Terminal and Ninety-six; the look switcher and Terminal's rules. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A, B and C; Ninety-six's tokens, bevels and traps.
 updated: 2026-11-24
 ---
 
 # The page
 
-Built in the Profile look (brief 03), then Terminal and the look switcher (brief 04). It is React 19 on Vite, rendered to HTML at build time and hydrated
+Built in the Profile look (brief 03), then Terminal and the look switcher (brief 04), then Ninety-six (brief 05). It is React 19 on Vite, rendered to HTML at build time and hydrated
 ([architecture.md](architecture.md)); `DESIGN.md` at the repo root is the locked system for all three looks.
 
 ## Where things live
@@ -125,9 +125,6 @@ mail.
 - Scripting off (headless Chrome, the preview): 5 sections, 34 cards and 34 See more texts shown; no See more
   button, filter or mode control. The only failed request is `/favicon.ico`: the page links no icon yet.
 - Scripting on, `gatehouse.mode` dark and `gatehouse.look` terminal stored: no console error, Dark chosen.
-- First paint: a reload throttled to 6x CPU and a slow network, recorded as a screencast: the first frame with the
-  page in it is already dark.
-- Network: only Geist (latin, latin-ext) and Geist Mono (latin) download.
 - sloplint (`--scope app --url http://localhost:5182/ --render`): clean after one fix (below).
 - Shots at 1280 x 800 light and 390 x 844 dark beside `design/shots/`: the light one differs in 0.27% of pixels
   (the Behind the scenes count and the heading weight). The dark one differs in 13.8%, and in 0.3% once the build is
@@ -147,7 +144,6 @@ mail.
   (text under the header), so it sits above the page instead.
 - The title is the wordmark and the description the header's line, as in the sketch; the favicon is emitted as a build asset.
 - The mode control and filters are radio groups: one tab stop each, arrows move and choose.
-- At 390 px the approved render sits 6 px higher than the build and `sketch.html` (above).
 
 ## The look switcher
 
@@ -180,3 +176,28 @@ pressed Dark and Terminal chips are already amber, so the first paint is right. 
 Differences from sketch B: the GitHub link in the header has no underline; the card names and mono lines sit a pixel
 or two off; the sketch drew System pressed, the page defaults to Light; Behind the scenes counts 4 (the owner part is
 off the page until brief 06).
+
+## Ninety-six
+
+Tokens in `index.css` under `:root[data-look="ninety-six"]`; the skin is the `ninety-six:` variant on the components.
+Square corners and the type scale of the sketch come from the same overrides (`--text-*`, `--radius-*`,
+`--container-page` 75rem). Rules worth knowing:
+
+- The bevels are theme shadows built from colour tokens (`--color-bevel-1` to `-4`, `--color-drop`): `shadow-raised`
+  (buttons), `shadow-sunken` (pressed, picture frame), `shadow-panel` (raised plus the 4 px drop), `shadow-field` and
+  `shadow-field-ok` (access labels). Profile and Terminal leave those colour tokens transparent.
+- Text on the teal ground (wordmark, header lines, section lines) is `text-on-ground`; panels keep `ink`.
+- `font-display` is the wordmark and the section titles: Pixelify Sans here, Plex Mono in Terminal, Geist in Profile.
+  Arimo is `font-sans` and `font-ui`, Cousine `font-mono`.
+- A pressed option is `ninety-six:pressed:*`, which must come after the base `pressed:*`; the check icon shows on a
+  chosen option (not on the phone's icon-only mode buttons, which draw a heavier icon stroke instead).
+- The header is a three-column grid from 1024 px (`display: contents` on the flex row); the footer is a panel the
+  width of the cards. The section links and filters share one row from 1240 px, split by a 2 px groove.
+- Focus: 3 px, `--color-focus` (black in light, white in dark), 2 px gap.
+
+Checked 2026-11-24 (dev server, headless Chrome): light 1280 x 800 and dark 390 x 844 against `design/shots/c-light-1280.webp`
+and `c-dark-390.webp`; a fresh browser downloads only Pixelify and Arimo (Cousine loads once an address shows in See more). sloplint `--render` on `?look=ninety-six`, light and dark: 0 FAIL.
+
+Differences from sketch C: the mode and look pressed state follows Light (the page's default), the sketch drew System;
+the title bar of a section is 4 px taller; the filters on a phone keep their own width; Behind the scenes counts 4;
+buttons have no one-pixel padding shift when pressed.

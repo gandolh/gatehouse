@@ -81,3 +81,16 @@ What makes it Ninety-six, from the sketch and its tokens:
 
 - Settled 2026-11-23: Ninety-six keeps the teal ground as drawn; the slate ground only on the
   owner's word.
+
+## Outcome (2026-11-24)
+
+Built: Ninety-six (tokens under `data-look="ninety-six"`, `ninety-six:` variants, bevel theme shadows, Pixelify Sans,
+Arimo and Cousine, 3 px focus). Details in [page.md](../../wiki/page.md). DESIGN.md untouched.
+
+Checks: `npm run check`, `npm run build`, the corpus lint pass. Light 1280 x 800 and dark 390 x 844 read against
+`design/shots/c-light-1280.webp` and `c-dark-390.webp`; the first card's buttons are above the fold at 390. A fresh
+browser downloads only Pixelify and Arimo in Ninety-six, Geist alone in Profile, Plex alone in Terminal. sloplint
+`--render`: 0 FAIL, light and dark. Profile and Terminal were re-shot and look as before.
+
+Differences from sketch C: the page defaults to Light where the sketch showed System pressed; the section bar is a
+few pixels taller; phone filters keep their own widths; no padding shift on a pressed button; Behind the scenes counts 4.
