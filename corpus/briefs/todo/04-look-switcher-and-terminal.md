@@ -59,10 +59,11 @@ buttons (Profile, Terminal, Ninety-six) in the footer, styled with each look's o
 3. **Fonts.** IBM Plex Mono (400, 600, 700) and IBM Plex Sans (400, 600) through `@fontsource`,
    used only under `[data-look="terminal"]`.
 4. **The filter result** is announced in Terminal too (critique B6).
-5. **Shots.** Terminal light at 1280 x 800 and dark at 390 x 844 beside `design/shots/b-light-1280.webp`
+5. **Shots**, opened with `?look=terminal&mode=light` and `?look=terminal&mode=dark`. Terminal
+   light at 1280 x 800 and dark at 390 x 844 beside `design/shots/b-light-1280.webp`
    and `b-dark-390.webp`; Profile again at the same two sizes to show nothing moved. Keep them out of
    git.
-6. **sloplint** as brief 03 ran it, with Terminal selected. The `dark-glow` findings on the wordmark
+6. **sloplint** as brief 03 ran it, on `http://localhost:5182/?look=terminal`. The `dark-glow` findings on the wordmark
    and section titles are allowed; fix every other FAIL.
 7. The corpus: `page.md` (the switcher, Terminal's rules), `status.md`, a `log.md` entry.
 

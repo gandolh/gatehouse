@@ -28,6 +28,8 @@ phone.
 - **`data-mode`, not `data-theme`,** on `<html>`, next to `data-look`. The `base-ui` skill's rule
   14 names `data-theme`; this page has no React, and the glossary keeps "theme" out.
 - **A first visit is System** (light unless the device asks for dark), as the sketches draw it.
+  The `base-ui` skill's rule 14 says light first; the owner hasn't ruled between the two, so it
+  is in `open-questions.md`. Build System; switching later is one default in the head script.
 - **No Hallmark deal.** `DESIGN.md` at the root (step 1) is a locked system, so the hallmark skill
   reads it instead of dealing a theme.
 - **The sketches' `.theme-light` / `.theme-dark` classes** become the data attributes; the sloplint
@@ -70,7 +72,9 @@ phone.
    height.
 4. **Looks and modes.** `<html data-look="profile" data-mode="system">` in the HTML. An inline
    script in `<head>` reads `gatehouse.look` and `gatehouse.mode` from localStorage (inside
-   try/catch) and sets both before the first paint. The stylesheet holds the tokens per look and
+   try/catch) and sets both before the first paint. A `?look=` or `?mode=` query parameter
+   overrides the stored pick for that load without storing it, so a shot or a sloplint run can
+   open any look (sketch C does the same with `?ground=slate`). The stylesheet holds the tokens per look and
    mode as CSS variables; `system` follows `prefers-color-scheme`. Tailwind's `@custom-variant`
    gives `dark` (an explicit dark mode, or system on a dark device) and one variant per look. The
    mode control is a three-way Light / Dark / System group with `aria-pressed`, as drawn; it stores

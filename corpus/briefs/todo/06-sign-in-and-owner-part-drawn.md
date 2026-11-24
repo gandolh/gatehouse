@@ -76,7 +76,8 @@ never edit either repo.
    reading it.
 5. **Visitors never call the API.** With no hint set, a page load makes no request to
    `/gatehouse-api` (checked in the network panel).
-6. **Shots** for the owner, outside the repo: each state in Profile at 1280 x 800 light and 390 x 844
+6. **Shots** for the owner, outside the repo, each look and mode opened with `?look=` and
+   `?mode=`: each state in Profile at 1280 x 800 light and 390 x 844
    dark, plus signed in at 1280 x 800 in Terminal and in Ninety-six. Name the folder in the test
    notes.
 7. The corpus: `page.md` (the owner part, the states, the fake API), `status.md`, a `log.md` entry.

@@ -28,7 +28,8 @@ What Gatehouse is: [overview.md](../../wiki/overview.md). How it is built:
 
 ## Steps
 
-1. **Shots** with the page on `npm run dev` and the fake API from brief 06 for the signed-in shot:
+1. **Shots** with the page on `npm run dev` (each look and mode opened with `?look=` and
+   `?mode=`) and the fake API from brief 06 for the signed-in shot:
    a hero of Profile at 1280 x 800 light, the phone in Terminal dark at 390 x 844, Ninety-six at
    1280 x 800 light, and the owner part signed in. Webp, in `docs/images/`, with `shots.md` saying
    how to take them again. Read each shot before keeping it: no domain in any address bar or link

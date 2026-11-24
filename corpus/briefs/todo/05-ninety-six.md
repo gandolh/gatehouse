@@ -51,9 +51,10 @@ What makes it Ninety-six, from the sketch and its tokens:
    `[data-look="ninety-six"]`.
 3. **Focus.** The sketch's ring: 3 px in the inner colour with a 2 px gap, readable on the panel and
    on the teal ground.
-4. **Shots.** Light at 1280 x 800 and dark at 390 x 844 beside `design/shots/c-light-1280.webp` and
+4. **Shots**, opened with `?look=ninety-six&mode=light` and `&mode=dark`. Light at 1280 x 800
+   and dark at 390 x 844 beside `design/shots/c-light-1280.webp` and
    `c-dark-390.webp`; Profile and Terminal again at the same sizes. Keep them out of git.
-5. **sloplint** as brief 03 ran it, with Ninety-six selected. Fix every FAIL.
+5. **sloplint** as brief 03 ran it, on `http://localhost:5182/?look=ninety-six`. Fix every FAIL.
 6. The corpus: `page.md`, `status.md`, a `log.md` entry.
 
 ## Acceptance

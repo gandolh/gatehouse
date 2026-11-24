@@ -51,7 +51,8 @@ one file at exactly `/`.
   `dark`, `system`). The server-rendered HTML says `profile` and `system`, so the page is right
   with scripting off.
 - An inline script in `<head>` reads `gatehouse.look` and `gatehouse.mode` from localStorage and sets
-  both attributes before the first paint.
+  both attributes before the first paint. A `?look=` or `?mode=` query parameter overrides the
+  stored pick for one load without storing it, for shots and sloplint runs.
 - The tokens live in the one stylesheet, per look and per mode; `system` follows
   `prefers-color-scheme`. Tailwind's `@custom-variant` gives each look and the dark mode a variant.
 - `data-mode`, not `data-theme`: the glossary keeps "theme" out. The `base-ui` skill's rule 14 names
