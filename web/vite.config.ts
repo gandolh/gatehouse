@@ -192,6 +192,9 @@ export default defineConfig(({ command, isPreview }) => ({
   base: command === "build" || isPreview === true ? BASE : "/",
   plugins: [react(), tailwindcss(), cardModule(), headAssets()],
   publicDir: false,
+  // The owner part's calls load on demand and bring zod; bundled for the dev server at start, so the first sign-in
+  // doesn't make Vite discover it, re-optimise and reload the page mid-way.
+  optimizeDeps: { include: ["zod"] },
   server: { port: 5182, strictPort: true, proxy },
   preview: { port: 4182, strictPort: true, proxy },
 }));
