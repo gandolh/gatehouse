@@ -1,3 +1,7 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { displayAddress, publicCards, resolveLink } from "@gatehouse/shared";
+import { loadCards } from "@gatehouse/shared/load";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, type ProxyOptions } from "vite";
@@ -7,6 +11,14 @@ const BASE = "/gatehouse/";
 
 /** The origin the dev server stands in with, so a `host:` link shows as a placeholder there. */
 const DEV_ORIGIN = "https://example.org";
+
+/** The one card list, and the folder of its pictures. */
+const CARD_LIST = fileURLToPath(new URL("../content/cards.json", import.meta.url));
+const PICTURES = fileURLToPath(new URL("../content/images/", import.meta.url));
+
+/** The page's public card module, as the entries import it, and its id inside Vite. */
+const CARD_MODULE = "virtual:gatehouse-cards";
+const CARD_MODULE_ID = `\0${CARD_MODULE}`;
 
 /**
  * `GATEHOUSE_ORIGIN`, the domain's origin, bare. A build needs it to turn `host:<name>` links into addresses, and fails
@@ -28,14 +40,75 @@ function gatehouseOrigin(building: boolean): string {
 }
 
 /**
- * Checks `GATEHOUSE_ORIGIN` once Vite knows what it is running, so a tool that only loads this file (knip, ESLint)
+ * A picture's width and height, read from its lossy webp header (the `VP8 ` chunk's frame header), so the `<img>`
+ * reserves its box. Vite gives an imported picture only a URL; the pictures are 800 px wide or less already, so
+ * nothing is resized. Any other kind of webp fails, naming the file.
+ */
+function webpSize(file: string): { width: number; height: number } {
+  const bytes = readFileSync(file);
+  const lossy =
+    bytes.toString("latin1", 0, 4) === "RIFF" &&
+    bytes.toString("latin1", 8, 16) === "WEBPVP8 " &&
+    bytes[23] === 0x9d &&
+    bytes[24] === 0x01 &&
+    bytes[25] === 0x2a;
+  if (!lossy) throw new Error(`${file}: not a lossy webp (a VP8 chunk); convert it before it goes on a card.`);
+  return { width: bytes.readUInt16LE(26) & 0x3fff, height: bytes.readUInt16LE(28) & 0x3fff };
+}
+
+/**
+ * The page's card module, `virtual:gatehouse-cards`, in dev and in the build: the public part of the card list only
+ * (the owner part never reaches the page's HTML or its scripts), each link resolved against the origin, the address
+ * as the card shows it, and each picture imported, so Vite fingerprints it under the base, with its size. It also
+ * checks `GATEHOUSE_ORIGIN` once Vite knows what it is running, so a tool that only loads this file (knip, ESLint)
  * never needs it.
  */
-function requireOrigin(): Plugin {
+function cardModule(): Plugin {
+  let origin = DEV_ORIGIN;
   return {
-    name: "gatehouse-origin",
+    name: "gatehouse-cards",
     config(_config, { command, isPreview }) {
-      gatehouseOrigin(command === "build" && isPreview !== true);
+      origin = gatehouseOrigin(command === "build" && isPreview !== true);
+    },
+    resolveId(id) {
+      return id === CARD_MODULE ? CARD_MODULE_ID : undefined;
+    },
+    load(id) {
+      if (id !== CARD_MODULE_ID) return undefined;
+      this.addWatchFile(CARD_LIST);
+      const list = loadCards(CARD_LIST);
+      const pictures: string[] = [];
+      const picture = (image: string) => {
+        const file = `${PICTURES}${image}`;
+        this.addWatchFile(file);
+        pictures.push(file);
+        return { src: `\0picture:${pictures.length - 1}`, ...webpSize(file) };
+      };
+      // Field by field, so nothing the page doesn't draw (the part) reaches it.
+      const sections = publicCards(list).map((section) => ({
+        id: section.id,
+        title: section.title,
+        line: section.line,
+        compact: section.compact === true,
+        cards: section.cards.map((card) => ({
+          id: card.id,
+          name: card.name,
+          href: resolveLink(card.href, origin),
+          address: displayAddress(card.href),
+          ownAddress: card.href.startsWith("host:"),
+          access: card.access,
+          image: card.image === null ? null : picture(card.image),
+          blurb: card.blurb,
+          more: card.more,
+          docs: card.docs,
+          source: card.source,
+        })),
+      }));
+      const data = JSON.stringify({ site: list.site, access: list.access, sections }, null, 2);
+      // Each picture's URL is the default export of its import: the placeholder string becomes that binding.
+      const body = data.replace(/"\\u0000picture:(\d+)"/g, (_match, index: string) => `picture${index}`);
+      const imports = pictures.map((file, index) => `import picture${index} from ${JSON.stringify(file)};`);
+      return `${imports.join("\n")}\nexport default ${body};\n`;
     },
   };
 }
@@ -54,7 +127,7 @@ const proxy: Record<string, ProxyOptions> = { "/gatehouse-api": { target: "http:
  */
 export default defineConfig(({ command, isPreview }) => ({
   base: command === "build" || isPreview === true ? BASE : "/",
-  plugins: [react(), tailwindcss(), requireOrigin()],
+  plugins: [react(), tailwindcss(), cardModule()],
   publicDir: false,
   server: { port: 5182, strictPort: true, proxy },
   preview: { port: 4182, strictPort: true, proxy },
