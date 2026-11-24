@@ -113,6 +113,60 @@ function cardModule(): Plugin {
   };
 }
 
+/** The page's icon: a gate's arch in the primary button's colours (Profile's tokens), small enough to inline. */
+const FAVICON = [
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">',
+  '<rect width="32" height="32" rx="7" fill="#171a20"/>',
+  '<path d="M9 25V15a7 7 0 0 1 14 0v10" fill="none" stroke="#f6f7f9" stroke-width="3" stroke-linecap="round"/>',
+  "</svg>",
+].join("");
+
+/**
+ * The page's head, from what the build emitted: a preload for the Geist latin font file the page's text uses (without
+ * it the fallback font draws first and the layout jumps when Geist arrives), and the icon, emitted as an asset so it
+ * is served under the base like the rest. Terminal's fonts are not preloaded: Profile is the default look. The dev
+ * server has no build, so it inlines the icon.
+ */
+function headAssets(): Plugin {
+  let base = "/";
+  let icon: string | undefined;
+  return {
+    name: "gatehouse-head",
+    configResolved(config) {
+      base = config.base;
+    },
+    generateBundle() {
+      icon = this.getFileName(this.emitFile({ type: "asset", name: "favicon.svg", source: FAVICON }));
+    },
+    transformIndexHtml: {
+      order: "post",
+      handler(_html, context) {
+        const tags: { tag: string; attrs: Record<string, string | boolean>; injectTo: "head" }[] = [];
+        const bundle = context.bundle;
+        if (bundle === undefined) {
+          const href = `data:image/svg+xml,${encodeURIComponent(FAVICON)}`;
+          return [{ tag: "link", attrs: { rel: "icon", type: "image/svg+xml", href }, injectTo: "head" }];
+        }
+        const font = Object.keys(bundle).find((name) => /(^|\/)geist-latin-wght-normal-[\w-]+\.woff2$/.test(name));
+        if (font === undefined) throw new Error("the build holds no Geist latin font file to preload");
+        tags.push({
+          tag: "link",
+          attrs: { rel: "preload", as: "font", type: "font/woff2", crossorigin: true, href: `${base}${font}` },
+          injectTo: "head",
+        });
+        if (icon !== undefined) {
+          tags.push({
+            tag: "link",
+            attrs: { rel: "icon", type: "image/svg+xml", href: `${base}${icon}` },
+            injectTo: "head",
+          });
+        }
+        return tags;
+      },
+    },
+  };
+}
+
 /** The API, as the page reaches it. The prefix stays on: the API strips it itself, as it does behind Caddy. */
 const proxy: Record<string, ProxyOptions> = { "/gatehouse-api": { target: "http://127.0.0.1:8815" } };
 
@@ -127,7 +181,7 @@ const proxy: Record<string, ProxyOptions> = { "/gatehouse-api": { target: "http:
  */
 export default defineConfig(({ command, isPreview }) => ({
   base: command === "build" || isPreview === true ? BASE : "/",
-  plugins: [react(), tailwindcss(), cardModule()],
+  plugins: [react(), tailwindcss(), cardModule(), headAssets()],
   publicDir: false,
   server: { port: 5182, strictPort: true, proxy },
   preview: { port: 4182, strictPort: true, proxy },

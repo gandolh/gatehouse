@@ -18,6 +18,12 @@ export interface RadioGroupProps<Value extends string> {
   onValueChange: (value: Value) => void;
   /** `track` draws the options as buttons in a track (the mode); `chips` as a row of pills (the filters). */
   look: "track" | "chips";
+  /**
+   * A setting the head script restores before the first paint: its options carry `data-<setting>-option`, so the chosen
+   * one is drawn pressed from the first frame, before React hydrates (the stylesheet's `pressed` variant). A filter
+   * has no such setting.
+   */
+  setting?: "mode" | "look";
   className?: string;
 }
 
@@ -31,13 +37,13 @@ const optionLooks = {
   track: [
     "inline-flex size-11 items-center justify-center gap-2 rounded-segment border border-transparent text-control",
     "font-medium text-ink-body hover:text-ink active:bg-line sm:h-9.5 sm:w-auto sm:px-3",
-    "data-checked:border-line-ui data-checked:bg-surface data-checked:text-ink data-checked:shadow-card",
+    "pressed:border-line-ui pressed:bg-surface pressed:text-ink pressed:shadow-card",
   ].join(" "),
   chips: [
     "inline-flex min-h-11 min-w-11 flex-none items-center justify-center gap-2 rounded-full border border-line-ui px-3",
-    "text-control font-medium whitespace-nowrap text-ink hover:not-data-checked:bg-surface-2",
-    "active:not-data-checked:bg-line sm:min-h-9.5 sm:pointer-coarse:min-h-11",
-    "data-checked:border-button data-checked:bg-button data-checked:text-on-button",
+    "text-control font-medium whitespace-nowrap text-ink hover:not-pressed:bg-surface-2",
+    "active:not-pressed:bg-line sm:min-h-9.5 sm:pointer-coarse:min-h-11",
+    "pressed:border-button pressed:bg-button pressed:text-on-button",
   ].join(" "),
 } as const;
 
@@ -52,6 +58,7 @@ export function RadioGroup<Value extends string>({
   value,
   onValueChange,
   look,
+  setting,
   className,
 }: RadioGroupProps<Value>) {
   return (
@@ -65,6 +72,7 @@ export function RadioGroup<Value extends string>({
         <Radio.Root
           key={option.value}
           value={option.value}
+          {...(setting === undefined ? {} : { [`data-${setting}-option`]: option.value })}
           className={cn(
             "cursor-pointer select-none motion-safe:transition-colors motion-safe:duration-120",
             optionLooks[look],

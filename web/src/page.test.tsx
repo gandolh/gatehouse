@@ -116,6 +116,47 @@ describe("the page", () => {
     expect(document.querySelector('meta[name="theme-color"]')?.getAttribute("content")).toBe("#0e0905");
   });
 
+  it("draws the stored mode pressed before hydration, and Base UI's choice after the page marks itself hydrated", async () => {
+    const html = renderToString(page(DATA));
+    const root = document.documentElement;
+    root.removeAttribute("data-hydrated");
+    document.head.innerHTML = '<meta name="theme-color" content="#e5e8ee">';
+    document.body.innerHTML = `<div id="root">${html}</div>`;
+    localStorage.setItem("gatehouse.mode", "dark");
+    new Function(headScript())();
+
+    // The stylesheet's `pressed` variant, as the selector it writes.
+    const css = readFileSync(join(import.meta.dirname, "styles/index.css"), "utf8");
+    const block = /@custom-variant pressed \{\s*&:is\(([\s\S]*?)\n\s*\) \{/.exec(css)?.[1];
+    if (block === undefined) throw new Error("the stylesheet has no pressed variant");
+    const pressed = `:is(${block})`;
+    const option = (name: string) => {
+      const found = [...document.querySelectorAll("[data-mode-option]")].find((node) => node.textContent === name);
+      if (found === undefined) throw new Error(`no ${name} option`);
+      return found;
+    };
+
+    // The HTML was rendered in light, so Base UI marks Light checked; the first frame must still show Dark pressed.
+    expect(option("Light").hasAttribute("data-checked")).toBe(true);
+    expect(option("Dark").matches(pressed)).toBe(true);
+    expect(option("Light").matches(pressed)).toBe(false);
+    // A filter has no stored value: its checked option from the HTML stands.
+    const all = [...document.querySelectorAll("[data-checked]")].find((node) => node.textContent?.startsWith("All"));
+    expect(all?.matches(pressed)).toBe(true);
+
+    const container = document.getElementById("root");
+    if (container === null) throw new Error("no root");
+    await act(async () => {
+      hydrateRoot(container, page(DATA));
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
+
+    expect(root.hasAttribute("data-hydrated")).toBe(true);
+    expect(option("Dark").hasAttribute("data-checked")).toBe(true);
+    expect(option("Dark").matches(pressed)).toBe(true);
+    expect(option("Light").matches(pressed)).toBe(false);
+  });
+
   it("puts every card's See more text in the HTML, and no live text", () => {
     const html = renderToString(page(DATA));
     expect(html).toContain("Each opens on its own page.");

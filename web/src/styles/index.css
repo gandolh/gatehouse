@@ -38,6 +38,42 @@
    under it, and what must show without them (See more's text) hides under it until opened. */
 @custom-variant scripted (&:where([data-scripted], [data-scripted] *));
 
+/* pressed: the chosen option of a RadioGroup. Once React has hydrated (main's mark, data-hydrated on <html>) it is Base
+   UI's data-checked. Before that, a setting's option (data-mode-option, data-look-option) is pressed when <html> holds
+   its value, which the head script set before the first paint, so a stored Dark never shows Light pressed while the
+   scripts load; a filter has no stored value, so its data-checked from the HTML stands. */
+@custom-variant pressed {
+  &:is(
+    :root[data-hydrated] [data-checked],
+    :root:not([data-hydrated]) [data-checked]:not([data-mode-option], [data-look-option]),
+    :root:not([data-hydrated])[data-theme="light"] [data-mode-option="light"],
+    :root:not([data-hydrated])[data-theme="dark"] [data-mode-option="dark"],
+    :root:not([data-hydrated])[data-theme="system"] [data-mode-option="system"],
+    :root:not([data-hydrated])[data-look="profile"] [data-look-option="profile"],
+    :root:not([data-hydrated])[data-look="terminal"] [data-look-option="terminal"],
+    :root:not([data-hydrated])[data-look="ninety-six"] [data-look-option="ninety-six"]
+  ) {
+    @slot;
+  }
+}
+/* not-pressed, for the rules that apply to an option that isn't chosen. */
+@custom-variant not-pressed {
+  &:not(
+    :is(
+      :root[data-hydrated] [data-checked],
+      :root:not([data-hydrated]) [data-checked]:not([data-mode-option], [data-look-option]),
+      :root:not([data-hydrated])[data-theme="light"] [data-mode-option="light"],
+      :root:not([data-hydrated])[data-theme="dark"] [data-mode-option="dark"],
+      :root:not([data-hydrated])[data-theme="system"] [data-mode-option="system"],
+      :root:not([data-hydrated])[data-look="profile"] [data-look-option="profile"],
+      :root:not([data-hydrated])[data-look="terminal"] [data-look-option="terminal"],
+      :root:not([data-hydrated])[data-look="ninety-six"] [data-look-option="ninety-six"]
+    )
+  ) {
+    @slot;
+  }
+}
+
 /* Profile's tokens are the defaults (DESIGN.md has every look's). Names say a role, never a value (base-ui rule 6).
    light-dark() holds both modes; color-scheme on <html> (the base layer below) picks one. */
 @theme {
@@ -70,7 +106,7 @@
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
-  --font-weight-strong: 650;
+  --font-weight-strong: 700;
   --font-weight-bold: 700;
 
   /* The type scale, each size with its line height; the page's base is 15 px on body, html keeps the reader's own. */

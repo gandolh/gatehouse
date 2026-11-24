@@ -30,6 +30,7 @@ export function ModeControl() {
     <RadioGroup
       label="Mode"
       look="track"
+      setting="mode"
       options={MODES}
       value={mode}
       onValueChange={setMode}

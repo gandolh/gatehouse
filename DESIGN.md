@@ -64,7 +64,8 @@ Tokens by role. `web/src/styles/index.css` is the source of truth: each colour i
 | shade 1, shade 2 (card shadow) | `--color-shade-1`, `--color-shade-2` | 10% and 4% blue-black | 40% and 25% black |
 
 - Fonts: Geist for all text, Geist Mono for addresses in See more, self-hosted (`@fontsource-variable`). Weights 400,
-  500 (controls), 650 (names, section titles), 700 (wordmark).
+  500 (controls), 700 (names, section titles, wordmark). The approved renders drew the 650 the sketch asked for as 700, since
+  its font file has no 650.
 - Type: wordmark 24/1.2, section title 21/1.25, the header line 17/1.45 (16 on a phone), card name 17/1.3, body
   15/1.5, sub line 14.5, controls 14, facts 13.5, access label 12.5.
 - Radii: cards and the section row 12 px, controls 8, the mode track 10 and its buttons 7, labels and filters a pill.
