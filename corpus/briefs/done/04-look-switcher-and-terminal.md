@@ -93,3 +93,30 @@ part or a raw colour (rules 4 to 6).
 
 - Settled 2026-11-23: all three looks ship, picked with a switcher in the footer and kept in
   localStorage.
+
+## Outcome (2026-11-24)
+
+Built: the footer look switcher (`web/src/features/look/`, a RadioGroup row, `gatehouse.look`) and Terminal (tokens under
+`data-look="terminal"`, the `terminal:` variant on the components, Plex Mono 400/600/700 and Plex Sans 400/600, latin
+and latin-ext files only). Details in [page.md](../../wiki/page.md).
+
+Also in this run: brief 03's design-critic fixes (d628cb8): headings at 700, **DESIGN.md's weight line corrected**
+(the 650 token was drawn as 700 in the approved renders), the switch pressed from the first frame, a favicon asset.
+
+Checks: `npm run check`, `npm run build` and the corpus lint pass. Terminal light 1280 x 800 and dark 390 x 844 read
+against `design/shots/b-light-1280.webp` and `b-dark-390.webp`; the first card's buttons are above the fold at 390
+dark. In a fresh browser Terminal downloads only Plex and Profile only Geist. With the page script blocked and Dark
+and Terminal stored, those chips are already pressed. sloplint `--render` on `?look=terminal`: 0 FAIL, one WARN (four
+font weights).
+
+Deviations:
+- The Geist preload is an inline script that adds the link only when `data-look` is profile, not a static link: a
+  static link would download Geist in Terminal, against the acceptance.
+- `mode/index.ts` also exports `paintBrowserBar`, so the look feature reaches it through the feature's index (the
+  dependency rule).
+- Terminal's card shadow is `terminal:shadow-hard`, not an override of `--shadow-card`, because Tailwind inlines theme
+  shadows into the utility.
+- The throttled reload was replaced by blocking the page script, which shows the pre-hydration state directly.
+
+Differences from sketch B: the header's GitHub link has no underline; the sketch drew System pressed, the page
+defaults to Light; Behind the scenes counts 4 until brief 06.
