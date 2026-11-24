@@ -1,11 +1,14 @@
 ---
-summary: The page as built on 2026-11-24 (briefs 03 to 05), in Profile, Terminal and Ninety-six; the look switcher and Terminal's rules. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A, B and C; Ninety-six's tokens, bevels and traps.
+summary: The page as built on 2026-11-24 (briefs 03 to 05), its structure and behaviour in every look; the look switcher, Terminal and Ninety-six are on looks.md, the owner part on owner-part.md. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A, B and C; Ninety-six's tokens, bevels and traps.
 updated: 2026-11-24
 ---
 
 # The page
 
-Built in the Profile look (brief 03), then Terminal and the look switcher (brief 04), then Ninety-six (brief 05). It is React 19 on Vite, rendered to HTML at build time and hydrated
+Built in the Profile look (brief 03), then Terminal and the look switcher (brief 04), then Ninety-six (brief 05). The
+owner part (brief 06: Owner sign-in, the owner's cards, their states and the fake API) is on
+[owner-part.md](owner-part.md); the look switcher, Terminal's and Ninety-six's rules and the design critic's fixes
+are on [looks.md](looks.md). It is React 19 on Vite, rendered to HTML at build time and hydrated
 ([architecture.md](architecture.md)); `DESIGN.md` at the repo root is the locked system for all three looks.
 
 ## Where things live
@@ -16,17 +19,18 @@ web/src/
   page.tsx                     the tree both entries render (StrictMode + App); the tests render it too
   App.tsx                      skip link, Header (with the mode control), CardListing, Footer
   card-module.d.ts             types `virtual:gatehouse-cards` as PageData, so a fresh clone typechecks
-  components/Header.tsx, Footer.tsx   the footer takes `lookSwitcher` and `signIn` slots, empty today
+  components/Header.tsx, Footer.tsx   the footer's slots hold the look switcher and Owner sign-in
   components/ui/               RadioGroup (the one Base UI wrapper), icons, looks.ts (button looks, page width)
   features/cards/              CardListing (filter state, live region), SectionNav, CardSection, Card,
                                AccessLabel, filters.ts, useLevelRows.ts, types.ts (PageData, PageCard)
   features/mode/               ModeControl, mode.ts (the store, the browser-bar colours)
+  features/owner/              the owner part ([owner-part.md](owner-part.md)); lib/api.ts, the API client
   lib/cn.ts                    cn(), tailwind-merge told the page's token names
   styles/index.css             the one stylesheet: Profile's tokens, the look variants, `dark`, `scripted`
 ```
 
-`Card` takes one card's data and its label's words as props, so brief 06 can draw the owner cards with it; export it
-from `web/src/features/cards/index.ts` then (it isn't today, so knip stays quiet).
+`Card` takes one card's data and its label's words as props. The owner's cards reach it through `CardListing`, which
+adds them to their section, so it stays inside the cards feature.
 
 ## The card module
 
@@ -64,7 +68,8 @@ then moves to the stored mode. Until hydration ends, the control shows the store
 
 `web/src/page.test.tsx` renders the page with `renderToString`, builds a document from it, stores dark and Terminal,
 runs index.html's own head script, hydrates with `hydrateRoot`, and expects no recoverable error, no
-`console.error`, Dark chosen and the Terminal dark bar colour. A planted text change in the HTML fails it.
+`console.error`, Dark chosen and the Terminal dark bar colour. A planted text change in the HTML fails it. Its owner
+case is on [owner-part.md](owner-part.md).
 
 ## See more with scripting off
 
@@ -137,67 +142,10 @@ mail.
   fixed weights drew it as 700 in the approved renders. One token switches it: `--font-weight-strong` in the
   stylesheet (700 draws the renders' weight).
 - Light is chosen on a first visit; the sketch drew System (rule 14, the decisions).
-- Behind the scenes counts 4, not 8: the owner part is off the page until brief 06.
+- Behind the scenes counts 4 for a visitor and 7 once the owner signs in; the sketch drew 8, Grafana included.
 - No card is drawn open: the sketch opened Solstice to show See more.
 - Pictures after the first three load lazily; the sketch loaded all of them at once.
 - A skip link ("Skip to the cards", from sketch B), off screen until focused. sloplint failed it as `sr-only`
   (text under the header), so it sits above the page instead.
 - The title is the wordmark and the description the header's line, as in the sketch; the favicon is emitted as a build asset.
 - The mode control and filters are radio groups: one tab stop each, arrows move and choose.
-
-## The look switcher
-
-`web/src/features/look/`: `look.ts` is the store (`useSyncExternalStore` over `data-look` on `<html>`, server
-snapshot Profile; a pick sets the attribute and writes `gatehouse.look`), `LookSwitcher.tsx` a Base UI `RadioGroup`
-labelled Look with Profile, Terminal and Ninety-six, drawn as a row of buttons (RadioGroup's `row` look) in the
-footer's `lookSwitcher` slot. The slot is `hidden scripted:flex`, so it is gone without scripts. Each option carries
-`data-look-option`, which the pre-hydration `pressed` variant reads.
-
-## Terminal
-
-Tokens in `index.css` under `:root[data-look="terminal"]`; the skin is the `terminal:` Tailwind variant on the
-components (Card, CardSection, SectionNav, AccessLabel, Header, Footer, RadioGroup, `looks.ts`). Rules worth knowing:
-
-- Tailwind inlines a theme shadow into its utility, so a look can't swap `--shadow-card`. Terminal's hard offset is
-  `terminal:shadow-hard`, whose colour is `--color-offset`.
-- The section row is full width in Terminal (ink rules above and below, the content aligned to the page's width), the
-  one place the row leaves the page width, as in the sketch.
-- Access labels are `[public]`, lowercased, in brackets the markup carries hidden in the other looks.
-- The pressed chip shows a check icon in Terminal; `terminal:pressed:*` beats `pressed:*`.
-- Dark: glow on the wordmark and section titles only; pictures at `brightness(.85)` until the card is hovered or
-  focused.
-
-How it was checked on 2026-11-24 (preview, headless Chrome): Terminal light 1280 x 800 and dark 390 x 844 against
-`design/shots/b-light-1280.webp` and `b-dark-390.webp`; the Terminal dark 1280 combo once. Fresh browser, Terminal:
-only Plex files download; Profile: only Geist. With the page script blocked and Dark and Terminal stored, the
-pressed Dark and Terminal chips are already amber, so the first paint is right. sloplint with `--render` on
-`?look=terminal` (light and dark): 0 FAIL, one WARN (four font weights in use: Plex 400, 500 from controls, 600, 700).
-
-Differences from sketch B: the GitHub link in the header has no underline; the card names and mono lines sit a pixel
-or two off; the sketch drew System pressed, the page defaults to Light; Behind the scenes counts 4 (the owner part is
-off the page until brief 06).
-
-## Ninety-six
-
-Tokens in `index.css` under `:root[data-look="ninety-six"]`; the skin is the `ninety-six:` variant on the components.
-Square corners and the type scale of the sketch come from the same overrides (`--text-*`, `--radius-*`,
-`--container-page` 75rem). Rules worth knowing:
-
-- The bevels are theme shadows built from colour tokens (`--color-bevel-1` to `-4`, `--color-drop`): `shadow-raised`
-  (buttons), `shadow-sunken` (pressed, picture frame), `shadow-panel` (raised plus the 4 px drop), `shadow-field` and
-  `shadow-field-ok` (access labels). Profile and Terminal leave those colour tokens transparent.
-- Text on the teal ground (wordmark, header lines, section lines) is `text-on-ground`; panels keep `ink`.
-- `font-display` is the wordmark and the section titles: Pixelify Sans here, Plex Mono in Terminal, Geist in Profile.
-  Arimo is `font-sans` and `font-ui`, Cousine `font-mono`.
-- A pressed option is `ninety-six:pressed:*`, which must come after the base `pressed:*`; the check icon shows on a
-  chosen option (not on the phone's icon-only mode buttons, which draw a heavier icon stroke instead).
-- The header is a three-column grid from 1024 px (`display: contents` on the flex row); the footer is a panel the
-  width of the cards. The section links and filters share one row from 1240 px, split by a 2 px groove.
-- Focus: 3 px, `--color-focus` (black in light, white in dark), 2 px gap.
-
-Checked 2026-11-24 (dev server, headless Chrome): light 1280 x 800 and dark 390 x 844 against `design/shots/c-light-1280.webp`
-and `c-dark-390.webp`; a fresh browser downloads only Pixelify and Arimo (Cousine loads once an address shows in See more). sloplint `--render` on `?look=ninety-six`, light and dark: 0 FAIL.
-
-Differences from sketch C: the mode and look pressed state follows Light (the page's default), the sketch drew System;
-the title bar of a section is 4 px taller; the filters on a phone keep their own width; Behind the scenes counts 4;
-buttons have no one-pixel padding shift when pressed.
