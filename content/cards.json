@@ -4,11 +4,7 @@
     "line": "Web apps I build for myself and a few people around me. Everything below runs on this server.",
     "sub": "Public ones work for anyone. Sign-in ones show a sign-in screen to visitors.",
     "github": "https://github.com/gandolh",
-    "filters": [
-      "All",
-      "Open to anyone",
-      "Needs sign-in"
-    ],
+    "filters": ["All", "Open to anyone", "Needs sign-in"],
     "footer": "Every app is TypeScript, mostly a React client on a Fastify and SQLite API, deployed from one repo. The source of most of them is on GitHub."
   },
   "access": {
