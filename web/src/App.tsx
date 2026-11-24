@@ -1,6 +1,7 @@
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { CardListing, type PageData } from "./features/cards";
+import { LookSwitcher } from "./features/look";
 import { ModeControl } from "./features/mode";
 
 /**
@@ -20,7 +21,7 @@ export function App({ site, access, sections }: PageData) {
         <ModeControl />
       </Header>
       <CardListing sections={sections} access={access} filterLabels={site.filters} />
-      <Footer site={site} />
+      <Footer site={site} lookSwitcher={<LookSwitcher />} />
     </>
   );
 }

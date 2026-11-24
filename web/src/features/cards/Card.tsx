@@ -26,7 +26,7 @@ function openLabel(card: PageCard): string {
 function Fact({ label, className, children }: { label: string; className?: string; children: ReactNode }) {
   return (
     <div className={cn("grid grid-cols-[76px_minmax(0,1fr)] items-baseline gap-2", className)}>
-      <dt className="text-fact text-ink-muted">{label}</dt>
+      <dt className="font-ui text-fact text-ink-muted">{label}</dt>
       <dd className="min-w-0 wrap-anywhere">{children}</dd>
     </div>
   );
@@ -53,14 +53,14 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       id={`c-${card.id}`}
       data-access={card.access}
       hidden={hidden}
-      className="mb-5 flex min-w-0 flex-col self-start rounded-card border border-line bg-surface text-ink-body shadow-card"
+      className="group/card mb-5 flex min-w-0 flex-col self-start rounded-card border border-edge bg-surface text-ink-body shadow-card terminal:p-4 terminal:text-ink terminal:shadow-hard"
     >
       {card.image && (
         <a
           href={card.href}
           tabIndex={-1}
           aria-hidden="true"
-          className="group/picture block overflow-hidden rounded-t-picture border-b border-line bg-surface-2"
+          className="group/picture block overflow-hidden rounded-t-picture border-b border-line bg-surface-2 terminal:border"
         >
           <img
             src={card.image.src}
@@ -69,22 +69,30 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
             alt=""
             loading={eager ? "eager" : "lazy"}
             decoding="async"
-            className="block aspect-16/10 h-auto w-full object-cover object-top group-hover/picture:opacity-92"
+            className="block aspect-16/10 h-auto w-full object-cover object-top group-hover/picture:opacity-92 terminal:dark:brightness-85 terminal:dark:group-focus-within/card:brightness-100 terminal:dark:group-hover/card:brightness-100"
           />
         </a>
       )}
-      <div data-level="head" className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 px-5 pt-4">
-        <h3 className="min-w-0 flex-auto text-name font-strong tracking-name wrap-break-word text-ink">{card.name}</h3>
+      <div
+        data-level="head"
+        className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 px-5 pt-4 terminal:px-0 terminal:pt-3"
+      >
+        <h3 className="min-w-0 flex-auto font-ui text-name font-strong tracking-name wrap-break-word text-ink terminal:font-[600]">
+          {card.name}
+        </h3>
         <AccessLabel access={card.access} label={accessLabel} />
       </div>
-      <p className="hidden px-5 pt-1 wrap-anywhere text-ink-muted terminal:block">
+      <p className="hidden px-5 pt-1 font-ui text-fact wrap-anywhere text-ink-muted terminal:block terminal:px-0 terminal:pt-0.5">
         {card.address}
         {ownAddress}
       </p>
-      <p data-level="blurb" className="px-5 pt-2 wrap-break-word sm:min-h-[calc(3em+8px)]">
+      <p data-level="blurb" className="px-5 pt-2 wrap-break-word sm:min-h-[calc(3em+8px)] terminal:px-0">
         {card.blurb}
       </p>
-      <div data-level="actions" className="flex flex-wrap content-start items-center gap-2 px-5 pt-4 pb-5">
+      <div
+        data-level="actions"
+        className="flex flex-wrap content-start items-center gap-2 px-5 pt-4 pb-5 terminal:px-0 terminal:pb-0"
+      >
         <a href={card.href} className={button(forAnyone ? "primary" : "secondary")}>
           {openLabel(card)}
           <span className="sr-only"> {card.name}</span>
@@ -111,10 +119,10 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       <div
         id={moreId}
         data-open={open ? "" : undefined}
-        className="border-t border-line px-5 pt-4 pb-5 scripted:not-data-open:hidden"
+        className="border-t border-line px-5 pt-4 pb-5 terminal:mt-4 terminal:border-dashed terminal:px-0 terminal:pt-3 terminal:pb-0 scripted:not-data-open:hidden"
       >
         <p>{card.more}</p>
-        <dl className="mt-4 grid gap-2 border-t border-dashed border-line pt-4">
+        <dl className="mt-4 grid gap-2 border-t border-dashed border-line pt-4 terminal:mt-3 terminal:border-t-0 terminal:pt-0">
           <Fact label="Address" className="terminal:hidden">
             <code className={code}>{card.address}</code>
             {ownAddress}

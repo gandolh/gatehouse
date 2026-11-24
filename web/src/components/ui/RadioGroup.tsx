@@ -16,8 +16,8 @@ export interface RadioGroupProps<Value extends string> {
   options: readonly RadioOption<Value>[];
   value: Value;
   onValueChange: (value: Value) => void;
-  /** `track` draws the options as buttons in a track (the mode); `chips` as a row of pills (the filters). */
-  look: "track" | "chips";
+  /** `track` draws the options as buttons in a track (the mode); `chips` as a row of pills (the filters); `row` as a row of the page's secondary buttons (the look). */
+  look: "track" | "chips" | "row";
   /**
    * A setting the head script restores before the first paint: its options carry `data-<setting>-option`, so the chosen
    * one is drawn pressed from the first frame, before React hydrates (the stylesheet's `pressed` variant). A filter
@@ -28,21 +28,33 @@ export interface RadioGroupProps<Value extends string> {
 }
 
 const groupLooks = {
-  track: "inline-flex gap-0.5 rounded-track border border-line bg-surface-2 p-1",
+  track:
+    "inline-flex gap-0.5 rounded-track border border-line bg-surface-2 p-1 terminal:gap-0 terminal:border-edge terminal:bg-surface terminal:p-0",
   chips: "flex gap-1",
+  row: "flex flex-wrap gap-2",
 } as const;
 
 const optionLooks = {
   // On a phone a track shows only the icons, at 44 px; the label stays for a screen reader.
   track: [
-    "inline-flex size-11 items-center justify-center gap-2 rounded-segment border border-transparent text-control",
+    "inline-flex size-11 items-center justify-center gap-2 rounded-segment border border-transparent font-ui text-control",
     "font-medium text-ink-body hover:text-ink active:bg-line sm:h-9.5 sm:w-auto sm:px-3",
     "pressed:border-line-ui pressed:bg-surface pressed:text-ink pressed:shadow-card",
+    "terminal:text-ink terminal:hover:bg-surface-2 terminal:not-first:border-l-edge sm:terminal:h-10",
+    "terminal:pressed:border-transparent terminal:pressed:bg-button terminal:pressed:text-on-button terminal:pressed:shadow-none",
+    "terminal:pressed:hover:bg-button",
   ].join(" "),
   chips: [
     "inline-flex min-h-11 min-w-11 flex-none items-center justify-center gap-2 rounded-full border border-line-ui px-3",
-    "text-control font-medium whitespace-nowrap text-ink hover:not-pressed:bg-surface-2",
+    "font-ui text-control font-medium whitespace-nowrap text-ink hover:not-pressed:bg-surface-2",
+    "terminal:rounded-none terminal:border-edge terminal:bg-surface terminal:font-normal",
     "active:not-pressed:bg-line sm:min-h-9.5 sm:pointer-coarse:min-h-11",
+    "pressed:border-button pressed:bg-button pressed:text-on-button",
+  ].join(" "),
+  row: [
+    "inline-flex min-h-11 items-center justify-center gap-2 rounded-control border border-line-ui px-4 font-ui text-control",
+    "font-medium whitespace-nowrap text-ink hover:not-pressed:bg-surface-2 active:not-pressed:bg-line",
+    "sm:min-h-9.5 sm:pointer-coarse:min-h-11",
     "pressed:border-button pressed:bg-button pressed:text-on-button",
   ].join(" "),
 } as const;
@@ -74,11 +86,11 @@ export function RadioGroup<Value extends string>({
           value={option.value}
           {...(setting === undefined ? {} : { [`data-${setting}-option`]: option.value })}
           className={cn(
-            "cursor-pointer select-none motion-safe:transition-colors motion-safe:duration-120",
+            "group/option cursor-pointer select-none motion-safe:transition-colors motion-safe:duration-120",
             optionLooks[look],
           )}
         >
-          <CheckIcon className="hidden size-3.5" />
+          <CheckIcon className={cn("hidden size-3.5", look === "chips" && "group-pressed/option:terminal:block")} />
           {option.icon}
           <span className={cn(look === "track" && "max-sm:sr-only")}>{option.label}</span>
         </Radio.Root>

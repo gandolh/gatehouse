@@ -14,12 +14,18 @@ export function Header({ site, children }: { site: CardList["site"]; children?: 
     <header className="pt-4 pb-3 max-sm:pb-4 lg:pt-5">
       <div className={pageWidth}>
         <div className="flex min-h-11 items-center justify-between gap-3 sm:min-h-11.5">
-          <h1 className="min-w-0 text-wordmark font-bold tracking-wordmark text-ink">
+          <h1 className="min-w-0 font-ui text-wordmark font-bold tracking-wordmark text-ink terminal:text-shadow-glow">
             {site.wordmark}
-            <span aria-hidden="true" className="hidden terminal:inline-block" />
+            <span
+              aria-hidden="true"
+              className="ml-1 hidden h-[1.05em] w-[0.6em] bg-accent align-middle terminal:inline-block"
+            />
           </h1>
           <div className="flex items-center gap-2">
-            <a href={site.github} className={cn(button("secondary"), "w-11 px-0 sm:w-auto sm:px-3")}>
+            <a
+              href={site.github}
+              className={cn(button("secondary"), "w-11 px-0 sm:w-auto sm:px-3 terminal:border-transparent")}
+            >
               <GitHubIcon />
               <span className="max-sm:sr-only">GitHub</span>
             </a>

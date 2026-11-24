@@ -27,18 +27,23 @@ export function SectionNav({ sections, counts, filter, onFilterChange, filterLab
     { value: "sign-in", label: signIn },
   ] as const;
   return (
-    <div className={cn(pageWidth, "relative z-sticky max-sm:contents md:sticky md:top-3")}>
+    <div
+      className={cn(
+        pageWidth,
+        "relative z-sticky max-sm:contents md:sticky md:top-3 terminal:max-w-none terminal:px-0 terminal:md:top-0",
+      )}
+    >
       <nav
         aria-label="Sections and filters"
-        className="flex flex-col rounded-card border border-line bg-surface p-1 shadow-card max-sm:contents xl:flex-row xl:items-center xl:justify-between"
+        className="flex flex-col rounded-card border border-edge bg-surface p-1 shadow-card max-sm:contents xl:flex-row xl:items-center xl:justify-between terminal:border-x-0 terminal:bg-ground terminal:px-[max(1.5rem,calc((100%-var(--container-page))/2+1.5rem))] terminal:shadow-none"
       >
-        <div className="flex [scrollbar-width:thin] gap-1 overflow-x-auto p-0.5 max-sm:sticky max-sm:top-0 max-sm:z-sticky max-sm:scroll-px-2 max-sm:border-y max-sm:border-line max-sm:bg-surface max-sm:px-4 max-sm:py-0">
+        <div className="flex [scrollbar-width:thin] gap-1 overflow-x-auto p-0.5 max-sm:sticky max-sm:top-0 max-sm:z-sticky max-sm:scroll-px-2 max-sm:border-y max-sm:border-edge max-sm:bg-surface max-sm:px-4 max-sm:py-0 terminal:max-sm:bg-ground">
           {sections.map((section, index) => (
             <a
               key={section.id}
               href={`#${section.id}`}
               hidden={counts[index] === 0}
-              className="inline-flex min-h-11 flex-none items-center gap-2 rounded-control border border-transparent px-3 text-control font-medium whitespace-nowrap text-ink no-underline hover:bg-surface-2 active:bg-line max-sm:min-h-12 sm:min-h-9.5 sm:pointer-coarse:min-h-11"
+              className="inline-flex min-h-11 flex-none items-center gap-2 rounded-control border border-transparent px-3 font-ui text-control font-medium whitespace-nowrap text-ink no-underline hover:bg-surface-2 active:bg-line max-sm:min-h-12 sm:min-h-9.5 sm:pointer-coarse:min-h-11 terminal:px-2 terminal:text-label terminal:hover:bg-transparent terminal:hover:underline"
             >
               {section.title}
               <span className="font-normal text-ink-muted tabular-nums">{counts[index]}</span>

@@ -13,6 +13,7 @@ const twMerge = extendTailwindMerge({
       radius: ["control", "card", "picture", "track", "segment"],
       shadow: ["card"],
       tracking: ["wordmark", "section", "name"],
+      font: ["ui"],
       "font-weight": ["normal", "medium", "strong", "bold"],
       breakpoint: ["sm", "md", "lg", "xl"],
       container: ["page", "measure", "prose"],

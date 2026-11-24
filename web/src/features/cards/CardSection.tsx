@@ -29,13 +29,19 @@ export function CardSection({ section, access, filter, first }: CardSectionProps
       hidden={shown === 0}
       className="scroll-mt-15 pt-7 md:scroll-mt-21"
     >
-      <header className="mb-4 flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4">
-        <h2 id={`h-${section.id}`} className="text-section font-strong tracking-section text-ink">
-          <span aria-hidden="true" className="hidden flex-wrap items-baseline gap-x-4 terminal:flex">
+      <header className="mb-4 flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4 terminal:flex-col terminal:items-stretch terminal:gap-1 terminal:border-b terminal:border-dashed terminal:border-line terminal:pb-3">
+        <h2
+          id={`h-${section.id}`}
+          className="font-ui text-section font-strong tracking-section text-ink terminal:text-[1.6rem] terminal:leading-tight terminal:text-shadow-glow"
+        >
+          <span
+            aria-hidden="true"
+            className="hidden flex-wrap items-baseline gap-x-4 text-[0.95rem] leading-normal font-[600] text-shadow-none terminal:flex"
+          >
             <span>
-              <span>$</span> ls ~/{section.id}
+              <span className="font-bold text-accent">$</span> ls ~/{section.id}
             </span>
-            <span>
+            <span className="text-fact font-normal text-ink-muted">
               {shown} {shown === 1 ? "item" : "items"}
             </span>
           </span>

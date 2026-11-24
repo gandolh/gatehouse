@@ -23,9 +23,10 @@ export function AccessLabel({ access, label }: { access: Access; label: string }
   return (
     <span
       className={cn(
-        "inline-flex h-6 flex-none items-center gap-1 rounded-full border border-line-ui px-2 text-label font-medium",
+        "inline-flex h-6 flex-none items-center gap-1 rounded-full border border-line-ui px-2 font-ui text-label font-medium",
+        "terminal:h-auto terminal:gap-0 terminal:rounded-none terminal:border-0 terminal:p-0 terminal:leading-[1.6] terminal:lowercase",
         "whitespace-nowrap text-ink-body",
-        access === "open" && "border-ok-line text-ok",
+        access === "open" && "border-ok-line text-ok terminal:font-bold",
       )}
     >
       <span aria-hidden="true" className="hidden terminal:inline">

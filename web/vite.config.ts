@@ -122,7 +122,7 @@ const FAVICON = [
 ].join("");
 
 /**
- * The page's head, from what the build emitted: a preload for the Geist latin font file the page's text uses (without
+ * The page's head, from what the build emitted: a preload for the Geist latin font file the page's text uses in Profile (without
  * it the fallback font draws first and the layout jumps when Geist arrives), and the icon, emitted as an asset so it
  * is served under the base like the rest. Terminal's fonts are not preloaded: Profile is the default look. The dev
  * server has no build, so it inlines the icon.
@@ -141,7 +141,8 @@ function headAssets(): Plugin {
     transformIndexHtml: {
       order: "post",
       handler(_html, context) {
-        const tags: { tag: string; attrs: Record<string, string | boolean>; injectTo: "head" }[] = [];
+        const tags: { tag: string; attrs?: Record<string, string | boolean>; children?: string; injectTo: "head" }[] =
+          [];
         const bundle = context.bundle;
         if (bundle === undefined) {
           const href = `data:image/svg+xml,${encodeURIComponent(FAVICON)}`;
@@ -149,9 +150,12 @@ function headAssets(): Plugin {
         }
         const font = Object.keys(bundle).find((name) => /(^|\/)geist-latin-wght-normal-[\w-]+\.woff2$/.test(name));
         if (font === undefined) throw new Error("the build holds no Geist latin font file to preload");
+        // Added by a script, once the head script has set the look: Geist is Profile's font only, and a stored Terminal
+        // must not download it. A link in the HTML would be fetched before any script runs.
+        const preload = `var l=document.createElement("link");l.rel="preload";l.as="font";l.type="font/woff2";l.crossOrigin="";l.href=${JSON.stringify(`${base}${font}`)};document.head.appendChild(l);`;
         tags.push({
-          tag: "link",
-          attrs: { rel: "preload", as: "font", type: "font/woff2", crossorigin: true, href: `${base}${font}` },
+          tag: "script",
+          children: `if(document.documentElement.dataset.look==="profile"){${preload}}`,
           injectTo: "head",
         });
         if (icon !== undefined) {
