@@ -96,4 +96,7 @@ a visitor's load never wakes it. Sign-out ends Gatehouse's session only, not the
 session.
 Rejected: a session check on every load (every visitor would wake the container, and the page would
 wait on it).
+Revisited 2026-11-24 (brief 08's walk): a 401 whose reason is `ward_unavailable` or `ward_misconfigured`
+keeps the hint, because the API keeps the session while Ward is down; the page shows Ward unreachable with
+Try again and Sign out. Any other 401 still drops it.
 Cost accepted: an owner on a new browser presses sign in once.
