@@ -26,7 +26,9 @@ export function AccessLabel({ access, label }: { access: Access; label: string }
         "inline-flex h-6 flex-none items-center gap-1 rounded-full border border-line-ui px-2 font-ui text-label font-medium",
         "terminal:h-auto terminal:gap-0 terminal:rounded-none terminal:border-0 terminal:p-0 terminal:leading-[1.6] terminal:lowercase",
         "whitespace-nowrap text-ink-body",
-        access === "open" && "border-ok-line text-ok terminal:font-bold",
+        "ninety-six:h-auto ninety-six:rounded-none ninety-six:border-0 ninety-six:px-2 ninety-six:py-0.5 ninety-six:text-label ninety-six:leading-[1.4] ninety-six:font-bold ninety-six:text-ink ninety-six:shadow-field",
+        access === "open" &&
+          "border-ok-line text-ok terminal:font-bold ninety-six:bg-ok-face ninety-six:text-on-ok ninety-six:shadow-field-ok",
       )}
     >
       <span aria-hidden="true" className="hidden terminal:inline">

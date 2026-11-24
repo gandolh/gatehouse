@@ -11,9 +11,9 @@ const twMerge = extendTailwindMerge({
     theme: {
       text: ["wordmark", "section", "lead", "lead-phone", "name", "body", "sub", "control", "fact", "label", "code"],
       radius: ["control", "card", "picture", "track", "segment"],
-      shadow: ["card"],
+      shadow: ["card", "hard", "raised", "sunken", "panel", "field", "field-ok"],
       tracking: ["wordmark", "section", "name"],
-      font: ["ui"],
+      font: ["ui", "display"],
       "font-weight": ["normal", "medium", "strong", "bold"],
       breakpoint: ["sm", "md", "lg", "xl"],
       container: ["page", "measure", "prose"],

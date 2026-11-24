@@ -15,9 +15,14 @@ export interface FooterProps {
 /** The footer: how the apps are built, the GitHub link, and room for the look switcher and the owner's sign-in. */
 export function Footer({ site, lookSwitcher, signIn }: FooterProps) {
   return (
-    <footer className="mt-6 border-t border-edge terminal:mt-14 terminal:bg-surface">
-      <div className={cn(pageWidth, "flex flex-col items-start gap-4 pt-6 pb-9")}>
-        <p className="max-w-prose text-ink-muted">{site.footer}</p>
+    <footer className="mt-6 border-t border-edge terminal:mt-14 terminal:bg-surface ninety-six:mx-auto ninety-six:mt-5 ninety-six:mb-7 ninety-six:w-[calc(100%-2rem)] ninety-six:max-w-[calc(var(--container-page)-3rem)] ninety-six:border-0 ninety-six:bg-surface ninety-six:shadow-panel ninety-six:sm:w-[calc(100%-3rem)]">
+      <div
+        className={cn(
+          pageWidth,
+          "flex flex-col items-start gap-4 pt-6 pb-9 ninety-six:max-w-none ninety-six:gap-3 ninety-six:px-4.5 ninety-six:py-3.5 ninety-six:sm:px-4.5 ninety-six:lg:px-4.5",
+        )}
+      >
+        <p className="max-w-prose text-ink-muted ninety-six:text-ink">{site.footer}</p>
         <a href={site.github} className={cn(button("secondary"), "px-3")}>
           <GitHubIcon />
           GitHub

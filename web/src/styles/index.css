@@ -22,6 +22,18 @@
 @import "@fontsource/ibm-plex-sans/latin-ext-400.css" layer(vendor);
 @import "@fontsource/ibm-plex-sans/latin-600.css" layer(vendor);
 @import "@fontsource/ibm-plex-sans/latin-ext-600.css" layer(vendor);
+/* Ninety-six's fonts: Pixelify Sans for the wordmark and the section bars only, Arimo for the text, Cousine for
+   addresses. */
+@import "@fontsource/pixelify-sans/latin-600.css" layer(vendor);
+@import "@fontsource/pixelify-sans/latin-ext-600.css" layer(vendor);
+@import "@fontsource/pixelify-sans/latin-700.css" layer(vendor);
+@import "@fontsource/pixelify-sans/latin-ext-700.css" layer(vendor);
+@import "@fontsource/arimo/latin-400.css" layer(vendor);
+@import "@fontsource/arimo/latin-ext-400.css" layer(vendor);
+@import "@fontsource/arimo/latin-700.css" layer(vendor);
+@import "@fontsource/arimo/latin-ext-700.css" layer(vendor);
+@import "@fontsource/cousine/latin-400.css" layer(vendor);
+@import "@fontsource/cousine/latin-ext-400.css" layer(vendor);
 
 /* Tailwind scans the repo for class names; the vendored house-style copy holds none of the page's. */
 @source not "../../../vendor";
@@ -113,6 +125,24 @@
   --color-on-button: light-dark(#f6f7f9, #12151a);
   --color-ok: light-dark(#135c2d, #7bd9a0); /* the Public label */
   --color-ok-line: light-dark(#2f8553, #43a06c);
+  /* Ninety-six's roles. Profile and Terminal never use them, so they stay transparent there. */
+  --color-on-ground: transparent; /* text on the page's ground (the panels keep ink) */
+  --color-face: transparent; /* a button's face */
+  --color-bevel-1: transparent; /* the bevel: outer light, outer dark, inner light, inner dark */
+  --color-bevel-2: transparent;
+  --color-bevel-3: transparent;
+  --color-bevel-4: transparent;
+  --color-drop: transparent; /* the panels' hard drop shadow */
+  --color-bar: transparent; /* a section's bar */
+  --color-on-bar: transparent;
+  --color-frame: transparent; /* a picture's inset frame */
+  --color-field: transparent; /* a count's face */
+  --color-on-field: transparent;
+  --color-ok-face: transparent; /* the Public label's face */
+  --color-on-ok: transparent;
+  --color-wordmark-shadow: transparent;
+  --color-visited: var(--color-accent); /* a visited text link */
+  --color-focus: var(--color-accent); /* the focus ring */
   --color-shade-1: light-dark(rgb(20 28 44 / 0.1), rgb(0 0 0 / 0.4));
   --color-shade-2: light-dark(rgb(20 28 44 / 0.04), rgb(0 0 0 / 0.25));
 
@@ -120,6 +150,8 @@
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   /* Names, labels, buttons and headings: the look's display face. Profile's is its text face. */
   --font-ui: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* The wordmark and the section titles. Profile's is its text face; Ninety-six's is Pixelify Sans. */
+  --font-display: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-strong: 700;
@@ -160,6 +192,20 @@
 
   --shadow-card: 0 1px 2px var(--color-shade-1), 0 2px 8px var(--color-shade-2);
   --shadow-hard: 3px 3px 0 var(--color-offset); /* Terminal's card: no blur, the offset in its own colour */
+  /* Ninety-six's bevels, each from the colour tokens above (a theme shadow is inlined, so it names tokens): raised
+     (a button), sunken (a pressed button, a picture's frame), panel (raised and a hard drop shadow), and the two
+     one-pixel fields (an access label, Public's). */
+  --shadow-raised:
+    inset -1px -1px var(--color-bevel-2), inset 1px 1px var(--color-bevel-1), inset -2px -2px var(--color-bevel-4),
+    inset 2px 2px var(--color-bevel-3);
+  --shadow-sunken:
+    inset -1px -1px var(--color-bevel-1), inset 1px 1px var(--color-bevel-4), inset -2px -2px var(--color-bevel-3),
+    inset 2px 2px var(--color-bevel-2);
+  --shadow-panel:
+    inset -1px -1px var(--color-bevel-2), inset 1px 1px var(--color-bevel-1), inset -2px -2px var(--color-bevel-4),
+    inset 2px 2px var(--color-bevel-3), 4px 4px 0 var(--color-drop);
+  --shadow-field: inset 1px 1px var(--color-bevel-4), inset -1px -1px var(--color-bevel-1);
+  --shadow-field-ok: inset 1px 1px var(--color-bevel-2), inset -1px -1px var(--color-bevel-3);
 
   /* The sketch's widths: 2 columns from 640, the row sticks from 900, 3 columns from 1000, one row from 1240. */
   --breakpoint-sm: 40rem;
@@ -172,6 +218,7 @@
   --container-prose: 68ch; /* the footer's line */
 
   --text-shadow-glow: 0 0 10px var(--color-glow);
+  --text-shadow-wordmark: 3px 3px 0 var(--color-wordmark-shadow); /* Ninety-six's wordmark */
 
   --z-index-sticky: 10; /* the section row */
   --z-index-skip: 20; /* the skip link, above the row */
@@ -211,6 +258,7 @@
     --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-ui: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --font-display: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
     --color-offset: light-dark(#1c1912, #5f4614);
 
@@ -221,6 +269,85 @@
     --radius-track: 0;
     --radius-segment: 0;
     --container-page: 75rem;
+  }
+
+  /* Ninety-six's tokens (DESIGN.md): the teal ground and grey bevelled panels, navy at night; the type scale follows the
+     sketch's sizes. Its skin on the components is the ninety-six: variant. */
+  :root[data-look="ninety-six"] {
+    --color-ground: light-dark(#008080, #0a1033);
+    --color-on-ground: light-dark(#ffffff, #eef1ff);
+    --color-wordmark-shadow: light-dark(#003f5c, #02040f);
+    --color-surface: light-dark(#c8c8c8, #243066); /* the panel: cards, the section row, the footer */
+    --color-surface-2: light-dark(#e4e4e4, #141c47); /* a button's hover and pressed face */
+    --color-face: light-dark(#c8c8c8, #2e3b7a);
+    --color-edge: transparent;
+    --color-line: light-dark(#808080, #121a45);
+    --color-line-ui: transparent;
+    --color-ink: light-dark(#000000, #f2f4ff);
+    --color-ink-body: light-dark(#000000, #f2f4ff);
+    --color-ink-muted: light-dark(#262626, #d3d9f5);
+    --color-accent: light-dark(#0000d0, #9bc0ff); /* links */
+    --color-visited: light-dark(#551a8b, #d9b3ff);
+    --color-button: light-dark(#000080, #3347c4); /* the primary button */
+    --color-on-button: #f6f8ff;
+    --color-ok: light-dark(#000000, #f2f4ff);
+    --color-ok-line: transparent;
+    --color-ok-face: light-dark(#006400, #1c7f3c);
+    --color-on-ok: #f6f8ff;
+    --color-bevel-1: light-dark(#ffffff, #7685d6);
+    --color-bevel-2: light-dark(#1a1a1a, #02040f);
+    --color-bevel-3: light-dark(#e8e8e8, #4a5aae);
+    --color-bevel-4: light-dark(#808080, #121a45);
+    --color-drop: light-dark(#005050, #02040f);
+    --color-bar: light-dark(#000080, #3347c4);
+    --color-on-bar: #f6f8ff;
+    --color-frame: light-dark(#7a7a7a, #02040f);
+    --color-field: light-dark(#ffffff, #f2f4ff);
+    --color-on-field: light-dark(#000000, #0a1033);
+    --color-focus: light-dark(#000000, #ffffff);
+
+    --font-sans: "Arimo", Arial, Helvetica, sans-serif;
+    --font-ui: "Arimo", Arial, Helvetica, sans-serif;
+    --font-mono: "Cousine", "Courier New", monospace;
+    --font-display: "Pixelify Sans", "Arial Black", Impact, sans-serif;
+
+    --text-wordmark: clamp(2.5rem, 6vw, 3.75rem);
+    --text-wordmark--line-height: 1;
+    --text-section: clamp(1.5rem, 3.4vw, 1.875rem);
+    --text-section--line-height: 1.15;
+    --text-lead: 1.125rem;
+    --text-lead--line-height: 1.35;
+    --text-lead-phone: 1.0625rem;
+    --text-lead-phone--line-height: 1.35;
+    --text-name: 1.25rem;
+    --text-name--line-height: 1.2;
+    --text-body: 1rem;
+    --text-body--line-height: 1.4;
+    --text-sub: 0.9375rem;
+    --text-sub--line-height: 1.4;
+    --text-control: 0.9375rem;
+    --text-fact: 0.9375rem;
+    --text-fact--line-height: 1.4;
+    --text-label: 0.875rem;
+    --text-label--line-height: 1.4;
+    --text-code: 1em;
+    --tracking-wordmark: 0;
+    --tracking-section: 0;
+    --tracking-name: 0;
+
+    /* Square everything. */
+    --radius-control: 0;
+    --radius-card: 0;
+    --radius-picture: 0;
+    --radius-track: 0;
+    --radius-segment: 0;
+    --container-page: 75rem;
+  }
+  :root[data-look="ninety-six"] body {
+    color: var(--color-on-ground);
+  }
+  :root[data-look="ninety-six"] :focus-visible {
+    outline-width: 3px;
   }
 
   html,
@@ -249,9 +376,9 @@
     text-wrap: balance;
   }
 
-  /* Every control shows focus at once, in the accent. */
+  /* Every control shows focus at once, in the focus colour (the accent, except in Ninety-six). */
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
   }
 }

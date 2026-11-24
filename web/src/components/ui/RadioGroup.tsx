@@ -29,7 +29,7 @@ export interface RadioGroupProps<Value extends string> {
 
 const groupLooks = {
   track:
-    "inline-flex gap-0.5 rounded-track border border-line bg-surface-2 p-1 terminal:gap-0 terminal:border-edge terminal:bg-surface terminal:p-0",
+    "inline-flex gap-0.5 rounded-track border border-line bg-surface-2 p-1 terminal:gap-0 terminal:border-edge terminal:bg-surface terminal:p-0 ninety-six:gap-1 ninety-six:border-0 ninety-six:bg-transparent ninety-six:p-0",
   chips: "flex gap-1",
   row: "flex flex-wrap gap-2",
 } as const;
@@ -43,6 +43,8 @@ const optionLooks = {
     "terminal:text-ink terminal:hover:bg-surface-2 terminal:not-first:border-l-edge sm:terminal:h-10",
     "terminal:pressed:border-transparent terminal:pressed:bg-button terminal:pressed:text-on-button terminal:pressed:shadow-none",
     "terminal:pressed:hover:bg-button",
+    "ninety-six:border-0 ninety-six:bg-face ninety-six:font-normal ninety-six:text-ink ninety-six:shadow-raised ninety-six:hover:bg-surface-2",
+    "ninety-six:pressed:bg-surface-2 ninety-six:pressed:font-bold ninety-six:pressed:shadow-sunken ninety-six:max-sm:pressed:[&>svg]:stroke-3",
   ].join(" "),
   chips: [
     "inline-flex min-h-11 min-w-11 flex-none items-center justify-center gap-2 rounded-full border border-line-ui px-3",
@@ -50,12 +52,18 @@ const optionLooks = {
     "terminal:rounded-none terminal:border-edge terminal:bg-surface terminal:font-normal",
     "active:not-pressed:bg-line sm:min-h-9.5 sm:pointer-coarse:min-h-11",
     "pressed:border-button pressed:bg-button pressed:text-on-button",
+    "ninety-six:rounded-none ninety-six:border-0 ninety-six:bg-face ninety-six:font-normal ninety-six:shadow-raised",
+    "ninety-six:hover:not-pressed:bg-surface-2 ninety-six:active:not-pressed:bg-surface-2",
+    "ninety-six:pressed:bg-surface-2 ninety-six:pressed:font-bold ninety-six:pressed:text-ink ninety-six:pressed:shadow-sunken",
   ].join(" "),
   row: [
     "inline-flex min-h-11 items-center justify-center gap-2 rounded-control border border-line-ui px-4 font-ui text-control",
     "font-medium whitespace-nowrap text-ink hover:not-pressed:bg-surface-2 active:not-pressed:bg-line",
     "sm:min-h-9.5 sm:pointer-coarse:min-h-11",
     "pressed:border-button pressed:bg-button pressed:text-on-button",
+    "ninety-six:border-0 ninety-six:bg-face ninety-six:font-normal ninety-six:shadow-raised",
+    "ninety-six:hover:not-pressed:bg-surface-2 ninety-six:active:not-pressed:bg-surface-2",
+    "ninety-six:pressed:bg-surface-2 ninety-six:pressed:font-bold ninety-six:pressed:text-ink ninety-six:pressed:shadow-sunken",
   ].join(" "),
 } as const;
 
@@ -90,7 +98,13 @@ export function RadioGroup<Value extends string>({
             optionLooks[look],
           )}
         >
-          <CheckIcon className={cn("hidden size-3.5", look === "chips" && "group-pressed/option:terminal:block")} />
+          <CheckIcon
+            className={cn(
+              "hidden size-3.5",
+              look === "chips" && "group-pressed/option:terminal:block",
+              look === "track" ? "sm:group-pressed/option:ninety-six:block" : "group-pressed/option:ninety-six:block",
+            )}
+          />
           {option.icon}
           <span className={cn(look === "track" && "max-sm:sr-only")}>{option.label}</span>
         </Radio.Root>
