@@ -3,6 +3,8 @@
 **Depends on:** vps-deploy's brief 44 (the `gazette` stack, which serves `/gazette/`). vps-deploy's card check fails
 on a card whose path no route answers, so this card lands after that stack.
 
+**Runs before:** the next `node cli.ts gatehouse all`.
+
 **Builder:** Sonnet ([routing.md](../../routing.md)): one card in the list and its picture.
 
 ## Context
@@ -14,6 +16,17 @@ it goes on the front page.
 
 The influencer is a real person. The card names neither him nor the brand his reports are for, in the blurb, the
 `more` line or the picture.
+
+## Files you OWN
+
+- `content/cards.json` (the one card), `content/images/gazette.webp` (new)
+- The card list's tests that count cards per section
+- `corpus/wiki/card-list.md` if it lists the cards or counts them, `corpus/wiki/status.md`, `corpus/log.md`
+
+## Files you must NOT touch
+
+- `design/` (read only), the page's components and styles: a card is data.
+- The gazette and vps-deploy repos (read only).
 
 ## Steps
 
