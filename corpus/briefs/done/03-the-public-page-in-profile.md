@@ -180,3 +180,31 @@ and the check icon on a checked option; each sketch's icon-only mode buttons on 
 - Settled 2026-11-23: look and mode are two controls, both stored, both applied before the first
   paint; the look switcher and the sign-in sit in the footer.
 - Settled 2026-11-24 (the owner): React instead of Astro, rendered at build time and hydrated.
+
+## Outcome (2026-11-24)
+
+Built as written, Done on the board (nothing deploys yet). Details in [page.md](../../wiki/page.md).
+
+- `DESIGN.md` holds all three looks' tokens by role, light and dark, from the three `tokens.md`, with the shared
+  structure, R1 to R3 and each look's controls.
+- The card module is `cardModule()` in `web/vite.config.ts` (`virtual:gatehouse-cards`, typed by
+  `web/src/card-module.d.ts`); picture sizes come from the `VP8 ` header. Only the two entries import it.
+- The page: `web/src/components/` (Header, Footer with `lookSwitcher` and `signIn` slots, the `RadioGroup` wrapper,
+  icons, looks), `web/src/features/cards/` and `web/src/features/mode/`. Terminal's and Ninety-six's elements are in
+  the markup, hidden in Profile. `Card` is not yet exported from the feature's index (brief 06 adds it).
+- See more: Base UI's `Collapsible` can't show its text without scripts (a closed panel is absent, or `hidden=""`,
+  which Preflight hides with `!important`), so it is a hand-built disclosure; recorded in
+  [open-questions.md](../../wiki/open-questions.md).
+- The guard is `web/scripts/check-owner-part.ts`, last in the page's build; it fails on a planted dist (exit 1).
+- Checks: `npm run check` exit 0 (`check-base-ui` strict, 43 tests); `bash corpus/lint.sh` clean; the build passes
+  with `GATEHOUSE_ORIGIN` (66 path references, the guard clean); the acceptance grep finds nothing; the built HTML
+  holds 34 public cards in 5 sections with every See more text and no owner card; scripting off shows them all;
+  hydration with a stored dark mode and Terminal look logs nothing; a throttled reload is dark from its first
+  frame; only Geist and Geist Mono download; sloplint is clean.
+
+Deviations: the variable Fontsource packages (one file for every weight) where the brief said `@fontsource`; the
+prerender also writes the wordmark as the title and the header's line as the description (the sketch's head), from
+`head()` in `entry-server.tsx`; a skip link from sketch B, off screen until focused (sloplint failed it as
+`sr-only`); `CLAUDE.md`'s build line names the guard (not an owned file). Differences from sketch A, for the design
+critic: [page.md](../../wiki/page.md), "Where it differs from sketch A"; the one real choice is the 650 heading
+weight, where the renders drew 700 (`--font-weight-strong` switches it).

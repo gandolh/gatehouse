@@ -74,3 +74,15 @@ every rule in [wiki/card-list.md](wiki/card-list.md). `cards.json` was formatted
 labels changed layout) and left `.prettierignore`. The Mercatus picture was retaken logged out, cropped above the
 page's cookie notice. All 33 non-GitHub access labels were read live and held, so none changed; the
 table is in the card-list page.
+
+## [2026-11-24] done | Brief 03: the public page in Profile
+
+Built the page in Profile from sketch A: `DESIGN.md` as the locked system for all three looks; a Vite plugin that
+gives the page the public cards only (links resolved, pictures fingerprinted with their sizes); the header, section
+row, sections, cards and footer on Base UI radio groups and Tailwind tokens, with Terminal's and Ninety-six's
+elements in the markup, hidden; the head script with `data-look`, `data-theme` and `data-scripted`; hydration that
+reads them only after mount, tested in jsdom with the real head script; and a build guard over every built file.
+The open question is answered: Base UI's Collapsible can't show its text without scripts, so See more is a
+hand-built disclosure. Geist comes from the variable Fontsource packages, so headings draw at 650 where the renders
+drew 700. Findings in [wiki/page.md](wiki/page.md).
+

@@ -1,13 +1,13 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01) and the card list with its schema and live check (brief 02) are built; the page, the owner part and the docs are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03) are built; Terminal, Ninety-six, the owner part and the docs are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
 updated: 2026-11-24
 ---
 
 # Status
 
-_2026-11-24._ **The skeleton is built** (brief 01). Beside it the repo holds the approved design
-(`design/`), the card list (`content/cards.json` and 25 pictures), this corpus, and briefs 03 to 09.
-It has no remote.
+_2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleton (brief 01) and the card list
+(brief 02). Beside it the repo holds the approved design (`design/`), `DESIGN.md`, the card list
+(`content/cards.json` and 25 pictures), this corpus, and briefs 04 to 09. It has no remote.
 
 ## By area
 
@@ -20,9 +20,11 @@ It has no remote.
   checked by a zod schema in `shared` (`loadCards` at `@gatehouse/shared/load`, `resolveLink`,
   `displayAddress`) and its tests. All 33 non-GitHub access labels were read live, logged out, and
   held; the Mercatus picture was retaken ([card-list.md](card-list.md)).
-- **The page**: a React page on Vite, rendered at build time; a placeholder heading so far. Profile
-  (brief 03), the look switcher and Terminal (brief 04), Ninety-six (brief 05). Not started; the
-  sketches in `design/` are the spec.
+- **The page**: Profile done 2026-11-24 (brief 03): every public card in the prerendered HTML, hydrated; the mode
+  control, filters, See more (which shows with scripting off), the phone's sticky section row, Geist self-hosted,
+  and a build guard that fails on any owner card in `web/dist/`. `DESIGN.md` locks all three looks' tokens; the
+  markup already carries Terminal's and Ninety-six's elements, hidden ([page.md](page.md)). Next: the look switcher
+  and Terminal (brief 04), Ninety-six (brief 05).
 - **The owner part**: drawn against a fake API in brief 06, served by the API in brief 07, wired to
   Ward in brief 08. Not started.
 - **README and docs**: brief 09.
