@@ -16,7 +16,7 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
   a placeholder React page, prerendered at build time, whose files the path check holds under
   `/gatehouse/`. One question on the board: the vendored house-style LICENSE holds the account
   name.
-- **The card list**: done 2026-11-24 (brief 02). 38 cards in 5 sections (Gazette added by brief 12), 3 in the owner part, now
+- **The card list**: done 2026-11-24 (brief 02). 39 cards in 5 sections (Gazette added by brief 12, Tavi by brief 11), 3 in the owner part, now
   checked by a zod schema in `shared` (`loadCards` at `@gatehouse/shared/load`, `resolveLink`,
   `displayAddress`) and its tests. All 33 non-GitHub access labels were read live, logged out, and
   held; the Mercatus picture was retaken ([card-list.md](card-list.md)). Gazette added 2026-11-24 (brief 12), ready for deploy.

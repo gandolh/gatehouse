@@ -56,7 +56,7 @@ for them and adds them to Behind the scenes. How that works: [architecture.md](a
 - Nothing live: no up or down label, no Updated date.
 - English only.
 - Older GitHub repos stay off; On GitHub lists five.
-- No search: 38 cards fit the section links and the filters.
+- No search: 39 cards fit the section links and the filters.
 
 ## The work
 

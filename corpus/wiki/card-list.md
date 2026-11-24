@@ -1,5 +1,5 @@
 ---
-summary: The card list in content/cards.json (schema in shared, live access check of 2026-11-24 in a table), as seeded on 2026-11-24 from the approved sketches' fixture. Its shape (site, access labels, five sections, 38 cards); each card's fields; the three link forms (/path/, host:<name>, an https address off the domain) and how each is resolved and shown; the access label against the part (34 public cards, 4 in the owner part); which filter takes which label; who reads the file (the page build, the API, vps-deploy's check); the rules the schema and its tests hold.
+summary: The card list in content/cards.json (schema in shared, live access check of 2026-11-24 in a table), as seeded on 2026-11-24 from the approved sketches' fixture. Its shape (site, access labels, five sections, 39 cards); each card's fields; the three link forms (/path/, host:<name>, an https address off the domain) and how each is resolved and shown; the access label against the part (36 public cards, 3 in the owner part); which filter takes which label; who reads the file (the page build, the API, vps-deploy's check); the rules the schema and its tests hold.
 updated: 2026-11-24
 ---
 
@@ -24,7 +24,7 @@ fields (`updated`, `expandedInSketch`, a note), plus `part`. The schema in `shar
 | --- | --- | --- | --- |
 | Games and toys | `play` | 6 | 6 |
 | Apps for home | `home` | 11 | 11 |
-| Sites for other people | `sites` | 9 | 9 |
+| Sites for other people | `sites` | 10 | 10 |
 | Behind the scenes | `estate` | 8 | 4 |
 | On GitHub | `github` | 5 | 5 |
 
@@ -64,8 +64,8 @@ anyway, in the certificate transparency logs; the split keeps them off the page,
 
 | Chip | Labels it shows | Public cards |
 | --- | --- | --- |
-| All | every label | 35 |
-| Open to anyone | `open`, `docs`, `repo` | 22 |
+| All | every label | 36 |
+| Open to anyone | `open`, `docs`, `repo` | 23 |
 | Needs sign-in | `sign-in`, `owner` | 13, and 17 once the owner part is in |
 
 A section whose cards a filter hides drops out, and so does its link in the section row.
@@ -99,7 +99,7 @@ Where it lives, in `shared/src/`:
 - `cards.test.ts`: the rules above against the real file, and the resolver on each form.
 
 `content/cards.json` was formatted with Prettier on 2026-11-24 (one line, the filter labels, now sits
-on one row) and left `.prettierignore`; the parsed list is the same 38 cards.
+on one row) and left `.prettierignore`; the parsed list is the same 38 cards (39 since Tavi was added).
 
 ## The live check, 2026-11-24
 
@@ -148,3 +148,7 @@ The Mercatus picture was retaken the same day from `/piataro/`, logged out, ligh
 The page's cookie notice covers its bottom edge, so the picture is cropped above it (1280 x 714
 scaled to 800 px wide) rather than answered.
 
+
+Tavi's picture (`tavi.webp`) is the hero of the site's first screen at 1280 x 800, paused after the fonts loaded,
+cropped to 1250 x 781 (the strip of the next section at the bottom is out) and scaled to 800 x 500, WebP at
+quality 82. It shows the site's own name in the header, which is the card's name.

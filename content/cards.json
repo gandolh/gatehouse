@@ -345,6 +345,18 @@
           "more": "Templates, fonts, graphics and e-books with e-Factura invoices. Browsing is open and payments are simulated.",
           "docs": null,
           "source": "https://github.com/gandolh/comercial-website"
+        },
+        {
+          "id": "tavi",
+          "name": "Tavi Ceasornicaru",
+          "href": "/tavi/",
+          "access": "open",
+          "part": "public",
+          "image": "tavi.webp",
+          "blurb": "An interactive wristwatch movement you can wind, slow down and take apart.",
+          "more": "A personal site about clocks and watches, in English. Seven steps follow the energy from the mainspring to the balance, and a workbench lets you take the movement apart.",
+          "docs": null,
+          "source": "https://github.com/gandolh/presentation-sites"
         }
       ]
     },
