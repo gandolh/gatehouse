@@ -1,12 +1,12 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton is built (brief 01): the workspaces, the harness, the API's health route and a placeholder page prerendered with its files under /gatehouse/; the rest is not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01) and the card list with its schema and live check (brief 02) are built; the page, the owner part and the docs are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
 updated: 2026-11-24
 ---
 
 # Status
 
 _2026-11-24._ **The skeleton is built** (brief 01). Beside it the repo holds the approved design
-(`design/`), the card list (`content/cards.json` and 25 pictures), this corpus, and briefs 02 to 09.
+(`design/`), the card list (`content/cards.json` and 25 pictures), this corpus, and briefs 03 to 09.
 It has no remote.
 
 ## By area
@@ -16,9 +16,10 @@ It has no remote.
   a placeholder React page, prerendered at build time, whose files the path check holds under
   `/gatehouse/`. One question on the board: the vendored house-style LICENSE holds the account
   name.
-- **The card list**: seeded from the sketches' fixture, 38 cards in 5 sections, 4 in the owner part
-  ([card-list.md](card-list.md)). No schema yet; the Mercatus picture still shows the old brand, and
-  no access label has been checked against the live site (brief 02).
+- **The card list**: done 2026-11-24 (brief 02). 38 cards in 5 sections, 4 in the owner part, now
+  checked by a zod schema in `shared` (`loadCards` at `@gatehouse/shared/load`, `resolveLink`,
+  `displayAddress`) and its tests. All 33 non-GitHub access labels were read live, logged out, and
+  held; the Mercatus picture was retaken ([card-list.md](card-list.md)).
 - **The page**: a React page on Vite, rendered at build time; a placeholder heading so far. Profile
   (brief 03), the look switcher and Terminal (brief 04), Ninety-six (brief 05). Not started; the
   sketches in `design/` are the spec.

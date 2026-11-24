@@ -65,3 +65,12 @@ preview, and the preview shows the page at `/gatehouse/`. The build ends with a 
 fails on any URL outside the prefix. Node 24.2 is the floor, for `import.meta.main`. Open: the
 vendored house-style LICENSE holds the account name, asked on the board. Findings in
 [wiki/architecture.md](wiki/architecture.md) and [wiki/open-questions.md](wiki/open-questions.md).
+
+## [2026-11-24] done | Brief 02: the card list's schema, links, pictures and live check
+
+Added the zod schema, `loadCards` (behind `@gatehouse/shared/load`, so the barrel stays free of
+`node:`), `publicCards` / `ownerCards`, `resolveLink` and `displayAddress` to `shared`, with tests for
+every rule in [wiki/card-list.md](wiki/card-list.md). `cards.json` was formatted with Prettier (only the filter
+labels changed layout) and left `.prettierignore`. The Mercatus picture was retaken logged out, cropped above the
+page's cookie notice. All 33 non-GitHub access labels were read live and held, so none changed; the
+table is in the card-list page.

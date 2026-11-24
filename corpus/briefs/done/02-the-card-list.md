@@ -90,3 +90,15 @@ it into the repo: notes and the outcome name paths only (`/piataro/`, `ward.`).
 - Settled 2026-11-23: the access labels are Public, Sign-in, Owner only, Docs only, On GitHub; the
   owner part is the vault, Grafana, the mail admin and brief-board; Trips links only to `/trips/`.
 - Settled 2026-11-23: name the Mercatus card after what is live at build time.
+
+## Outcome (2026-11-24)
+
+Built as written. `shared/src/` holds `cards.ts` (zod schema, types, `publicCards`, `ownerCards`),
+`links.ts` (`resolveLink`, `displayAddress`), `load.ts` (`loadCards`, exported as
+`@gatehouse/shared/load`) and `cards.test.ts`; the barrel imports nothing from `node:`. `zod` is a
+dependency of `shared`. `cards.json` was formatted (only the filter labels changed layout) and left
+`.prettierignore`. The Mercatus picture was retaken logged out, cropped above the page's cookie
+notice (800 x 446, webp). All 33 access labels held on the live read, so none changed; the table is
+in [card-list.md](../../wiki/card-list.md). `lantern`, `ro-housing` and `grafana` were loaded twice,
+because the first read caught a loading screen. `@gatehouse/shared` is not yet a dependency of
+`server` or `web`: add it with the first import.
