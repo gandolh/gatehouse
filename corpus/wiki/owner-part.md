@@ -1,5 +1,5 @@
 ---
-summary: The owner part on the page as built on 2026-11-24 (brief 06), against a fake API until brief 07's server and brief 08's Ward wiring. The contract in shared (the owner answer's schema, the start's answer, the error body, ownerCardsAnswer, ownerSection); the page's side in web/src/features/owner (the owner hint, a store read after mount, the three calls loaded on demand so visitors download neither them nor zod, the footer's Owner sign-in and its live line, the waking note); the nine states and their words; where the owner's cards join Behind the scenes; the fake API (web/scripts/fake-owner-api.ts, GATEHOUSE_FAKE, dev:fake and fake-api) and how to open each state; the hydration test's owner case; how it was checked; what brief 08 swaps.
+summary: The owner part on the page as built on 2026-11-24 (brief 06), against a fake API until brief 07's server and brief 08's Ward wiring. The contract in shared (the owner answer's schema, the start's answer, the error body, ownerCardsAnswer, ownerSection); the page's side in web/src/features/owner (the owner hint, a store read after mount, the three calls loaded on demand so visitors download neither them nor zod, the footer's Owner sign-in and its live line, the waking note); the nine states and their words; where the owner's cards join Behind the scenes; the fake API (web/scripts/fake-owner-api.ts, GATEHOUSE_FAKE, dev:fake and fake-api) and how to open each state; the hydration test's owner case; how it was checked; the walk against the real API (brief 08) and the 401 reason it added.
 updated: 2026-11-24
 ---
 
@@ -16,7 +16,7 @@ controls section. The page's other parts are in [page.md](page.md).
 - `ownerCardSchema` and `ownerCardsSchema` (`{ cards }`): the owner route's 200, in the shape the card module gives a
   public card: `href` resolved, `address` from `displayAddress`, `ownAddress`, and `image` always `null` (the owner
   part sits in a compact section, and pictures are fingerprinted by a build that never sees an owner card).
-- `wardStartSchema` (`{ url }`) and `errorBodySchema` (`{ error, message? }`): Ward's library answers its 401, 403
+- `wardStartSchema` (`{ url }`) and `errorBodySchema` (`{ error, message?, reason? }`): Ward's library answers its 401, 403
   and 503 as `{ error }` alone, so the message is optional.
 - `ownerCardsAnswer(list, origin)`: the owner route's answer from the card list. The fake sends it; brief 07's route
   can send it with `PUBLIC_ORIGIN`.
@@ -63,12 +63,15 @@ stays empty under Open to anyone.
 | signed in | 200 | "Signed in as the owner: 3 cards added to Behind the scenes." and Sign out | the owner's cards |
 | not the owner | 403 | a message that the cards are the owner's, and Sign out | unchanged |
 | failed | no answer in 30 s, a 5xx, a refused answer | "The owner's cards didn't load." Try again, Sign out | unchanged |
+| Ward can't vouch | 401 with `reason` `ward_unavailable` / `ward_misconfigured` | "Ward can't be reached right now. Try again later." Try again, Sign out | unchanged |
 | refused | back with any other `ward_error` | "Ward didn't sign you in…", Owner sign-in | unchanged |
 | Ward unreachable | the start fails, or `ward_unavailable` / `ward_misconfigured` | "Ward can't be reached right now. Try again later." | unchanged |
 | signed out again | Sign out answered | "Signed out. The owner's cards are off the page." | the cards gone |
 
-- A 401 drops the hint and shows the signed-out page with no message.
-- Refused, Ward unreachable and signed out again drop the hint. Not the owner and failed keep it, so Sign out works.
+- A 401 drops the hint and shows the signed-out page with no message, unless its `reason` says Ward couldn't vouch for
+  a live session: the API keeps that session, so the page keeps the hint and offers Try again and Sign out.
+- Refused, Ward unreachable and signed out again drop the hint. Not the owner, failed and Ward can't vouch keep it,
+  so Sign out works.
 - The footer's line is a live region, empty in the HTML; the note's cell is another. No line ever shows a code.
 - Owner sign-in, Sign out and their busy words are one `<button>` element, so focus stays on it when it changes. Back
   from Ward with an error, the line takes focus (`tabIndex={-1}`), which scrolls the footer into view.
@@ -102,8 +105,12 @@ directly with `?ward_error=access_denied` or `?ward_error=ward_unavailable`.
   on each with the look's ring (2 px, 3 px in Ninety-six).
 - The build guard passes, and `fake-owner-api` appears nowhere in `web/dist`.
 
-## For brief 08
+## Against the real API
 
-Brief 08 replaces the fake with the real API: the page's calls, paths and states stay. The fake can stay as a
-drawing aid. Two things it doesn't show: the real start goes to Ward first, and Ward lands the browser on `/`, so
-`?look=` doesn't survive a real round trip (the stored look does).
+Walked on 2026-11-24 (brief 08) against brief 07's API and the local Ward: every state above matched, and the page's
+calls and paths needed no change ([sign-in.md](sign-in.md), "The walk against the local Ward"). The one difference,
+a 401 whose `reason` says Ward couldn't vouch for a live session, is the "Ward can't vouch" row above. The fake stays
+as a drawing aid, and doesn't show two things: the real start goes to Ward first, and Ward lands the browser on `/`,
+so `?look=` doesn't survive a real round trip (the stored look does). The checks above gained two hydration cases: a
+plain 401 (hint dropped, no message) and a 401 with `reason: ward_unavailable` (the Ward unreachable line, Try again
+and Sign out, hint kept).

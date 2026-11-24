@@ -167,7 +167,8 @@ format` and `npm run house-style:sync -- --check`. The root `CLAUDE.md` says wha
 3. After mount, only when the hint is set, the page calls `GET /gatehouse-api/v1/owner/cards`. A
    visitor never calls the API, so the API sleeps unless the owner wakes it.
 4. 200: the page renders each owner card with the same Card component and adds it to Behind the
-   scenes, after the public cards. 401: the page drops the hint. 403: signed in, but not the owner.
+   scenes, after the public cards. 401: the page drops the hint, unless the `reason` says Ward couldn't
+   vouch for the session (then Ward unreachable, hint kept). 403: signed in, but not the owner.
    `?ward_error=<code>` on the return also drops the hint.
 5. Sign-out posts to `/gatehouse-api/auth/logout`, which ends Gatehouse's session only, and drops
    the hint.

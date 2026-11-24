@@ -7,7 +7,8 @@ updated: 2026-11-24
 
 Built in the Profile look (brief 03), then Terminal and the look switcher (brief 04), then Ninety-six (brief 05). The
 owner part (brief 06: Owner sign-in, the owner's cards, their states and the fake API) is on
-[owner-part.md](owner-part.md); the look switcher, Terminal's and Ninety-six's rules and the design critic's fixes
+[owner-part.md](owner-part.md), and its walk against the real API and the local Ward (brief 08) on
+[sign-in.md](sign-in.md); the look switcher, Terminal's and Ninety-six's rules and the design critic's fixes
 are on [looks.md](looks.md). It is React 19 on Vite, rendered to HTML at build time and hydrated
 ([architecture.md](architecture.md)); `DESIGN.md` at the repo root is the locked system for all three looks.
 
@@ -69,7 +70,7 @@ then moves to the stored mode. Until hydration ends, the control shows the store
 `web/src/page.test.tsx` renders the page with `renderToString`, builds a document from it, stores dark and Terminal,
 runs index.html's own head script, hydrates with `hydrateRoot`, and expects no recoverable error, no
 `console.error`, Dark chosen and the Terminal dark bar colour. A planted text change in the HTML fails it. Its owner
-case is on [owner-part.md](owner-part.md).
+cases (the 200, a plain 401, a 401 whose reason is `ward_unavailable`, no hint) are on [owner-part.md](owner-part.md).
 
 ## See more with scripting off
 

@@ -1,5 +1,5 @@
 ---
-summary: Sign in with Ward on Gatehouse's API, as built on 2026-11-24 (brief 07). Ward only, checked first - the API starts with no user, local sign-in fails for any name, and a first Ward sign-in takes the grant's role (read in ward-auth 1.1.0's userForSignIn, tested through it), copied once and never refreshed (Ward refuses a user with no grant, so the stuck case is a first sign-in under another role). The wiring (plugins/auth.ts, db/accounts.ts, the gatehouse_session cookie on /gatehouse-api, the library's routes under /auth, the guard over /v1 and /auth, the library's 401 and 403 bodies kept, cross-site POSTs refused, Ward sessions rechecked every 30 s); the owner route (GET /v1/owner/cards, admin, the card list read once, three cards); the settings (five WARD_OIDC_*, AUTH_TRUSTED_PROXIES, GATEHOUSE_CARDS_FILE); the data file; the vendored copy and its sums; the tests; the container, not built here.
+summary: Sign in with Ward on Gatehouse's API, as built on 2026-11-24 (brief 07). Ward only, checked first - the API starts with no user, local sign-in fails for any name, and a first Ward sign-in takes the grant's role (read in ward-auth 1.1.0's userForSignIn, tested through it), copied once and never refreshed (Ward refuses a user with no grant, so the stuck case is a first sign-in under another role). The wiring (plugins/auth.ts, db/accounts.ts, the gatehouse_session cookie on /gatehouse-api, the library's routes under /auth, the guard over /v1 and /auth, the library's 401 and 403 bodies kept, cross-site POSTs refused, Ward sessions rechecked every 30 s); the owner route (GET /v1/owner/cards, admin, the card list read once, three cards); the settings (five WARD_OIDC_*, AUTH_TRUSTED_PROXIES, GATEHOUSE_CARDS_FILE); the data file; the vendored copy and its sums; the tests; the container, not built here; and the walk against the local Ward on 2026-11-24 (brief 08): what the owner, a user with another grant and one with none saw, Ward down with and without a live session, and the 401 reason the page now reads.
 updated: 2026-11-24
 ---
 
@@ -57,15 +57,18 @@ What follows from it:
   to anyone. So an unknown path under `/v1` answers 401 without a session and 404 with one.
 - **401 and 403 keep the library's bodies**: `{ error: "unauthorized" }` (with a `reason` when a
   session check refused it) and `{ error: "forbidden" }` from `requireRole("admin")`. The API's own
-  errors carry a `message` too; shared's `errorBodySchema` (`{ error, message? }`) takes both, and the
-  page reads the status. Lantern and Wicket rewrite theirs because their contract's body differs.
+  errors carry a `message` too; shared's `errorBodySchema` (`{ error, message?, reason? }`) takes both, and
+  the page reads the status, and a 401's `reason`. Lantern and Wicket rewrite theirs because their
+  contract's body differs.
 - **Cross-site writes**: the library's POST routes answer `403 cross_site` when a browser says the
   request came from another site (an `Origin` other than `PUBLIC_ORIGIN`, or a `Sec-Fetch-Site` other
   than `same-origin`). A request with neither header passes (a script). The owner route is a GET and
   changes nothing.
 - **Ward sessions are rechecked**: a session a Ward sign-in made is checked against Ward at most once
   every 30 s. Ward unreachable: 401 with `reason: ward_unavailable`, the session kept for when Ward is
-  back. Ward session ended: 401, and the session ends. The page drops the hint on any 401.
+  back. Ward session ended: 401, and the session ends. The page shows a 401 whose `reason` is
+  `ward_unavailable` or `ward_misconfigured` as Ward unreachable and keeps the hint; any other 401 drops
+  it without a word.
 - **Sign-out**: `POST /auth/logout`, no body, answers 204, ends Gatehouse's session and clears the
   cookie. Ward's session stays (the owner's call). `POST /auth/ward/logout` exists; the page doesn't
   use it.
@@ -136,3 +139,43 @@ out) and `infrastructure/docker-compose.yml` (`gatehouse-api` on `127.0.0.1:8815
 `GATEHOUSE_HOST_DATA_DIR` at `/data`, health on `/v1/health`, an optional `.env`). Brief 07 didn't
 build the image: `docker compose -f infrastructure/docker-compose.yml config` parses, and the built
 server started from the image's file layout outside Docker. `docs/owner-setup.md` has the rest.
+
+## The walk against the local Ward (2026-11-24)
+
+Brief 08 ran `npm run dev` (the real API, not the fake) against the local Ward in Docker, with Gatehouse's
+`WARD_OIDC_*` from the repo's `.env` (the API logged "Sign in with Ward is on") and the data folder pointed at a
+scratch folder. Three throwaway local Ward users, disabled afterwards: one with `admin` on Gatehouse (the owner), one
+with `member` (not the owner), one with no grant. Profile at 1280 x 800, a separate browser per user. Every state
+matched brief 06's screens, word for word and in place; the one difference found is fixed (the last item).
+
+- **The owner.** Owner sign-in posts the start (200) and the browser goes to Ward's `/oidc/auth` with
+  `client_id=gatehouse`, the callback under `/gatehouse-api` and PKCE, then to Ward's "Continue to Gatehouse" form.
+  After the password, Ward calls back and the browser lands on `/`; the owner route answers 200 and Behind the
+  scenes gains brief-board, the vault and the mail admin (7 cards), the footer reading "Signed in as the owner: 3
+  cards added to Behind the scenes." with Sign out.
+- **Reload.** The session holds. On the dev server the owner route is called about 0.2 s after the first paint and
+  answers in 10 to 25 ms, so the checking line shows for a blink and the waking note never does (no sleeping
+  container locally). A reload a minute after sign-in made the first real 30 s check: Ward logged
+  `POST /session-status` 200 and the cards stayed.
+- **Sign out** answers 204: "Signed out. The owner's cards are off the page.", hint dropped, the section back to 4
+  cards; a later call with the hint answers 401. Ward's session stays, so the next Owner sign-in meets Ward's chooser
+  ("Continue as …" or "Use another account"), and Continue lands back with the cards.
+- **Not the owner** (`member`): back on `/`, the owner route answers 403: "You're signed in, but not as the owner:
+  …" with Sign out, which works.
+- **No grant**: Ward refuses after the password and calls back with `error=access_denied` ("the account holds no
+  grant for this app"); the browser lands on `/?ward_error=access_denied`: "Ward didn't sign you in. This sign-in is
+  only for the owner of this site.", focused, the address cleaned, the hint dropped, no call to the owner route.
+- **Cancelled at Ward** (its "Back to Gatehouse" link): the same `access_denied`, so the same refusal words. The
+  library passes only the code, so the page can't tell a cancel from a refusal. Left as it is: the words hold for both.
+- **Ward down, a fresh sign-in** (the API restarted with `WARD_OIDC_ISSUER` on a closed local port): the start
+  answers 503 `ward_unavailable`: "Ward can't be reached right now. Try again later.", hint dropped.
+- **No hint**: with the hint cleared and the owner's session cookie still in the browser, a reload makes no request
+  to `/gatehouse-api`. With the hint and no session: one 401, dropped without a word.
+- **Ward down, a live session** (the difference, fixed): the 30 s check fails, and the owner route answers 401 with
+  `reason: ward_unavailable`, keeping the session. The page used to read every 401 as "no session" and drop the hint
+  silently. It now shows the Ward unreachable words with the failed state's Try again and Sign out, and keeps the
+  hint. Walked: Try again while Ward is down answers the same; with Ward back, Try again brings the cards with no new
+  round trip; Sign out while Ward is down answers 204 (the library's logout runs no Ward check).
+
+In dev, the owner cards' `host:` links resolve against `PUBLIC_ORIGIN` (`vault.localhost:5182`) while the public
+cards use the build's default origin; in production both are the domain.
