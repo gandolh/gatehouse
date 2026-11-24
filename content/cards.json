@@ -1,0 +1,516 @@
+{
+  "site": {
+    "wordmark": "gandolh",
+    "line": "Web apps I build for myself and a few people around me. Everything below runs on this server.",
+    "sub": "Public ones work for anyone. Sign-in ones show a sign-in screen to visitors.",
+    "github": "https://github.com/gandolh",
+    "filters": [
+      "All",
+      "Open to anyone",
+      "Needs sign-in"
+    ],
+    "footer": "Every app is TypeScript, mostly a React client on a Fastify and SQLite API, deployed from one repo. The source of most of them is on GitHub."
+  },
+  "access": {
+    "open": "Public",
+    "sign-in": "Sign-in",
+    "owner": "Owner only",
+    "docs": "Docs only",
+    "repo": "On GitHub"
+  },
+  "sections": [
+    {
+      "id": "play",
+      "title": "Games and toys",
+      "line": "Play in the browser, no account needed.",
+      "cards": [
+        {
+          "id": "games",
+          "name": "Games portal",
+          "href": "/games/",
+          "access": "open",
+          "part": "public",
+          "image": "game-engine.webp",
+          "blurb": "The four games on one page, each playable in its own frame.",
+          "more": "All four run on one deterministic TypeScript engine, so any run replays exactly from its seed. Pick a game and it opens on its own page.",
+          "docs": "/game-engine/docs/",
+          "source": "https://github.com/gandolh/game-engine"
+        },
+        {
+          "id": "farm-valley",
+          "name": "Farm Valley",
+          "href": "/farm-valley/",
+          "access": "open",
+          "part": "public",
+          "image": "farm-valley.webp",
+          "blurb": "21 farmers compete for gold on a ring of islands, and you mostly watch.",
+          "more": "A simulation server runs the farmers and the browser draws them in WebGL2. A panel on the right lists the farmers and what each one is doing.",
+          "docs": "/game-engine/docs/",
+          "source": "https://github.com/gandolh/game-engine"
+        },
+        {
+          "id": "citadel",
+          "name": "Citadel",
+          "href": "/citadel/",
+          "access": "open",
+          "part": "public",
+          "image": "citadel.webp",
+          "blurb": "A settlement builder: lay roads, place houses, keep the town fed.",
+          "more": "Start from one road, add houses, a well, a chapel and a market, then speed the days up and deal with what each day brings.",
+          "docs": "/game-engine/docs/",
+          "source": "https://github.com/gandolh/game-engine"
+        },
+        {
+          "id": "hollow",
+          "name": "Hollow",
+          "href": "/hollow/",
+          "access": "open",
+          "part": "public",
+          "image": "hollow.webp",
+          "blurb": "A society across generations, in 3D, with charts of who lives and dies.",
+          "more": "Hollow follows a town's families over decades. The chronicle on the left logs the town's events as they happen, beside charts of the population.",
+          "docs": "/game-engine/docs/",
+          "source": "https://github.com/gandolh/game-engine"
+        },
+        {
+          "id": "mathquest",
+          "name": "MateQuest",
+          "href": "/mathquest/",
+          "access": "open",
+          "part": "public",
+          "image": "mathquest.webp",
+          "blurb": "A math roguelike: answer the sum and your knight lands the hit.",
+          "more": "Pick a fight on the map and solve arithmetic to attack. The problems and buttons are in Romanian.",
+          "docs": "/game-engine/docs/",
+          "source": "https://github.com/gandolh/game-engine"
+        },
+        {
+          "id": "solstice",
+          "name": "Solstice",
+          "href": "/solstice/",
+          "access": "open",
+          "part": "public",
+          "image": "solstice.webp",
+          "blurb": "Model a house and its plot, then see it under the real sun on any date.",
+          "more": "A browser editor and path tracer. Set a place and a date and the light falls where it really would. This copy has no server, so Save downloads the scene file.",
+          "docs": null,
+          "source": "https://github.com/gandolh/3D-sandbox"
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "title": "Apps for home",
+      "line": "Used every day by me and a few people. Visitors see the sign-in screen.",
+      "cards": [
+        {
+          "id": "imbatranim",
+          "name": "ImbatranimOS",
+          "href": "host:imbatranim",
+          "access": "owner",
+          "part": "public",
+          "image": "imbatranimos.webp",
+          "blurb": "Alpine Linux in a container, used through a Windows 7-style desktop in the browser.",
+          "more": "It has one owner, so a visitor sees only the sign-in screen. Its office suite, games and tools install from its Marketplace. The README starts your own copy with Docker Compose.",
+          "docs": "/imbatranim-os/docs/",
+          "source": "https://github.com/gandolh/ImbatranimOS"
+        },
+        {
+          "id": "atrium",
+          "name": "Atrium",
+          "href": "/atrium/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "atrium.webp",
+          "blurb": "One household's books, music and video, with notebooks and LaTeX beside them.",
+          "more": "A library on its own server. Read, listen and watch in one place, and keep notes and LaTeX documents next to the books they are about.",
+          "docs": "/atrium/docs/",
+          "source": "https://github.com/gandolh/atrium"
+        },
+        {
+          "id": "shelfmark",
+          "name": "Shelfmark",
+          "href": "/shelfmark/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "shelfmark.webp",
+          "blurb": "A catalog of the paper books at home. Scan a barcode and it is listed.",
+          "more": "Scan with the phone camera and the details fill in. The list sorts, filters and exports to Excel or CSV.",
+          "docs": null,
+          "source": "https://github.com/gandolh/shelfmark"
+        },
+        {
+          "id": "almanac",
+          "name": "Almanac",
+          "href": "/almanac/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "almanac.webp",
+          "blurb": "A calendar that works like Google Calendar, private for each user.",
+          "more": "Day, week, month and year views, repeating events, and a calendar of your own that nobody else sees.",
+          "docs": null,
+          "source": "https://github.com/gandolh/almanac"
+        },
+        {
+          "id": "lantern",
+          "name": "Lantern",
+          "href": "/lantern/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "lantern.webp",
+          "blurb": "Rate films and series, keep a watchlist and get suggestions.",
+          "more": "Each suggestion names the title you liked that put it there. Film data comes from OMDb and IMDb's public data files.",
+          "docs": null,
+          "source": "https://github.com/gandolh/lantern"
+        },
+        {
+          "id": "sports-app",
+          "name": "sports-app",
+          "href": "/sports-app/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "sports-app.webp",
+          "blurb": "A calisthenics trainer for beginners at home. It picks today's session.",
+          "more": "No equipment needed. It plans the month, tracks progress against targets and opens offline once you have signed in.",
+          "docs": "/sports-app/docs/",
+          "source": "https://github.com/gandolh/sports-app"
+        },
+        {
+          "id": "satchel",
+          "name": "Satchel",
+          "href": "host:satchel",
+          "access": "sign-in",
+          "part": "public",
+          "image": "satchel.webp",
+          "blurb": "A small messenger for a few friends, with an ideas inbox.",
+          "more": "Group chats for a handful of people. Claude Code reads the ideas inbox from the command line, so an idea typed on the phone becomes work later.",
+          "docs": null,
+          "source": "https://github.com/gandolh/Satchel"
+        },
+        {
+          "id": "postern",
+          "name": "Postern",
+          "href": "host:postern",
+          "access": "sign-in",
+          "part": "public",
+          "image": "postern.webp",
+          "blurb": "Gmail-style webmail for this server's own mail.",
+          "more": "It talks JMAP to the Stalwart mail server. Conversations, labels and folders work the way they do in Gmail.",
+          "docs": null,
+          "source": "https://github.com/gandolh/postern"
+        },
+        {
+          "id": "newspapper",
+          "name": "newspapper",
+          "href": "/newspapper/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "newspapper.webp",
+          "blurb": "Write Instagram news posts in a small markup and export the slides.",
+          "more": "Type the post on the left and the 1080 by 1080 slides update as you write. Export them as JPEGs.",
+          "docs": "/newspapper/docs/",
+          "source": "https://github.com/gandolh/newspapper"
+        },
+        {
+          "id": "ro-housing",
+          "name": "ro-housing",
+          "href": "/ro-housing/",
+          "access": "sign-in",
+          "part": "public",
+          "image": "ro-housing.webp",
+          "blurb": "A flat hunt in Timișoara: nine listing sites in one table.",
+          "more": "Listings arrive with their price history, prices per square metre sit beside them, and a shortlist keeps the ones worth a visit.",
+          "docs": null,
+          "source": "https://github.com/gandolh/ro-housing"
+        }
+      ]
+    },
+    {
+      "id": "sites",
+      "title": "Sites for other people",
+      "line": "Websites made for small businesses, a parish and friends. Most are in Romanian.",
+      "cards": [
+        {
+          "id": "trips",
+          "name": "Trips",
+          "href": "/trips/",
+          "access": "open",
+          "part": "public",
+          "image": "trips.webp",
+          "blurb": "Week-long trips from Timișoara, planned day by day for a small group.",
+          "more": "Each destination has a day-by-day plan, a map, the costs, a reading guide and a printable poster.",
+          "docs": "/trips/docs/",
+          "source": null
+        },
+        {
+          "id": "saloon",
+          "name": "Ana Saloon",
+          "href": "/saloon/",
+          "access": "open",
+          "part": "public",
+          "image": "saloon.webp",
+          "blurb": "A nail salon in Târgu-Jiu: services, prices and WhatsApp booking.",
+          "more": "A static Astro site in Romanian. Prices start at 80 lei and the booking button opens WhatsApp.",
+          "docs": "/saloon/docs/",
+          "source": "https://github.com/gandolh/presentation-sites"
+        },
+        {
+          "id": "auto-service",
+          "name": "BavAuto Gorj",
+          "href": "/auto-service/",
+          "access": "open",
+          "part": "public",
+          "image": "auto-service.webp",
+          "blurb": "A BMW repair garage in Târgu-Jiu, with call and WhatsApp buttons.",
+          "more": "A static Astro site in Romanian. It lists the common faults the garage fixes, with a call button up front.",
+          "docs": "/auto-service/docs/",
+          "source": "https://github.com/gandolh/presentation-sites"
+        },
+        {
+          "id": "tractari",
+          "name": "AXA Tractări",
+          "href": "/tractari/",
+          "access": "open",
+          "part": "public",
+          "image": "tractari.webp",
+          "blurb": "A demo site for car towing in Oltenia, phone lines first.",
+          "more": "A static Astro site in Romanian. Three phone lines sit at the top, because that is what someone stuck on the road needs.",
+          "docs": "/tractari/docs/",
+          "source": "https://github.com/gandolh/presentation-sites"
+        },
+        {
+          "id": "subcort",
+          "name": "Subcort",
+          "href": "/subcort/",
+          "access": "open",
+          "part": "public",
+          "image": "subcort.webp",
+          "blurb": "A demo site for event tent rental in Gorj, by tent size.",
+          "more": "A static Astro site in Romanian, with the tent sizes on offer.",
+          "docs": "/subcort/docs/",
+          "source": "https://github.com/gandolh/presentation-sites"
+        },
+        {
+          "id": "churchix",
+          "name": "Churchix",
+          "href": "/churchix/",
+          "access": "open",
+          "part": "public",
+          "image": "churchix.webp",
+          "blurb": "A platform for parish sites, shown with one Orthodox parish.",
+          "more": "A white-label platform for Orthodox parish sites. The home page leads with the next service and this week's schedule.",
+          "docs": "/churchix/docs/",
+          "source": "https://github.com/gandolh/presentation-sites"
+        },
+        {
+          "id": "design-study",
+          "name": "Fourteen Renderings",
+          "href": "/design-study/",
+          "access": "open",
+          "part": "public",
+          "image": "design-study.webp",
+          "blurb": "One blog drawn in 14 different design styles.",
+          "more": "The same blog, rendered fourteen times, from Minimalism and Swiss Design to Brutalism, to compare how type, colour and layout change one page.",
+          "docs": "/design-study/docs/",
+          "source": "https://github.com/gandolh/presentation-sites"
+        },
+        {
+          "id": "prm",
+          "name": "CivicMap",
+          "href": "/prm/",
+          "access": "open",
+          "part": "public",
+          "image": "public-resource-map.webp",
+          "blurb": "Parks, libraries, clinics and museums in Timișoara and București, with what is on.",
+          "more": "A proof of concept: the places are real and the events are made up. Filter by kind of place and see the week's listings.",
+          "docs": "/prm/docs/",
+          "source": "https://github.com/gandolh/public-resource-map"
+        },
+        {
+          "id": "piataro",
+          "name": "Mercatus",
+          "href": "/piataro/",
+          "access": "open",
+          "part": "public",
+          "image": "piataro.webp",
+          "blurb": "A demo marketplace for digital files, priced in lei.",
+          "more": "Templates, fonts, graphics and e-books with e-Factura invoices. Browsing is open and payments are simulated.",
+          "docs": null,
+          "source": "https://github.com/gandolh/comercial-website"
+        }
+      ]
+    },
+    {
+      "id": "estate",
+      "title": "Behind the scenes",
+      "line": "What keeps the apps running. Most of it is for me only.",
+      "compact": true,
+      "cards": [
+        {
+          "id": "ward",
+          "name": "Ward",
+          "href": "host:ward",
+          "access": "sign-in",
+          "part": "public",
+          "image": null,
+          "blurb": "The shared sign-in. One account, and a grant per app decides who gets in.",
+          "more": "Most apps offer Sign in with Ward next to their own accounts. Ward is an OpenID Connect provider with a console for apps and grants.",
+          "docs": "/ward/docs/",
+          "source": "https://github.com/gandolh/ward-auth"
+        },
+        {
+          "id": "wicket",
+          "name": "Wicket",
+          "href": "/wicket/",
+          "access": "sign-in",
+          "part": "public",
+          "image": null,
+          "blurb": "One queue for every LLM call the apps make, served in ticket order.",
+          "more": "It holds the model key and runs one call at a time, so no app needs a key of its own.",
+          "docs": "/wicket/docs/",
+          "source": "https://github.com/gandolh/wicket"
+        },
+        {
+          "id": "brief-board",
+          "name": "brief-board",
+          "href": "/brief-board/",
+          "access": "owner",
+          "part": "owner",
+          "image": null,
+          "blurb": "Where every planned change stands across all the projects.",
+          "more": "A Jira-style board of every brief, with what is waiting on me at the top.",
+          "docs": null,
+          "source": "https://github.com/gandolh/the-board"
+        },
+        {
+          "id": "status",
+          "name": "Status",
+          "href": "host:uptime",
+          "access": "open",
+          "part": "public",
+          "image": null,
+          "blurb": "Every public address on this server, checked once a minute.",
+          "more": "A Gatus dashboard. Green means the address answered in the last minute.",
+          "docs": null,
+          "source": null
+        },
+        {
+          "id": "just-a-bot",
+          "name": "just-a-bot",
+          "href": "/just-a-bot/docs/",
+          "access": "docs",
+          "part": "public",
+          "image": null,
+          "blurb": "A Discord bot for one server: play-money casino, party games, a text RPG.",
+          "more": "It has no public invite, so its docs are what you can open here.",
+          "docs": "/just-a-bot/docs/",
+          "source": "https://github.com/gandolh/just-a-bot"
+        },
+        {
+          "id": "grafana",
+          "name": "Grafana",
+          "href": "host:grafana",
+          "access": "owner",
+          "part": "owner",
+          "image": null,
+          "blurb": "Charts of the server: requests, memory, containers.",
+          "more": "Prometheus collects the numbers and Grafana draws them.",
+          "docs": null,
+          "source": null
+        },
+        {
+          "id": "vault",
+          "name": "Vault",
+          "href": "host:vault",
+          "access": "owner",
+          "part": "owner",
+          "image": null,
+          "blurb": "The password vault, a Vaultwarden server.",
+          "more": "Bitwarden apps on the phone and laptop sync to it.",
+          "docs": null,
+          "source": null
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "href": "host:mail",
+          "access": "owner",
+          "part": "owner",
+          "image": null,
+          "blurb": "The mail server's admin, a Stalwart server.",
+          "more": "Postern reads the mail. This is where the accounts and domains are set up.",
+          "docs": null,
+          "source": null
+        }
+      ]
+    },
+    {
+      "id": "github",
+      "title": "On GitHub",
+      "line": "Projects that don't run on this server. Each card opens its repo.",
+      "compact": true,
+      "cards": [
+        {
+          "id": "imbatranim-apps",
+          "name": "imbatranim-apps",
+          "href": "https://github.com/gandolh/imbatranim-apps",
+          "access": "repo",
+          "part": "public",
+          "image": null,
+          "blurb": "Docs, Sheets, Slides, PDF and CAD apps for ImbatranimOS.",
+          "more": "They install from the OS's Marketplace and run only inside it, so the repo is where you can see them.",
+          "docs": null,
+          "source": "https://github.com/gandolh/imbatranim-apps"
+        },
+        {
+          "id": "my-personal-skills",
+          "name": "my-personal-skills",
+          "href": "https://github.com/gandolh/my-personal-skills",
+          "access": "repo",
+          "part": "public",
+          "image": null,
+          "blurb": "The Claude Code skills that run every project here: wiki, briefs, design and review.",
+          "more": "Each project keeps a corpus wiki and written briefs. These skills plan, split and review the work.",
+          "docs": null,
+          "source": "https://github.com/gandolh/my-personal-skills"
+        },
+        {
+          "id": "socialevents",
+          "name": "SocialEvents",
+          "href": "https://github.com/gandolh/SocialEvents",
+          "access": "repo",
+          "part": "public",
+          "image": null,
+          "blurb": "A planner for a company's social events, on a calendar and a map.",
+          "more": "Invite people or whole departments, see the weather at each place, and rate events afterwards. Runs locally only.",
+          "docs": null,
+          "source": "https://github.com/gandolh/SocialEvents"
+        },
+        {
+          "id": "hackathons",
+          "name": "hackathons",
+          "href": "https://github.com/gandolh/hackathons",
+          "access": "repo",
+          "part": "public",
+          "image": null,
+          "blurb": "Three hackathon projects, among them Nutrisha, an AI meal planner from ITFest.",
+          "more": "Also an API uptime dashboard and a WhatsApp chat analyser. Several earlier repos merged into one, with their history kept.",
+          "docs": null,
+          "source": "https://github.com/gandolh/hackathons"
+        },
+        {
+          "id": "mini-projects",
+          "name": "mini-projects",
+          "href": "https://github.com/gandolh/mini-projects",
+          "access": "repo",
+          "part": "public",
+          "image": null,
+          "blurb": "Five small tools: a diff viewer, a password manager, a TSP solver and more.",
+          "more": "A GitLab-style diff viewer, an Electron password manager, a todo app, an A* solver for the travelling salesman problem and an OpenCV tomato detector.",
+          "docs": null,
+          "source": "https://github.com/gandolh/mini-projects"
+        }
+      ]
+    }
+  ]
+}

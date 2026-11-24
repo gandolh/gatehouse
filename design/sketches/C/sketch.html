@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wordmark</title>
+<meta name="description" content="Web apps I build for myself and a few people around me. Everything below runs on this server.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Cousine:wght@400;700&family=Pixelify+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<script>(function(){var r=document.documentElement;r.className+=' js';try{var t=localStorage.getItem('sketch-theme');if(t==='light'||t==='dark')r.classList.add('theme-'+t);}catch(e){}if(/[?&]ground=slate/.test(location.search))r.classList.add('ground-slate');})()</script>
+<style>
+/* Hallmark · shape: app screen · genre: playful · theme: custom (period 1996 homepage, teal ground, grey bevelled panels) · nav: sticky section bar with filter chips · signature: every card a raised bevelled panel, every action a bevelled button that presses in · states: default, hover, pressed, focus, filtered, expanded
+ * axes: P4 H4 E4 S4 R4 V4 · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: R, a lot of grey; kept panels flat of extra ornament and let the teal ground and the pictures carry colour */
+/* Hallmark · waive 24b · 1 to 3 px values are bevel edges, paddings are target sizes · the bevel and the buttons are drawn at pixel scale */
+/* Hallmark · waive 26b · no :disabled or aria-disabled control exists · filters and toggles use aria-pressed and aria-expanded */
+/* Hallmark · dismissed 3 · each grid column holds a card with a picture, name, blurb and buttons, so these are screenshot cards and not icon tiles */
+/* Hallmark · answered F1 · the straight apostrophes are the fixture copy, kept as written */
+/* Hallmark · answered F4 · Light and Dark are a three-way theme toggle with one pressed state, not hero actions */
+:root{
+  --slate-ground:#4f5f6e;
+  --slate-shadow:#1c2630;
+  --slate-drop:#2b3640;
+--font-display:"Pixelify Sans","Arial Black",Impact,sans-serif;
+  --font-body:"Arimo",Arial,Helvetica,sans-serif;
+  --font-mono:"Cousine","Courier New",monospace;
+  --l-ground:#008080;
+  --l-on-ground:#ffffff;
+  --l-wordmark-shadow:#003f5c;
+  --l-panel:#c8c8c8;
+  --l-btn-face:#c8c8c8;
+  --l-pressed-bg:#e4e4e4;
+  --l-frame:#7a7a7a;
+  --l-ink:#000000;
+  --l-ink-soft:#262626;
+  --l-bv-1:#ffffff;
+  --l-bv-2:#1a1a1a;
+  --l-bv-3:#e8e8e8;
+  --l-bv-4:#808080;
+  --l-drop:#005050;
+  --l-bar:#000080;
+  --l-on-bar:#f6f8ff;
+  --l-primary-bg:#000080;
+  --l-primary-fg:#f6f8ff;
+  --l-link:#0000d0;
+  --l-visited:#551a8b;
+  --l-open-bg:#006400;
+  --l-open-fg:#f6f8ff;
+  --l-signin-bg:#e4e4e4;
+  --l-signin-fg:#000000;
+  --l-owner-bg:#262626;
+  --l-owner-fg:#f6f8ff;
+  --l-docs-bg:#ffffff;
+  --l-docs-fg:#000000;
+  --l-chip-edge:#262626;
+  --l-focus-in:#000000;
+  --d-ground:#0a1033;
+  --d-on-ground:#eef1ff;
+  --d-wordmark-shadow:#02040f;
+  --d-panel:#243066;
+  --d-btn-face:#2e3b7a;
+  --d-pressed-bg:#141c47;
+  --d-frame:#02040f;
+  --d-ink:#f2f4ff;
+  --d-ink-soft:#d3d9f5;
+  --d-bv-1:#7685d6;
+  --d-bv-2:#02040f;
+  --d-bv-3:#4a5aae;
+  --d-bv-4:#121a45;
+  --d-drop:#02040f;
+  --d-bar:#3347c4;
+  --d-on-bar:#f6f8ff;
+  --d-primary-bg:#3347c4;
+  --d-primary-fg:#f6f8ff;
+  --d-link:#9bc0ff;
+  --d-visited:#d9b3ff;
+  --d-open-bg:#1c7f3c;
+  --d-open-fg:#f6f8ff;
+  --d-signin-bg:#4a5aae;
+  --d-signin-fg:#f6f8ff;
+  --d-owner-bg:#02040f;
+  --d-owner-fg:#f6f8ff;
+  --d-docs-bg:#f2f4ff;
+  --d-docs-fg:#0a1033;
+  --d-chip-edge:#d3d9f5;
+  --d-focus-in:#ffffff;
+  --ground:var(--l-ground);
+  --on-ground:var(--l-on-ground);
+  --wordmark-shadow:var(--l-wordmark-shadow);
+  --panel:var(--l-panel);
+  --btn-face:var(--l-btn-face);
+  --pressed-bg:var(--l-pressed-bg);
+  --frame:var(--l-frame);
+  --ink:var(--l-ink);
+  --ink-soft:var(--l-ink-soft);
+  --bv-1:var(--l-bv-1);
+  --bv-2:var(--l-bv-2);
+  --bv-3:var(--l-bv-3);
+  --bv-4:var(--l-bv-4);
+  --drop:var(--l-drop);
+  --bar:var(--l-bar);
+  --on-bar:var(--l-on-bar);
+  --primary-bg:var(--l-primary-bg);
+  --primary-fg:var(--l-primary-fg);
+  --link:var(--l-link);
+  --visited:var(--l-visited);
+  --open-bg:var(--l-open-bg);
+  --open-fg:var(--l-open-fg);
+  --signin-bg:var(--l-signin-bg);
+  --signin-fg:var(--l-signin-fg);
+  --owner-bg:var(--l-owner-bg);
+  --owner-fg:var(--l-owner-fg);
+  --docs-bg:var(--l-docs-bg);
+  --docs-fg:var(--l-docs-fg);
+  --chip-edge:var(--l-chip-edge);
+  --focus-in:var(--l-focus-in);
+  color-scheme:light;
+}
+.theme-light{
+  --ground:var(--l-ground);
+  --on-ground:var(--l-on-ground);
+  --wordmark-shadow:var(--l-wordmark-shadow);
+  --panel:var(--l-panel);
+  --btn-face:var(--l-btn-face);
+  --pressed-bg:var(--l-pressed-bg);
+  --frame:var(--l-frame);
+  --ink:var(--l-ink);
+  --ink-soft:var(--l-ink-soft);
+  --bv-1:var(--l-bv-1);
+  --bv-2:var(--l-bv-2);
+  --bv-3:var(--l-bv-3);
+  --bv-4:var(--l-bv-4);
+  --drop:var(--l-drop);
+  --bar:var(--l-bar);
+  --on-bar:var(--l-on-bar);
+  --primary-bg:var(--l-primary-bg);
+  --primary-fg:var(--l-primary-fg);
+  --link:var(--l-link);
+  --visited:var(--l-visited);
+  --open-bg:var(--l-open-bg);
+  --open-fg:var(--l-open-fg);
+  --signin-bg:var(--l-signin-bg);
+  --signin-fg:var(--l-signin-fg);
+  --owner-bg:var(--l-owner-bg);
+  --owner-fg:var(--l-owner-fg);
+  --docs-bg:var(--l-docs-bg);
+  --docs-fg:var(--l-docs-fg);
+  --chip-edge:var(--l-chip-edge);
+  --focus-in:var(--l-focus-in);
+  color-scheme:light;
+}
+.theme-dark{
+  --ground:var(--d-ground);
+  --on-ground:var(--d-on-ground);
+  --wordmark-shadow:var(--d-wordmark-shadow);
+  --panel:var(--d-panel);
+  --btn-face:var(--d-btn-face);
+  --pressed-bg:var(--d-pressed-bg);
+  --frame:var(--d-frame);
+  --ink:var(--d-ink);
+  --ink-soft:var(--d-ink-soft);
+  --bv-1:var(--d-bv-1);
+  --bv-2:var(--d-bv-2);
+  --bv-3:var(--d-bv-3);
+  --bv-4:var(--d-bv-4);
+  --drop:var(--d-drop);
+  --bar:var(--d-bar);
+  --on-bar:var(--d-on-bar);
+  --primary-bg:var(--d-primary-bg);
+  --primary-fg:var(--d-primary-fg);
+  --link:var(--d-link);
+  --visited:var(--d-visited);
+  --open-bg:var(--d-open-bg);
+  --open-fg:var(--d-open-fg);
+  --signin-bg:var(--d-signin-bg);
+  --signin-fg:var(--d-signin-fg);
+  --owner-bg:var(--d-owner-bg);
+  --owner-fg:var(--d-owner-fg);
+  --docs-bg:var(--d-docs-bg);
+  --docs-fg:var(--d-docs-fg);
+  --chip-edge:var(--d-chip-edge);
+  --focus-in:var(--d-focus-in);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not(.theme-light):not(.theme-dark){
+  --ground:var(--d-ground);
+  --on-ground:var(--d-on-ground);
+  --wordmark-shadow:var(--d-wordmark-shadow);
+  --panel:var(--d-panel);
+  --btn-face:var(--d-btn-face);
+  --pressed-bg:var(--d-pressed-bg);
+  --frame:var(--d-frame);
+  --ink:var(--d-ink);
+  --ink-soft:var(--d-ink-soft);
+  --bv-1:var(--d-bv-1);
+  --bv-2:var(--d-bv-2);
+  --bv-3:var(--d-bv-3);
+  --bv-4:var(--d-bv-4);
+  --drop:var(--d-drop);
+  --bar:var(--d-bar);
+  --on-bar:var(--d-on-bar);
+  --primary-bg:var(--d-primary-bg);
+  --primary-fg:var(--d-primary-fg);
+  --link:var(--d-link);
+  --visited:var(--d-visited);
+  --open-bg:var(--d-open-bg);
+  --open-fg:var(--d-open-fg);
+  --signin-bg:var(--d-signin-bg);
+  --signin-fg:var(--d-signin-fg);
+  --owner-bg:var(--d-owner-bg);
+  --owner-fg:var(--d-owner-fg);
+  --docs-bg:var(--d-docs-bg);
+  --docs-fg:var(--d-docs-fg);
+  --chip-edge:var(--d-chip-edge);
+  --focus-in:var(--d-focus-in);
+  color-scheme:dark;
+}
+}
+.ground-slate.theme-light{
+  --ground:var(--slate-ground);
+  --wordmark-shadow:var(--slate-shadow);
+  --drop:var(--slate-drop);
+}
+html{
+  --raised:inset -1px -1px var(--bv-2),inset 1px 1px var(--bv-1),inset -2px -2px var(--bv-4),inset 2px 2px var(--bv-3);
+  --sunken:inset -1px -1px var(--bv-1),inset 1px 1px var(--bv-4),inset -2px -2px var(--bv-3),inset 2px 2px var(--bv-2);
+  --lift:4px 4px 0 var(--drop);
+  overflow-x:clip;
+  background:var(--ground);
+  scroll-behavior:smooth;
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;overflow-x:clip;
+  font-family:var(--font-body);font-size:1rem;line-height:1.45;
+  color:var(--on-ground);background:var(--ground);
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:clamp(12px,3vw,24px)}
+a{color:var(--link)}
+a:visited{color:var(--visited)}
+:focus-visible{outline:3px solid var(--focus-in);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+svg.i{width:1.1em;height:1.1em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.45em;
+  min-height:36px;padding:6px 14px;margin:0;
+  font:inherit;font-size:.9375rem;line-height:1.2;color:var(--ink);text-decoration:none;
+  background:var(--btn-face);border:0;border-radius:0;cursor:pointer;
+  box-shadow:var(--raised);
+  max-width:100%;
+}
+.btn:visited{color:var(--ink)}
+.btn:hover{background:var(--pressed-bg)}
+.btn:active,.btn[aria-pressed="true"],.btn[aria-expanded="true"]{box-shadow:var(--sunken);padding:7px 13px 5px 15px}
+.btn[aria-pressed="true"]{background:var(--pressed-bg);font-weight:700}
+.btn[aria-expanded="true"]{background:var(--pressed-bg)}
+.btn.primary{background:var(--primary-bg);color:var(--primary-fg);font-weight:700;box-shadow:var(--raised)}
+.btn.primary:visited{color:var(--primary-fg)}
+.btn.primary:hover{background:var(--primary-bg);filter:brightness(1.15)}
+.btn.primary:active{box-shadow:var(--sunken)}
+.card[data-access="sign-in"] .btn.primary,.card[data-access="owner"] .btn.primary{background:var(--btn-face);color:var(--ink);box-shadow:var(--raised)}
+.card[data-access="sign-in"] .btn.primary:visited,.card[data-access="owner"] .btn.primary:visited{color:var(--ink)}
+.card[data-access="sign-in"] .btn.primary:hover,.card[data-access="owner"] .btn.primary:hover{background:var(--pressed-bg);filter:none}
+.card[data-access="sign-in"] .btn.primary:active,.card[data-access="owner"] .btn.primary:active{box-shadow:var(--sunken)}
+.btn .chev{transform:rotate(0deg)}
+.btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+
+/* header */
+.top{padding-block:14px 12px}
+.top-grid{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"mark text controls";column-gap:28px;align-items:center}
+.mark{grid-area:mark;margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(2.5rem,6vw,3.75rem);line-height:1;color:var(--on-ground);text-shadow:3px 3px 0 var(--wordmark-shadow);overflow-wrap:break-word;min-width:0}
+.intro{grid-area:text;min-width:0;max-width:62ch}
+.intro p{margin:0}
+.intro .line{font-size:1.125rem;line-height:1.35;font-weight:700}
+.intro .sub{margin-top:4px;font-size:.9375rem;line-height:1.4}
+.controls{grid-area:controls;justify-self:end;display:flex;align-items:center;gap:8px}
+.theme{display:flex;gap:4px}
+.chk{display:none}
+.btn[aria-pressed="true"] .chk{display:inline-block}
+
+/* nav */
+.nav{position:sticky;top:8px;z-index:5;margin-top:4px}
+.nav-box{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between;padding:6px;background:var(--panel);box-shadow:var(--raised),var(--lift);color:var(--ink)}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:4px;flex-wrap:wrap}
+.nav ul .btn,.chips .btn{padding-inline:10px}
+.nav ul .btn[aria-pressed="true"],.chips .btn[aria-pressed="true"]{padding-inline:9px 9px}
+.nav li[hidden]{display:none}
+.count{display:inline-block;font-variant-numeric:tabular-nums;min-width:1.7em;padding:0 5px;background:var(--docs-bg);color:var(--docs-fg);box-shadow:var(--sunken);text-align:center;font-size:.8125rem;line-height:1.5;font-weight:700}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+@media (min-width:1260px){.chips{border-left:2px groove var(--bv-4);padding-left:12px}.nav .btn{font-size:.875rem;padding-inline:8px}.nav ul .btn[aria-pressed="true"],.nav .chips .btn[aria-pressed="true"]{padding-inline:7px}.nav ul{flex-wrap:nowrap}.nav-box{flex-wrap:nowrap;justify-content:space-between;gap:16px}}
+
+/* sections */
+main{padding-block:22px 8px}
+section{margin-bottom:34px;scroll-margin-top:76px}
+.bar{background:var(--bar);color:var(--on-bar);box-shadow:var(--raised),var(--lift);padding:10px 16px}
+.bar h2{margin:0;text-wrap:balance;font-family:var(--font-display);font-weight:600;font-size:clamp(1.5rem,3.4vw,1.875rem);line-height:1.15;overflow-wrap:break-word;min-width:0}
+.sec-line{margin:12px 2px 16px;font-size:1.0625rem;max-width:70ch}
+section[hidden]{display:none}
+
+/* cards */
+.grid{list-style:none;margin:0;padding:0;display:grid;gap:22px;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.grid:has([aria-expanded="true"]){align-items:start}
+.card[hidden]{display:none}
+.card{
+  display:flex;flex-direction:column;gap:10px;min-width:0;
+  padding:12px;background:var(--panel);color:var(--ink);
+  box-shadow:var(--raised),var(--lift);
+}
+.shot{display:block;padding:3px;background:var(--frame);box-shadow:var(--sunken)}
+.shot img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;background:var(--frame)}
+.card h3{margin:0;font-size:1.25rem;line-height:1.2;font-weight:700;overflow-wrap:break-word;min-width:0}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.chip{display:inline-flex;align-items:center;gap:.4em;padding:2px 8px;font-size:.875rem;line-height:1.4;font-weight:700;color:var(--ink);background:transparent;border:0;box-shadow:inset 1px 1px var(--bv-4),inset -1px -1px var(--bv-1)}
+.chip.open{background:var(--open-bg);color:var(--open-fg);box-shadow:inset 1px 1px var(--bv-2),inset -1px -1px var(--bv-3)}
+.blurb{margin:0;font-size:1rem;line-height:1.4}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:2px}
+.more{position:relative;margin-top:2px;padding-top:12px;border-top:1px solid var(--bv-4)}
+.more::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:var(--bv-1)}
+.more[hidden]{display:none}
+html:not(.js) .more[hidden]{display:block}
+html:not(.js) .tog{display:none}
+.more p{margin:0 0 10px;font-size:.9375rem;line-height:1.45}
+.facts{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:.9375rem;line-height:1.4}
+.facts dt{font-weight:700;margin:0}
+.facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.facts .mono{font-family:var(--font-mono);font-size:.9375rem}
+.facts .own{font-size:.875rem;color:var(--ink-soft)}
+
+/* compact (behind the scenes) */
+.compact .card{padding:10px;gap:8px}
+.compact h3{font-size:1.125rem}
+.compact .blurb{font-size:.9375rem}
+.compact .btn{min-height:34px;padding-block:4px;font-size:.875rem}
+.compact .btn:active,.compact .btn[aria-expanded="true"]{padding-block:5px 3px}
+
+/* footer */
+.foot{margin:20px 0 28px;padding:14px 18px;background:var(--panel);color:var(--ink);box-shadow:var(--raised),var(--lift);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 24px;align-items:center}
+.foot p{margin:0;max-width:72ch}
+.foot .upd{grid-column:1;font-size:.9375rem;color:var(--ink-soft)}
+.foot .btn{grid-column:2;grid-row:1 / span 2}
+
+@media (max-width:1000px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .top-grid{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"mark controls" "text text";row-gap:10px;column-gap:8px}
+  .nav{position:static}
+  section{scroll-margin-top:12px}
+}
+@media (max-width:420px){
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .facts dd{margin-bottom:6px}
+  .facts a{white-space:nowrap}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:minmax(0,1fr);gap:18px}
+  .btn{min-height:44px}
+  .compact .btn{min-height:44px;font-size:.9375rem}
+  .top{padding-block:12px 8px}
+  .top-grid{row-gap:8px}
+  .intro .line{font-size:1.0625rem}
+  .intro .sub{font-size:.9375rem}
+  .controls{gap:4px}
+  .controls .btn{width:44px;padding:0}
+  .controls .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .controls .chk{display:none!important}
+  .theme .btn[aria-pressed="true"] svg.i{stroke-width:3}
+  .nav,.nav-box{display:contents}
+  .nav ul{position:sticky;top:0;z-index:5;flex-wrap:nowrap;overflow-x:auto;gap:6px;padding:6px;margin:8px clamp(12px,3vw,24px) 0;background:var(--panel);box-shadow:var(--raised),var(--lift);scrollbar-width:thin;scrollbar-color:var(--bv-4) var(--panel)}
+  .nav ul .btn{white-space:nowrap}
+  .chips{flex-wrap:nowrap;margin:8px clamp(12px,3vw,24px) 0;padding:6px;background:var(--panel);box-shadow:var(--raised),var(--lift)}
+  .chips .btn{flex:1 1 auto;padding-inline:6px;white-space:nowrap;min-width:0}
+  section{scroll-margin-top:72px}
+  .bar{padding:8px 16px}
+  main{padding-top:12px}
+  .sec-line{margin:10px 2px 12px}
+  section{margin-bottom:28px}
+  .facts a{display:inline-block;padding:12px 0}
+  .foot{grid-template-columns:minmax(0,1fr)}
+  .foot .btn{grid-column:1;grid-row:auto;justify-self:start}
+}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-grid">
+<h1 class="mark">wordmark</h1>
+<div class="intro"><p class="line">Web apps I build for myself and a few people around me. Everything below runs on this server.</p><p class="sub">Public ones work for anyone. Sign-in ones show a sign-in screen to visitors.</p></div>
+<div class="controls">
+<a class="btn gh" href="https://github.com/owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><span class="lbl">GitHub</span></a>
+<div class="theme" role="group" aria-label="Theme">
+<button class="btn" type="button" data-theme="light" aria-pressed="false"><svg class="i chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg><span class="lbl">Light</span></button>
+<button class="btn" type="button" data-theme="dark" aria-pressed="false"><svg class="i chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><span class="lbl">Dark</span></button>
+<button class="btn" type="button" data-theme="system" aria-pressed="true"><svg class="i chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span class="lbl">System</span></button>
+</div></div>
+</div></header>
+<div class="wrap nav"><nav class="nav-box" aria-label="Sections and filters">
+<ul>
+<li data-for="play"><a class="btn" href="#play">Games and toys <span class="count" data-count="play">6</span></a></li>
+<li data-for="home"><a class="btn" href="#home">Apps for home <span class="count" data-count="home">10</span></a></li>
+<li data-for="sites"><a class="btn" href="#sites">Sites for other people <span class="count" data-count="sites">9</span></a></li>
+<li data-for="estate"><a class="btn" href="#estate">Behind the scenes <span class="count" data-count="estate">8</span></a></li>
+<li data-for="github"><a class="btn" href="#github">On GitHub <span class="count" data-count="github">5</span></a></li>
+</ul>
+<div class="chips" role="group" aria-label="Show"><button class="btn" type="button" data-filter="all" aria-pressed="true"><svg class="i chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>All</button><button class="btn" type="button" data-filter="open" aria-pressed="false"><svg class="i chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Open to anyone</button><button class="btn" type="button" data-filter="signin" aria-pressed="false"><svg class="i chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Needs sign-in</button></div>
+</nav></div>
+<main class="wrap">
+<p class="sr" id="live" role="status" aria-live="polite"></p>
+<section id="play" data-sec="play" aria-labelledby="h-play">
+<div class="bar"><h2 id="h-play">Games and toys</h2></div>
+<p class="sec-line">Play in the browser, no account needed.</p>
+<ul class="grid">
+<li class="card" data-access="open" id="games">
+<a class="shot" href="/games/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/game-engine.webp" width="800" height="500" alt=""></a><div class="head"><h3>Games portal</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">The four games on one page, each playable in its own frame.</p>
+<div class="acts"><a class="btn primary" href="/games/">Open</a><a class="btn" href="/game-engine/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-games">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-games" hidden><p>All four run on one deterministic TypeScript engine, so any run replays exactly from its seed. Pick a game and it opens on its own page.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/games/</span></dd><dt>Docs</dt><dd><a href="/game-engine/docs/"><span class="mono">/game-engine/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/game-engine">owner/game-engine</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="farm-valley">
+<a class="shot" href="/farm-valley/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/farm-valley.webp" width="800" height="500" alt=""></a><div class="head"><h3>Farm Valley</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">21 farmers compete for gold on a ring of islands, and you mostly watch.</p>
+<div class="acts"><a class="btn primary" href="/farm-valley/">Open</a><a class="btn" href="/game-engine/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-farm-valley">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-farm-valley" hidden><p>A simulation server runs the farmers and the browser draws them in WebGL2. A panel on the right lists the farmers and what each one is doing.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/farm-valley/</span></dd><dt>Docs</dt><dd><a href="/game-engine/docs/"><span class="mono">/game-engine/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/game-engine">owner/game-engine</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="citadel">
+<a class="shot" href="/citadel/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/citadel.webp" width="800" height="500" alt=""></a><div class="head"><h3>Citadel</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A settlement builder: lay roads, place houses, keep the town fed.</p>
+<div class="acts"><a class="btn primary" href="/citadel/">Open</a><a class="btn" href="/game-engine/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-citadel">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-citadel" hidden><p>Start from one road, add houses, a well, a chapel and a market, then speed the days up and deal with what each day brings.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/citadel/</span></dd><dt>Docs</dt><dd><a href="/game-engine/docs/"><span class="mono">/game-engine/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/game-engine">owner/game-engine</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="hollow">
+<a class="shot" href="/hollow/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/hollow.webp" width="800" height="500" alt=""></a><div class="head"><h3>Hollow</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A society across generations, in 3D, with charts of who lives and dies.</p>
+<div class="acts"><a class="btn primary" href="/hollow/">Open</a><a class="btn" href="/game-engine/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-hollow">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-hollow" hidden><p>Hollow follows a town's families over decades. The chronicle on the left logs the town's events as they happen, beside charts of the population.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/hollow/</span></dd><dt>Docs</dt><dd><a href="/game-engine/docs/"><span class="mono">/game-engine/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/game-engine">owner/game-engine</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="mathquest">
+<a class="shot" href="/mathquest/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/mathquest.webp" width="800" height="500" alt=""></a><div class="head"><h3>MateQuest</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A math roguelike: answer the sum and your knight lands the hit.</p>
+<div class="acts"><a class="btn primary" href="/mathquest/">Open</a><a class="btn" href="/game-engine/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-mathquest">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-mathquest" hidden><p>Pick a fight on the map and solve arithmetic to attack. The problems and buttons are in Romanian.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/mathquest/</span></dd><dt>Docs</dt><dd><a href="/game-engine/docs/"><span class="mono">/game-engine/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/game-engine">owner/game-engine</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="solstice">
+<a class="shot" href="/solstice/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/solstice.webp" width="800" height="500" alt=""></a><div class="head"><h3>Solstice</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">Model a house and its plot, then see it under the real sun on any date.</p>
+<div class="acts"><a class="btn primary" href="/solstice/">Open</a><button class="btn tog" type="button" aria-expanded="true" aria-controls="m-solstice">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-solstice"><p>A browser editor and path tracer. Set a place and a date and the light falls where it really would. This copy has no server, so Save downloads the scene file.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/solstice/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/3D-sandbox">owner/3D-sandbox</a></dd></dl></div>
+</li>
+</ul></section>
+<section id="home" data-sec="home" aria-labelledby="h-home">
+<div class="bar"><h2 id="h-home">Apps for home</h2></div>
+<p class="sec-line">Used every day by me and a few people. Visitors see the sign-in screen.</p>
+<ul class="grid">
+<li class="card" data-access="owner" id="imbatranim">
+<a class="shot" href="https://imbatranim.example.org/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/imbatranimos.webp" width="800" height="500" alt=""></a><div class="head"><h3>ImbatranimOS</h3><span class="chip owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>Owner only</span></div>
+<p class="blurb">Alpine Linux in a container, used through a Windows 7-style desktop in the browser.</p>
+<div class="acts"><a class="btn primary" href="https://imbatranim.example.org/">Open</a><a class="btn" href="/imbatranim-os/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-imbatranim">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-imbatranim" hidden><p>It has one owner, so a visitor sees only the sign-in screen. Its office suite, games and tools install from its Marketplace. The README starts your own copy with Docker Compose.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">imbatranim.</span> <span class="own">own address</span></dd><dt>Docs</dt><dd><a href="/imbatranim-os/docs/"><span class="mono">/imbatranim-os/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/ImbatranimOS">owner/ImbatranimOS</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="atrium">
+<a class="shot" href="/atrium/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/atrium.webp" width="800" height="500" alt=""></a><div class="head"><h3>Atrium</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">One household's books, music and video, with notebooks and LaTeX beside them.</p>
+<div class="acts"><a class="btn primary" href="/atrium/">Open</a><a class="btn" href="/atrium/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-atrium">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-atrium" hidden><p>A library on its own server. Read, listen and watch in one place, and keep notes and LaTeX documents next to the books they are about.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/atrium/</span></dd><dt>Docs</dt><dd><a href="/atrium/docs/"><span class="mono">/atrium/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/atrium">owner/atrium</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="shelfmark">
+<a class="shot" href="/shelfmark/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/shelfmark.webp" width="800" height="500" alt=""></a><div class="head"><h3>Shelfmark</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">A catalog of the paper books at home. Scan a barcode and it is listed.</p>
+<div class="acts"><a class="btn primary" href="/shelfmark/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-shelfmark">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-shelfmark" hidden><p>Scan with the phone camera and the details fill in. The list sorts, filters and exports to Excel or CSV.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/shelfmark/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/shelfmark">owner/shelfmark</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="almanac">
+<a class="shot" href="/almanac/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/almanac.webp" width="800" height="500" alt=""></a><div class="head"><h3>Almanac</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">A calendar that works like Google Calendar, private for each user.</p>
+<div class="acts"><a class="btn primary" href="/almanac/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-almanac">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-almanac" hidden><p>Day, week, month and year views, repeating events, and a calendar of your own that nobody else sees.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/almanac/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/almanac">owner/almanac</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="lantern">
+<a class="shot" href="/lantern/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/lantern.webp" width="800" height="500" alt=""></a><div class="head"><h3>Lantern</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">Rate films and series, keep a watchlist and get suggestions.</p>
+<div class="acts"><a class="btn primary" href="/lantern/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-lantern">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-lantern" hidden><p>Each suggestion names the title you liked that put it there. Film data comes from OMDb and IMDb's public data files.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/lantern/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/lantern">owner/lantern</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="sports-app">
+<a class="shot" href="/sports-app/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/sports-app.webp" width="800" height="500" alt=""></a><div class="head"><h3>sports-app</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">A calisthenics trainer for beginners at home. It picks today's session.</p>
+<div class="acts"><a class="btn primary" href="/sports-app/">Open</a><a class="btn" href="/sports-app/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-sports-app">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-sports-app" hidden><p>No equipment needed. It plans the month, tracks progress against targets and opens offline once you have signed in.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/sports-app/</span></dd><dt>Docs</dt><dd><a href="/sports-app/docs/"><span class="mono">/sports-app/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/sports-app">owner/sports-app</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="satchel">
+<a class="shot" href="https://satchel.example.org/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/satchel.webp" width="800" height="500" alt=""></a><div class="head"><h3>Satchel</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">A small messenger for a few friends, with an ideas inbox.</p>
+<div class="acts"><a class="btn primary" href="https://satchel.example.org/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-satchel">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-satchel" hidden><p>Group chats for a handful of people. Claude Code reads the ideas inbox from the command line, so an idea typed on the phone becomes work later.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">satchel.</span> <span class="own">own address</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/Satchel">owner/Satchel</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="postern">
+<a class="shot" href="https://postern.example.org/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/postern.webp" width="800" height="500" alt=""></a><div class="head"><h3>Postern</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">Gmail-style webmail for this server's own mail.</p>
+<div class="acts"><a class="btn primary" href="https://postern.example.org/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-postern">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-postern" hidden><p>It talks JMAP to the Stalwart mail server. Conversations, labels and folders work the way they do in Gmail.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">postern.</span> <span class="own">own address</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/postern">owner/postern</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="newspapper">
+<a class="shot" href="/newspapper/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/newspapper.webp" width="800" height="500" alt=""></a><div class="head"><h3>newspapper</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">Write Instagram news posts in a small markup and export the slides.</p>
+<div class="acts"><a class="btn primary" href="/newspapper/">Open</a><a class="btn" href="/newspapper/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-newspapper">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-newspapper" hidden><p>Type the post on the left and the 1080 by 1080 slides update as you write. Export them as JPEGs.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/newspapper/</span></dd><dt>Docs</dt><dd><a href="/newspapper/docs/"><span class="mono">/newspapper/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/newspapper">owner/newspapper</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="ro-housing">
+<a class="shot" href="/ro-housing/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/ro-housing.webp" width="800" height="500" alt=""></a><div class="head"><h3>ro-housing</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">A flat hunt in Timișoara: nine listing sites in one table.</p>
+<div class="acts"><a class="btn primary" href="/ro-housing/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-ro-housing">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-ro-housing" hidden><p>Listings arrive with their price history, prices per square metre sit beside them, and a shortlist keeps the ones worth a visit.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/ro-housing/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/ro-housing">owner/ro-housing</a></dd></dl></div>
+</li>
+</ul></section>
+<section id="sites" data-sec="sites" aria-labelledby="h-sites">
+<div class="bar"><h2 id="h-sites">Sites for other people</h2></div>
+<p class="sec-line">Websites made for small businesses, a parish and friends. Most are in Romanian.</p>
+<ul class="grid">
+<li class="card" data-access="open" id="trips">
+<a class="shot" href="/trips/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/trips.webp" width="800" height="500" alt=""></a><div class="head"><h3>Trips</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">Week-long trips from Timișoara, planned day by day for a small group.</p>
+<div class="acts"><a class="btn primary" href="/trips/">Open</a><a class="btn" href="/trips/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-trips">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-trips" hidden><p>Each destination has a day-by-day plan, a map, the costs, a reading guide and a printable poster.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/trips/</span></dd><dt>Docs</dt><dd><a href="/trips/docs/"><span class="mono">/trips/docs/</span></a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="saloon">
+<a class="shot" href="/saloon/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/saloon.webp" width="800" height="500" alt=""></a><div class="head"><h3>Ana Saloon</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A nail salon in Târgu-Jiu: services, prices and WhatsApp booking.</p>
+<div class="acts"><a class="btn primary" href="/saloon/">Open</a><a class="btn" href="/saloon/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-saloon">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-saloon" hidden><p>A static Astro site in Romanian. Prices start at 80 lei and the booking button opens WhatsApp.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/saloon/</span></dd><dt>Docs</dt><dd><a href="/saloon/docs/"><span class="mono">/saloon/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/presentation-sites">owner/presentation-sites</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="auto-service">
+<a class="shot" href="/auto-service/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/auto-service.webp" width="800" height="500" alt=""></a><div class="head"><h3>BavAuto Gorj</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A BMW repair garage in Târgu-Jiu, with call and WhatsApp buttons.</p>
+<div class="acts"><a class="btn primary" href="/auto-service/">Open</a><a class="btn" href="/auto-service/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-auto-service">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-auto-service" hidden><p>A static Astro site in Romanian. It lists the common faults the garage fixes, with a call button up front.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/auto-service/</span></dd><dt>Docs</dt><dd><a href="/auto-service/docs/"><span class="mono">/auto-service/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/presentation-sites">owner/presentation-sites</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="tractari">
+<a class="shot" href="/tractari/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/tractari.webp" width="800" height="500" alt=""></a><div class="head"><h3>AXA Tractări</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A demo site for car towing in Oltenia, phone lines first.</p>
+<div class="acts"><a class="btn primary" href="/tractari/">Open</a><a class="btn" href="/tractari/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-tractari">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-tractari" hidden><p>A static Astro site in Romanian. Three phone lines sit at the top, because that is what someone stuck on the road needs.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/tractari/</span></dd><dt>Docs</dt><dd><a href="/tractari/docs/"><span class="mono">/tractari/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/presentation-sites">owner/presentation-sites</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="subcort">
+<a class="shot" href="/subcort/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/subcort.webp" width="800" height="500" alt=""></a><div class="head"><h3>Subcort</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A demo site for event tent rental in Gorj, by tent size.</p>
+<div class="acts"><a class="btn primary" href="/subcort/">Open</a><a class="btn" href="/subcort/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-subcort">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-subcort" hidden><p>A static Astro site in Romanian, with the tent sizes on offer.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/subcort/</span></dd><dt>Docs</dt><dd><a href="/subcort/docs/"><span class="mono">/subcort/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/presentation-sites">owner/presentation-sites</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="churchix">
+<a class="shot" href="/churchix/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/churchix.webp" width="800" height="500" alt=""></a><div class="head"><h3>Churchix</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A platform for parish sites, shown with one Orthodox parish.</p>
+<div class="acts"><a class="btn primary" href="/churchix/">Open</a><a class="btn" href="/churchix/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-churchix">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-churchix" hidden><p>A white-label platform for Orthodox parish sites. The home page leads with the next service and this week's schedule.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/churchix/</span></dd><dt>Docs</dt><dd><a href="/churchix/docs/"><span class="mono">/churchix/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/presentation-sites">owner/presentation-sites</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="design-study">
+<a class="shot" href="/design-study/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/design-study.webp" width="800" height="500" alt=""></a><div class="head"><h3>Fourteen Renderings</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">One blog drawn in 14 different design styles.</p>
+<div class="acts"><a class="btn primary" href="/design-study/">Open</a><a class="btn" href="/design-study/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-design-study">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-design-study" hidden><p>The same blog, rendered fourteen times, from Minimalism and Swiss Design to Brutalism, to compare how type, colour and layout change one page.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/design-study/</span></dd><dt>Docs</dt><dd><a href="/design-study/docs/"><span class="mono">/design-study/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/presentation-sites">owner/presentation-sites</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="prm">
+<a class="shot" href="/prm/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/public-resource-map.webp" width="800" height="500" alt=""></a><div class="head"><h3>CivicMap</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">Parks, libraries, clinics and museums in Timișoara and București, with what is on.</p>
+<div class="acts"><a class="btn primary" href="/prm/">Open</a><a class="btn" href="/prm/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-prm">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-prm" hidden><p>A proof of concept: the places are real and the events are made up. Filter by kind of place and see the week's listings.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/prm/</span></dd><dt>Docs</dt><dd><a href="/prm/docs/"><span class="mono">/prm/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/public-resource-map">owner/public-resource-map</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="piataro">
+<a class="shot" href="/piataro/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/piataro.webp" width="800" height="500" alt=""></a><div class="head"><h3>Mercatus</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">A demo marketplace for digital files, priced in lei.</p>
+<div class="acts"><a class="btn primary" href="/piataro/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-piataro">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-piataro" hidden><p>Templates, fonts, graphics and e-books with e-Factura invoices. Browsing is open and payments are simulated.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/piataro/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/comercial-website">owner/comercial-website</a></dd></dl></div>
+</li>
+</ul></section>
+<section id="estate" data-sec="estate" class="compact" aria-labelledby="h-estate">
+<div class="bar"><h2 id="h-estate">Behind the scenes</h2></div>
+<p class="sec-line">What keeps the apps running. Most of it is for me only.</p>
+<ul class="grid">
+<li class="card" data-access="sign-in" id="ward">
+<div class="head"><h3>Ward</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">The shared sign-in. One account, and a grant per app decides who gets in.</p>
+<div class="acts"><a class="btn primary" href="https://ward.example.org/">Open</a><a class="btn" href="/ward/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-ward">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-ward" hidden><p>Most apps offer Sign in with Ward next to their own accounts. Ward is an OpenID Connect provider with a console for apps and grants.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">ward.</span> <span class="own">own address</span></dd><dt>Docs</dt><dd><a href="/ward/docs/"><span class="mono">/ward/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/ward-auth">owner/ward-auth</a></dd></dl></div>
+</li>
+<li class="card" data-access="sign-in" id="wicket">
+<div class="head"><h3>Wicket</h3><span class="chip sign-in"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sign-in</span></div>
+<p class="blurb">One queue for every LLM call the apps make, served in ticket order.</p>
+<div class="acts"><a class="btn primary" href="/wicket/">Open</a><a class="btn" href="/wicket/docs/"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-wicket">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-wicket" hidden><p>It holds the model key and runs one call at a time, so no app needs a key of its own.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/wicket/</span></dd><dt>Docs</dt><dd><a href="/wicket/docs/"><span class="mono">/wicket/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/wicket">owner/wicket</a></dd></dl></div>
+</li>
+<li class="card" data-access="owner" id="brief-board">
+<div class="head"><h3>brief-board</h3><span class="chip owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>Owner only</span></div>
+<p class="blurb">Where every planned change stands across all the projects.</p>
+<div class="acts"><a class="btn primary" href="/brief-board/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-brief-board">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-brief-board" hidden><p>A Jira-style board of every brief, with what is waiting on me at the top.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/brief-board/</span></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/the-board">owner/the-board</a></dd></dl></div>
+</li>
+<li class="card" data-access="open" id="status">
+<div class="head"><h3>Status</h3><span class="chip open"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public</span></div>
+<p class="blurb">Every public address on this server, checked once a minute.</p>
+<div class="acts"><a class="btn primary" href="https://uptime.example.org/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-status">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-status" hidden><p>A Gatus dashboard. Green means the address answered in the last minute.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">uptime.</span> <span class="own">own address</span></dd></dl></div>
+</li>
+<li class="card" data-access="docs" id="just-a-bot">
+<div class="head"><h3>just-a-bot</h3><span class="chip docs"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Docs only</span></div>
+<p class="blurb">A Discord bot for one server: play-money casino, party games, a text RPG.</p>
+<div class="acts"><a class="btn primary" href="/just-a-bot/docs/">Read the docs</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-just-a-bot">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-just-a-bot" hidden><p>It has no public invite, so its docs are what you can open here.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">/just-a-bot/docs/</span></dd><dt>Docs</dt><dd><a href="/just-a-bot/docs/"><span class="mono">/just-a-bot/docs/</span></a></dd><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/just-a-bot">owner/just-a-bot</a></dd></dl></div>
+</li>
+<li class="card" data-access="owner" id="grafana">
+<div class="head"><h3>Grafana</h3><span class="chip owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>Owner only</span></div>
+<p class="blurb">Charts of the server: requests, memory, containers.</p>
+<div class="acts"><a class="btn primary" href="https://grafana.example.org/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-grafana">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-grafana" hidden><p>Prometheus collects the numbers and Grafana draws them.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">grafana.</span> <span class="own">own address</span></dd></dl></div>
+</li>
+<li class="card" data-access="owner" id="vault">
+<div class="head"><h3>Vault</h3><span class="chip owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>Owner only</span></div>
+<p class="blurb">The password vault, a Vaultwarden server.</p>
+<div class="acts"><a class="btn primary" href="https://vault.example.org/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-vault">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-vault" hidden><p>Bitwarden apps on the phone and laptop sync to it.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">vault.</span> <span class="own">own address</span></dd></dl></div>
+</li>
+<li class="card" data-access="owner" id="mail">
+<div class="head"><h3>Mail</h3><span class="chip owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>Owner only</span></div>
+<p class="blurb">The mail server's admin, a Stalwart server.</p>
+<div class="acts"><a class="btn primary" href="https://mail.example.org/">Open</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-mail">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-mail" hidden><p>Postern reads the mail. This is where the accounts and domains are set up.</p><dl class="facts"><dt>Address</dt><dd><span class="mono">mail.</span> <span class="own">own address</span></dd></dl></div>
+</li>
+</ul></section>
+<section id="github" data-sec="github" class="compact" aria-labelledby="h-github">
+<div class="bar"><h2 id="h-github">On GitHub</h2></div>
+<p class="sec-line">Projects that don't run on this server. Each card opens its repo.</p>
+<ul class="grid">
+<li class="card" data-access="repo" id="imbatranim-apps">
+<div class="head"><h3>imbatranim-apps</h3><span class="chip docs"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>On GitHub</span></div>
+<p class="blurb">Docs, Sheets, Slides, PDF and CAD apps for ImbatranimOS.</p>
+<div class="acts"><a class="btn primary" href="https://github.com/owner/imbatranim-apps">View on GitHub</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-imbatranim-apps">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-imbatranim-apps" hidden><p>They install from the OS's Marketplace and run only inside it, so the repo is where you can see them.</p><dl class="facts"><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/imbatranim-apps">owner/imbatranim-apps</a></dd></dl></div>
+</li>
+<li class="card" data-access="repo" id="my-personal-skills">
+<div class="head"><h3>my-personal-skills</h3><span class="chip docs"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>On GitHub</span></div>
+<p class="blurb">The Claude Code skills that run every project here: wiki, briefs, design and review.</p>
+<div class="acts"><a class="btn primary" href="https://github.com/owner/my-personal-skills">View on GitHub</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-my-personal-skills">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-my-personal-skills" hidden><p>Each project keeps a corpus wiki and written briefs. These skills plan, split and review the work.</p><dl class="facts"><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/my-personal-skills">owner/my-personal-skills</a></dd></dl></div>
+</li>
+<li class="card" data-access="repo" id="socialevents">
+<div class="head"><h3>SocialEvents</h3><span class="chip docs"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>On GitHub</span></div>
+<p class="blurb">A planner for a company's social events, on a calendar and a map.</p>
+<div class="acts"><a class="btn primary" href="https://github.com/owner/SocialEvents">View on GitHub</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-socialevents">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-socialevents" hidden><p>Invite people or whole departments, see the weather at each place, and rate events afterwards. Runs locally only.</p><dl class="facts"><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/SocialEvents">owner/SocialEvents</a></dd></dl></div>
+</li>
+<li class="card" data-access="repo" id="hackathons">
+<div class="head"><h3>hackathons</h3><span class="chip docs"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>On GitHub</span></div>
+<p class="blurb">Three hackathon projects, among them Nutrisha, an AI meal planner from ITFest.</p>
+<div class="acts"><a class="btn primary" href="https://github.com/owner/hackathons">View on GitHub</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-hackathons">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-hackathons" hidden><p>Also an API uptime dashboard and a WhatsApp chat analyser. Several earlier repos merged into one, with their history kept.</p><dl class="facts"><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/hackathons">owner/hackathons</a></dd></dl></div>
+</li>
+<li class="card" data-access="repo" id="mini-projects">
+<div class="head"><h3>mini-projects</h3><span class="chip docs"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>On GitHub</span></div>
+<p class="blurb">Five small tools: a diff viewer, a password manager, a TSP solver and more.</p>
+<div class="acts"><a class="btn primary" href="https://github.com/owner/mini-projects">View on GitHub</a><button class="btn tog" type="button" aria-expanded="false" aria-controls="m-mini-projects">See more<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+<div class="more" id="m-mini-projects" hidden><p>A GitLab-style diff viewer, an Electron password manager, a todo app, an A* solver for the travelling salesman problem and an OpenCV tomato detector.</p><dl class="facts"><dt>Source on GitHub</dt><dd><a href="https://github.com/owner/mini-projects">owner/mini-projects</a></dd></dl></div>
+</li>
+</ul></section>
+</main>
+<footer class="wrap"><div class="foot"><p>Every app is TypeScript, mostly a React client on a Fastify and SQLite API, deployed from one repo. The source of most of them is on GitHub.</p><a class="btn" href="https://github.com/owner"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</a></div></footer>
+<script>
+(function(){
+var root=document.documentElement,KEY='sketch-theme';
+function applyTheme(t){root.classList.remove('theme-light','theme-dark');if(t==='light'||t==='dark')root.classList.add('theme-'+t);
+ document.querySelectorAll('[data-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.theme===(t||'system')))});}
+var saved='system';try{saved=localStorage.getItem(KEY)||'system'}catch(e){}
+applyTheme(saved);
+document.querySelectorAll('[data-theme]').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.theme;applyTheme(t);try{localStorage.setItem(KEY,t)}catch(e){}})});
+document.querySelectorAll('.tog').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById(b.getAttribute('aria-controls'));var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!o));p.hidden=o;})});
+var live=document.getElementById('live');
+function filter(f){
+ var shown=0,all=0;
+ document.querySelectorAll('section[data-sec]').forEach(function(s){
+  var n=0;
+  s.querySelectorAll('.card').forEach(function(c){var a=c.dataset.access;all++;
+   var ok=f==='all'||(f==='open'&&(a==='open'||a==='docs'||a==='repo'))||(f==='signin'&&(a==='sign-in'||a==='owner'));
+   c.hidden=!ok;if(ok)n++;});
+  s.hidden=n===0;shown+=n;
+  var cnt=document.querySelector('[data-count="'+s.dataset.sec+'"]');if(cnt)cnt.textContent=n;
+  var li=document.querySelector('li[data-for="'+s.dataset.sec+'"]');if(li)li.hidden=n===0;
+ });
+ live.textContent='Showing '+shown+' of '+all;
+}
+document.querySelectorAll('[data-filter]').forEach(function(b){b.addEventListener('click',function(){
+ document.querySelectorAll('[data-filter]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});filter(b.dataset.filter);})});
+})();</script>
+</body>
+</html>

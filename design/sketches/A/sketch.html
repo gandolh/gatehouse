@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wordmark</title>
+<meta name="description" content="Web apps I build for myself and a few people around me. Everything below runs on this server.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){var r=document.documentElement;r.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')r.classList.add('theme-'+t);}catch(e){}})();
+</script>
+<style>
+/* Hallmark · theme: profile (by request) · genre: modern-minimal · modes: light+dark · posture: restrained · surface: tinted · data: fixture */
+/* Hallmark · pre-emit critique: P3 H4 E4 S3 R5 V3 · weakest: S, a profile README grown into a page is familiar by design; the pictures are the signature, so they get the full card width and nothing decorates them */
+/* palette first, then the two theme classes map roles onto it; with neither class set the system scheme decides */
+:root{
+  --light-ground:#e5e8ee;
+  --light-surface:#fbfbfd;
+  --light-surface-2:#eef0f4;
+  --light-line:#c4cad4;
+  --light-line-ui:#737c8b;
+  --light-ink:#14171c;
+  --light-body:#3a414c;
+  --light-muted:#566070;
+  --light-accent:#1b57c9;
+  --light-btn-bg:#171a20;
+  --light-btn-ink:#f6f7f9;
+  --light-ok-ink:#135c2d;
+  --light-ok-line:#2f8553;
+  --light-shade-1:rgb(20 28 44 / .10);
+  --light-shade-2:rgb(20 28 44 / .04);
+  --dark-ground:#0d0f13;
+  --dark-surface:#181b21;
+  --dark-surface-2:#20242c;
+  --dark-line:#2f3540;
+  --dark-line-ui:#7e8797;
+  --dark-ink:#eceef2;
+  --dark-body:#c5cad3;
+  --dark-muted:#9aa3b1;
+  --dark-accent:#7fb0ff;
+  --dark-btn-bg:#eceef2;
+  --dark-btn-ink:#12151a;
+  --dark-ok-ink:#7bd9a0;
+  --dark-ok-line:#43a06c;
+  --dark-shade-1:rgb(0 0 0 / .4);
+  --dark-shade-2:rgb(0 0 0 / .25);
+  --font-sans:"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+:root,
+.theme-light{
+  color-scheme:light;
+  --ground:var(--light-ground);
+  --surface:var(--light-surface);
+  --surface-2:var(--light-surface-2);
+  --line:var(--light-line);
+  --line-ui:var(--light-line-ui);
+  --ink:var(--light-ink);
+  --body:var(--light-body);
+  --muted:var(--light-muted);
+  --accent:var(--light-accent);
+  --btn-bg:var(--light-btn-bg);
+  --btn-ink:var(--light-btn-ink);
+  --ok-ink:var(--light-ok-ink);
+  --ok-line:var(--light-ok-line);
+  --shade-1:var(--light-shade-1);
+  --shade-2:var(--light-shade-2);
+}
+.theme-dark{
+  color-scheme:dark;
+  --ground:var(--dark-ground);
+  --surface:var(--dark-surface);
+  --surface-2:var(--dark-surface-2);
+  --line:var(--dark-line);
+  --line-ui:var(--dark-line-ui);
+  --ink:var(--dark-ink);
+  --body:var(--dark-body);
+  --muted:var(--dark-muted);
+  --accent:var(--dark-accent);
+  --btn-bg:var(--dark-btn-bg);
+  --btn-ink:var(--dark-btn-ink);
+  --ok-ink:var(--dark-ok-ink);
+  --ok-line:var(--dark-ok-line);
+  --shade-1:var(--dark-shade-1);
+  --shade-2:var(--dark-shade-2);
+}
+@media (prefers-color-scheme:dark){
+  :root:not(.theme-light):not(.theme-dark){
+    color-scheme:dark;
+    --ground:var(--dark-ground);
+    --surface:var(--dark-surface);
+    --surface-2:var(--dark-surface-2);
+    --line:var(--dark-line);
+    --line-ui:var(--dark-line-ui);
+    --ink:var(--dark-ink);
+    --body:var(--dark-body);
+    --muted:var(--dark-muted);
+    --accent:var(--dark-accent);
+    --btn-bg:var(--dark-btn-bg);
+    --btn-ink:var(--dark-btn-ink);
+    --ok-ink:var(--dark-ok-ink);
+    --ok-line:var(--dark-ok-line);
+    --shade-1:var(--dark-shade-1);
+    --shade-2:var(--dark-shade-2);
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--ground);color:var(--body);font:400 15px/1.5 var(--font-sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,dl,dd{margin:0}
+h1,h2,h3{text-wrap:balance}
+a{color:var(--accent);text-underline-offset:3px}
+code{font-family:var(--font-mono);font-size:.9em;color:var(--ink);overflow-wrap:anywhere}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{width:100%;max-width:1232px;margin-inline:auto;padding-inline:16px}
+
+/* header */
+.top{padding:16px 0 12px}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.wordmark{font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-.02em;color:var(--ink);min-width:0}
+.top-actions{display:flex;align-items:center;gap:8px}
+.line{margin-top:8px;color:var(--ink);font-size:17px;line-height:1.45;max-width:58rem;overflow-wrap:break-word}
+.sub{margin-top:4px;color:var(--muted);font-size:14.5px;max-width:58rem}
+.lbl{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--line-ui);border-radius:8px;background:transparent;color:var(--ink);font:500 14px/1 var(--font-sans);text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color .12s,border-color .12s}
+.btn:hover{background:var(--surface-2)}
+.btn:active,.chip-btn:active,.seg button:active,.navlink:active{background:var(--line)}
+.btn:disabled,.chip-btn:disabled,.seg button:disabled{color:var(--muted);border-color:var(--line);cursor:not-allowed}
+.btn-primary{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink)}
+.btn-primary:active{background:var(--btn-bg)}
+.btn-primary:hover{background:var(--btn-bg);filter:brightness(1.18)}
+.card[data-access=sign-in] .btn-primary,.card[data-access=owner] .btn-primary{background:var(--surface);color:var(--ink);border-color:var(--line-ui)}
+.card[data-access=sign-in] .btn-primary:hover,.card[data-access=owner] .btn-primary:hover,.card[data-access=sign-in] .btn-primary:active,.card[data-access=owner] .btn-primary:active{background:var(--surface-2);filter:none}
+.btn-quiet{border-color:transparent;color:var(--body);margin-left:auto;padding-inline:12px}
+.btn-quiet:hover{background:var(--surface-2);border-color:var(--line)}
+.toggle .ic{transition:transform .15s}
+.toggle[aria-expanded="true"] .ic{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.toggle .ic,.btn,.chip-btn{transition:none}}
+.btn-gh{padding:0 12px}
+.top .btn-gh{width:44px;padding:0}
+.seg{display:inline-flex;gap:2px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+.seg button{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:44px;height:44px;margin:0;padding:0;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--body);font:500 14px/1 var(--font-sans);cursor:pointer;transition:background-color .12s,border-color .12s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--surface);border-color:var(--line-ui);color:var(--ink);box-shadow:0 1px 2px var(--shade-1),0 2px 8px var(--shade-2)}
+
+.seg{display:none}
+.js .seg{display:inline-flex}
+[hidden]{display:none !important}
+
+/* nav bar */
+.navwrap{position:relative;z-index:5}
+.bar{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px var(--shade-1),0 2px 8px var(--shade-2);padding:4px}
+.scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin;padding:2px}
+.navlink,.chip-btn{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border-radius:8px;border:1px solid transparent;font:500 14px/1 var(--font-sans);white-space:nowrap;text-decoration:none}
+.navlink{color:var(--ink)}
+.navlink:hover{background:var(--surface-2)}
+.count{color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums}
+.filters{display:none;border-top:1px solid var(--line);margin-top:4px;padding-top:8px}
+.js .filters{display:flex}
+.chip-btn{min-width:44px;justify-content:center;background:transparent;border-color:var(--line-ui);color:var(--ink);cursor:pointer;border-radius:999px;transition:background-color .12s,border-color .12s}
+.chip-btn:hover{background:var(--surface-2)}
+.chip-btn[aria-pressed="true"]{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink)}
+
+/* sections */
+.sec{padding-top:28px;scroll-margin-top:60px}
+.sec[hidden]{display:none}
+.sec-head{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
+.sec-head h2{font-size:21px;line-height:1.25;font-weight:650;letter-spacing:-.015em;color:var(--ink)}
+.sec-head p{color:var(--muted);font-size:14.5px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);column-gap:20px}
+
+/* card: rows stay level through min-heights set per row by the script; an opened card never stretches its neighbours */
+.card{color:var(--body);display:flex;flex-direction:column;align-self:start;margin-bottom:20px;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px var(--shade-1),0 2px 8px var(--shade-2)}
+.card[hidden]{display:none}
+.pic{display:block;border-bottom:1px solid var(--line);border-radius:11px 11px 0 0;overflow:hidden;background:var(--surface-2)}
+.pic:hover img{opacity:.92}
+.pic img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:8px 12px;padding:16px 20px 0}
+.head h3{flex:1 1 auto;min-width:0;font-size:17px;line-height:1.3;font-weight:650;letter-spacing:-.01em;color:var(--ink);overflow-wrap:break-word}
+.chip{display:inline-flex;align-items:center;gap:4px;flex:none;height:24px;padding:0 8px 0 8px;border:1px solid var(--line-ui);border-radius:999px;font-size:12.5px;font-weight:500;line-height:1;white-space:nowrap;color:var(--body)}
+.chip .ic{width:13px;height:13px}
+.chip-ok{border-color:var(--ok-line);color:var(--ok-ink)}
+.blurb{padding:8px 20px 0;color:var(--body);overflow-wrap:break-word}
+.actions{display:flex;flex-wrap:wrap;align-items:center;align-content:flex-start;gap:8px;padding:16px 20px 20px}
+.toggle{display:none}
+.js .toggle{display:inline-flex}
+.more{padding:16px 20px 20px;border-top:1px solid var(--line);color:var(--body)}
+.js .more:not(.open){display:none}
+.facts{display:grid;gap:8px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+.facts>div{display:grid;grid-template-columns:76px minmax(0,1fr);gap:8px;align-items:baseline}
+.facts dt{color:var(--muted);font-size:13.5px}
+.facts dd{min-width:0;overflow-wrap:anywhere}
+.facts a{display:inline-flex;align-items:center;min-height:32px}
+.note{color:var(--muted);font-size:13.5px}
+
+/* footer */
+.foot{margin-top:24px;border-top:1px solid var(--line)}
+.foot .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding-block:24px 36px}
+.foot p{max-width:68ch;color:var(--muted)}
+
+@media (min-width:640px){
+  .blurb{min-height:calc(3em + 8px)}
+  .wrap{padding-inline:24px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lbl{position:static;width:auto;height:auto;margin:0;clip:auto;overflow:visible}
+  .seg button{width:auto;padding:0 12px;height:38px}
+  .top .btn-gh{width:auto;padding:0 12px}
+  .navlink,.chip-btn{min-height:38px}
+  .btn{min-height:38px}
+  .btn-quiet{padding-inline:12px}
+  .toggle .ic{width:15px;height:15px}
+  .top-row{min-height:46px}
+  .facts a{min-height:0}
+}
+@media (min-width:640px) and (pointer:coarse){.btn,.navlink,.chip-btn{min-height:44px}}
+@media (min-width:900px){
+  .sec{scroll-margin-top:84px}
+  .navwrap{position:sticky;top:12px}
+  .sec-head{flex-direction:row;align-items:baseline;gap:16px}
+}
+@media (min-width:1240px){
+  .bar{flex-direction:row;align-items:center;justify-content:space-between}
+  .filters{border-top:0;margin-top:0;padding-top:2px}
+}
+@media (min-width:1000px){
+  .wrap{padding-inline:32px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .top{padding-top:20px}
+}
+@media (max-width:639px){
+  .line{font-size:16px}
+  .navwrap,.bar{display:contents}
+  .sections{position:sticky;top:0;z-index:5;color:var(--ink);padding:0 16px;background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);gap:4px}
+  .sections .navlink{min-height:48px}
+  .filters{border-top:0;margin:0;padding:12px 16px 0}
+  .sec{scroll-margin-top:60px}
+  .top{padding-bottom:16px}
+  .scroll{scroll-padding-inline:8px}
+  .facts a{min-height:44px}
+  .foot .btn-gh{min-height:44px}
+}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-unlock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 13h4M10 17h4"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+</defs></svg>
+<header class="top"><div class="wrap">
+<div class="top-row"><h1 class="wordmark">wordmark</h1>
+<div class="top-actions"><a class="btn btn-gh" href="https://github.com/owner"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg><span class="lbl">GitHub</span></a>
+<div class="seg" role="group" aria-label="Theme"><button type="button" data-theme="light" aria-pressed="false"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg><span class="lbl">Light</span></button><button type="button" data-theme="dark" aria-pressed="false"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg><span class="lbl">Dark</span></button><button type="button" data-theme="system" aria-pressed="false"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-monitor"/></svg><span class="lbl">System</span></button></div></div></div>
+<p class="line">Web apps I build for myself and a few people around me. Everything below runs on this server.</p>
+<p class="sub">Public ones work for anyone. Sign-in ones show a sign-in screen to visitors.</p>
+</div></header>
+<div class="wrap navwrap"><nav class="bar" aria-label="Sections and filters">
+<div class="scroll sections"><a class="navlink" href="#play">Games and toys <span class="count" data-count-for="play">6</span></a><a class="navlink" href="#home">Apps for home <span class="count" data-count-for="home">10</span></a><a class="navlink" href="#sites">Sites for other people <span class="count" data-count-for="sites">9</span></a><a class="navlink" href="#estate">Behind the scenes <span class="count" data-count-for="estate">8</span></a><a class="navlink" href="#github">On GitHub <span class="count" data-count-for="github">5</span></a></div>
+<div class="scroll filters" role="group" aria-label="Show"><button type="button" class="chip-btn" data-filter="all" aria-pressed="true">All</button><button type="button" class="chip-btn" data-filter="open" aria-pressed="false">Open to anyone</button><button type="button" class="chip-btn" data-filter="signin" aria-pressed="false">Needs sign-in</button></div>
+</nav></div>
+<main class="wrap">
+<section class="sec" id="play" aria-labelledby="h-play"><header class="sec-head"><h2 id="h-play">Games and toys</h2><p>Play in the browser, no account needed.</p></header><div class="grid">
+<article class="card" id="c-games" data-access="open">
+<a class="pic" href="/games/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/game-engine.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Games portal</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">The four games on one page, each playable in its own frame.</p>
+<div class="actions"><a class="btn btn-primary" href="/games/">Open<span class="sr"> Games portal</span></a><a class="btn" href="/game-engine/docs/">Docs<span class="sr"> for Games portal</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-games">See more<span class="sr"> about Games portal</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-games"><p>All four run on one deterministic TypeScript engine, so any run replays exactly from its seed. Pick a game and it opens on its own page.</p><dl class="facts"><div><dt>Address</dt><dd><code>/games/</code></dd></div><div><dt>Docs</dt><dd><a href="/game-engine/docs/"><code>/game-engine/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/game-engine">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-farm-valley" data-access="open">
+<a class="pic" href="/farm-valley/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/farm-valley.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Farm Valley</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">21 farmers compete for gold on a ring of islands, and you mostly watch.</p>
+<div class="actions"><a class="btn btn-primary" href="/farm-valley/">Open<span class="sr"> Farm Valley</span></a><a class="btn" href="/game-engine/docs/">Docs<span class="sr"> for Farm Valley</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-farm-valley">See more<span class="sr"> about Farm Valley</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-farm-valley"><p>A simulation server runs the farmers and the browser draws them in WebGL2. A panel on the right lists the farmers and what each one is doing.</p><dl class="facts"><div><dt>Address</dt><dd><code>/farm-valley/</code></dd></div><div><dt>Docs</dt><dd><a href="/game-engine/docs/"><code>/game-engine/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/game-engine">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-citadel" data-access="open">
+<a class="pic" href="/citadel/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/citadel.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Citadel</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A settlement builder: lay roads, place houses, keep the town fed.</p>
+<div class="actions"><a class="btn btn-primary" href="/citadel/">Open<span class="sr"> Citadel</span></a><a class="btn" href="/game-engine/docs/">Docs<span class="sr"> for Citadel</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-citadel">See more<span class="sr"> about Citadel</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-citadel"><p>Start from one road, add houses, a well, a chapel and a market, then speed the days up and deal with what each day brings.</p><dl class="facts"><div><dt>Address</dt><dd><code>/citadel/</code></dd></div><div><dt>Docs</dt><dd><a href="/game-engine/docs/"><code>/game-engine/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/game-engine">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-hollow" data-access="open">
+<a class="pic" href="/hollow/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/hollow.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Hollow</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A society across generations, in 3D, with charts of who lives and dies.</p>
+<div class="actions"><a class="btn btn-primary" href="/hollow/">Open<span class="sr"> Hollow</span></a><a class="btn" href="/game-engine/docs/">Docs<span class="sr"> for Hollow</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-hollow">See more<span class="sr"> about Hollow</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-hollow"><p>Hollow follows a town&#x27;s families over decades. The chronicle on the left logs the town&#x27;s events as they happen, beside charts of the population.</p><dl class="facts"><div><dt>Address</dt><dd><code>/hollow/</code></dd></div><div><dt>Docs</dt><dd><a href="/game-engine/docs/"><code>/game-engine/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/game-engine">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-mathquest" data-access="open">
+<a class="pic" href="/mathquest/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/mathquest.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>MateQuest</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A math roguelike: answer the sum and your knight lands the hit.</p>
+<div class="actions"><a class="btn btn-primary" href="/mathquest/">Open<span class="sr"> MateQuest</span></a><a class="btn" href="/game-engine/docs/">Docs<span class="sr"> for MateQuest</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-mathquest">See more<span class="sr"> about MateQuest</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-mathquest"><p>Pick a fight on the map and solve arithmetic to attack. The problems and buttons are in Romanian.</p><dl class="facts"><div><dt>Address</dt><dd><code>/mathquest/</code></dd></div><div><dt>Docs</dt><dd><a href="/game-engine/docs/"><code>/game-engine/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/game-engine">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-solstice" data-access="open">
+<a class="pic" href="/solstice/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/solstice.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Solstice</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">Model a house and its plot, then see it under the real sun on any date.</p>
+<div class="actions"><a class="btn btn-primary" href="/solstice/">Open<span class="sr"> Solstice</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="true" aria-controls="more-solstice">See more<span class="sr"> about Solstice</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more open" id="more-solstice"><p>A browser editor and path tracer. Set a place and a date and the light falls where it really would. This copy has no server, so Save downloads the scene file.</p><dl class="facts"><div><dt>Address</dt><dd><code>/solstice/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/3D-sandbox">Source on GitHub</a></dd></div></dl></div>
+</article>
+</div></section>
+<section class="sec" id="home" aria-labelledby="h-home"><header class="sec-head"><h2 id="h-home">Apps for home</h2><p>Used every day by me and a few people. Visitors see the sign-in screen.</p></header><div class="grid">
+<article class="card" id="c-imbatranim" data-access="owner">
+<a class="pic" href="https://imbatranim.example.org/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/imbatranimos.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>ImbatranimOS</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Owner only</span></div>
+<p class="blurb">Alpine Linux in a container, used through a Windows 7-style desktop in the browser.</p>
+<div class="actions"><a class="btn btn-primary" href="https://imbatranim.example.org/">Open<span class="sr"> ImbatranimOS</span></a><a class="btn" href="/imbatranim-os/docs/">Docs<span class="sr"> for ImbatranimOS</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-imbatranim">See more<span class="sr"> about ImbatranimOS</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-imbatranim"><p>It has one owner, so a visitor sees only the sign-in screen. Its office suite, games and tools install from its Marketplace. The README starts your own copy with Docker Compose.</p><dl class="facts"><div><dt>Address</dt><dd><code>imbatranim.</code> <span class="note">own address</span></dd></div><div><dt>Docs</dt><dd><a href="/imbatranim-os/docs/"><code>/imbatranim-os/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/ImbatranimOS">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-atrium" data-access="sign-in">
+<a class="pic" href="/atrium/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/atrium.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Atrium</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">One household&#x27;s books, music and video, with notebooks and LaTeX beside them.</p>
+<div class="actions"><a class="btn btn-primary" href="/atrium/">Open<span class="sr"> Atrium</span></a><a class="btn" href="/atrium/docs/">Docs<span class="sr"> for Atrium</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-atrium">See more<span class="sr"> about Atrium</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-atrium"><p>A library on its own server. Read, listen and watch in one place, and keep notes and LaTeX documents next to the books they are about.</p><dl class="facts"><div><dt>Address</dt><dd><code>/atrium/</code></dd></div><div><dt>Docs</dt><dd><a href="/atrium/docs/"><code>/atrium/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/atrium">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-shelfmark" data-access="sign-in">
+<a class="pic" href="/shelfmark/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/shelfmark.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Shelfmark</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">A catalog of the paper books at home. Scan a barcode and it is listed.</p>
+<div class="actions"><a class="btn btn-primary" href="/shelfmark/">Open<span class="sr"> Shelfmark</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-shelfmark">See more<span class="sr"> about Shelfmark</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-shelfmark"><p>Scan with the phone camera and the details fill in. The list sorts, filters and exports to Excel or CSV.</p><dl class="facts"><div><dt>Address</dt><dd><code>/shelfmark/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/shelfmark">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-almanac" data-access="sign-in">
+<a class="pic" href="/almanac/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/almanac.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Almanac</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">A calendar that works like Google Calendar, private for each user.</p>
+<div class="actions"><a class="btn btn-primary" href="/almanac/">Open<span class="sr"> Almanac</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-almanac">See more<span class="sr"> about Almanac</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-almanac"><p>Day, week, month and year views, repeating events, and a calendar of your own that nobody else sees.</p><dl class="facts"><div><dt>Address</dt><dd><code>/almanac/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/almanac">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-lantern" data-access="sign-in">
+<a class="pic" href="/lantern/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/lantern.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Lantern</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">Rate films and series, keep a watchlist and get suggestions.</p>
+<div class="actions"><a class="btn btn-primary" href="/lantern/">Open<span class="sr"> Lantern</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-lantern">See more<span class="sr"> about Lantern</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-lantern"><p>Each suggestion names the title you liked that put it there. Film data comes from OMDb and IMDb&#x27;s public data files.</p><dl class="facts"><div><dt>Address</dt><dd><code>/lantern/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/lantern">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-sports-app" data-access="sign-in">
+<a class="pic" href="/sports-app/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/sports-app.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>sports-app</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">A calisthenics trainer for beginners at home. It picks today&#x27;s session.</p>
+<div class="actions"><a class="btn btn-primary" href="/sports-app/">Open<span class="sr"> sports-app</span></a><a class="btn" href="/sports-app/docs/">Docs<span class="sr"> for sports-app</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-sports-app">See more<span class="sr"> about sports-app</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-sports-app"><p>No equipment needed. It plans the month, tracks progress against targets and opens offline once you have signed in.</p><dl class="facts"><div><dt>Address</dt><dd><code>/sports-app/</code></dd></div><div><dt>Docs</dt><dd><a href="/sports-app/docs/"><code>/sports-app/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/sports-app">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-satchel" data-access="sign-in">
+<a class="pic" href="https://satchel.example.org/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/satchel.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Satchel</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">A small messenger for a few friends, with an ideas inbox.</p>
+<div class="actions"><a class="btn btn-primary" href="https://satchel.example.org/">Open<span class="sr"> Satchel</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-satchel">See more<span class="sr"> about Satchel</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-satchel"><p>Group chats for a handful of people. Claude Code reads the ideas inbox from the command line, so an idea typed on the phone becomes work later.</p><dl class="facts"><div><dt>Address</dt><dd><code>satchel.</code> <span class="note">own address</span></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/Satchel">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-postern" data-access="sign-in">
+<a class="pic" href="https://postern.example.org/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/postern.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Postern</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">Gmail-style webmail for this server&#x27;s own mail.</p>
+<div class="actions"><a class="btn btn-primary" href="https://postern.example.org/">Open<span class="sr"> Postern</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-postern">See more<span class="sr"> about Postern</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-postern"><p>It talks JMAP to the Stalwart mail server. Conversations, labels and folders work the way they do in Gmail.</p><dl class="facts"><div><dt>Address</dt><dd><code>postern.</code> <span class="note">own address</span></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/postern">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-newspapper" data-access="sign-in">
+<a class="pic" href="/newspapper/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/newspapper.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>newspapper</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">Write Instagram news posts in a small markup and export the slides.</p>
+<div class="actions"><a class="btn btn-primary" href="/newspapper/">Open<span class="sr"> newspapper</span></a><a class="btn" href="/newspapper/docs/">Docs<span class="sr"> for newspapper</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-newspapper">See more<span class="sr"> about newspapper</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-newspapper"><p>Type the post on the left and the 1080 by 1080 slides update as you write. Export them as JPEGs.</p><dl class="facts"><div><dt>Address</dt><dd><code>/newspapper/</code></dd></div><div><dt>Docs</dt><dd><a href="/newspapper/docs/"><code>/newspapper/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/newspapper">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-ro-housing" data-access="sign-in">
+<a class="pic" href="/ro-housing/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/ro-housing.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>ro-housing</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">A flat hunt in Timișoara: nine listing sites in one table.</p>
+<div class="actions"><a class="btn btn-primary" href="/ro-housing/">Open<span class="sr"> ro-housing</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-ro-housing">See more<span class="sr"> about ro-housing</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-ro-housing"><p>Listings arrive with their price history, prices per square metre sit beside them, and a shortlist keeps the ones worth a visit.</p><dl class="facts"><div><dt>Address</dt><dd><code>/ro-housing/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/ro-housing">Source on GitHub</a></dd></div></dl></div>
+</article>
+</div></section>
+<section class="sec" id="sites" aria-labelledby="h-sites"><header class="sec-head"><h2 id="h-sites">Sites for other people</h2><p>Websites made for small businesses, a parish and friends. Most are in Romanian.</p></header><div class="grid">
+<article class="card" id="c-trips" data-access="open">
+<a class="pic" href="/trips/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/trips.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Trips</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">Week-long trips from Timișoara, planned day by day for a small group.</p>
+<div class="actions"><a class="btn btn-primary" href="/trips/">Open<span class="sr"> Trips</span></a><a class="btn" href="/trips/docs/">Docs<span class="sr"> for Trips</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-trips">See more<span class="sr"> about Trips</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-trips"><p>Each destination has a day-by-day plan, a map, the costs, a reading guide and a printable poster.</p><dl class="facts"><div><dt>Address</dt><dd><code>/trips/</code></dd></div><div><dt>Docs</dt><dd><a href="/trips/docs/"><code>/trips/docs/</code></a></dd></div></dl></div>
+</article>
+<article class="card" id="c-saloon" data-access="open">
+<a class="pic" href="/saloon/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/saloon.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Ana Saloon</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A nail salon in Târgu-Jiu: services, prices and WhatsApp booking.</p>
+<div class="actions"><a class="btn btn-primary" href="/saloon/">Open<span class="sr"> Ana Saloon</span></a><a class="btn" href="/saloon/docs/">Docs<span class="sr"> for Ana Saloon</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-saloon">See more<span class="sr"> about Ana Saloon</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-saloon"><p>A static Astro site in Romanian. Prices start at 80 lei and the booking button opens WhatsApp.</p><dl class="facts"><div><dt>Address</dt><dd><code>/saloon/</code></dd></div><div><dt>Docs</dt><dd><a href="/saloon/docs/"><code>/saloon/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/presentation-sites">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-auto-service" data-access="open">
+<a class="pic" href="/auto-service/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/auto-service.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>BavAuto Gorj</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A BMW repair garage in Târgu-Jiu, with call and WhatsApp buttons.</p>
+<div class="actions"><a class="btn btn-primary" href="/auto-service/">Open<span class="sr"> BavAuto Gorj</span></a><a class="btn" href="/auto-service/docs/">Docs<span class="sr"> for BavAuto Gorj</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-auto-service">See more<span class="sr"> about BavAuto Gorj</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-auto-service"><p>A static Astro site in Romanian. It lists the common faults the garage fixes, with a call button up front.</p><dl class="facts"><div><dt>Address</dt><dd><code>/auto-service/</code></dd></div><div><dt>Docs</dt><dd><a href="/auto-service/docs/"><code>/auto-service/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/presentation-sites">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-tractari" data-access="open">
+<a class="pic" href="/tractari/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/tractari.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>AXA Tractări</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A demo site for car towing in Oltenia, phone lines first.</p>
+<div class="actions"><a class="btn btn-primary" href="/tractari/">Open<span class="sr"> AXA Tractări</span></a><a class="btn" href="/tractari/docs/">Docs<span class="sr"> for AXA Tractări</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-tractari">See more<span class="sr"> about AXA Tractări</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-tractari"><p>A static Astro site in Romanian. Three phone lines sit at the top, because that is what someone stuck on the road needs.</p><dl class="facts"><div><dt>Address</dt><dd><code>/tractari/</code></dd></div><div><dt>Docs</dt><dd><a href="/tractari/docs/"><code>/tractari/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/presentation-sites">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-subcort" data-access="open">
+<a class="pic" href="/subcort/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/subcort.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Subcort</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A demo site for event tent rental in Gorj, by tent size.</p>
+<div class="actions"><a class="btn btn-primary" href="/subcort/">Open<span class="sr"> Subcort</span></a><a class="btn" href="/subcort/docs/">Docs<span class="sr"> for Subcort</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-subcort">See more<span class="sr"> about Subcort</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-subcort"><p>A static Astro site in Romanian, with the tent sizes on offer.</p><dl class="facts"><div><dt>Address</dt><dd><code>/subcort/</code></dd></div><div><dt>Docs</dt><dd><a href="/subcort/docs/"><code>/subcort/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/presentation-sites">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-churchix" data-access="open">
+<a class="pic" href="/churchix/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/churchix.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Churchix</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A platform for parish sites, shown with one Orthodox parish.</p>
+<div class="actions"><a class="btn btn-primary" href="/churchix/">Open<span class="sr"> Churchix</span></a><a class="btn" href="/churchix/docs/">Docs<span class="sr"> for Churchix</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-churchix">See more<span class="sr"> about Churchix</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-churchix"><p>A white-label platform for Orthodox parish sites. The home page leads with the next service and this week&#x27;s schedule.</p><dl class="facts"><div><dt>Address</dt><dd><code>/churchix/</code></dd></div><div><dt>Docs</dt><dd><a href="/churchix/docs/"><code>/churchix/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/presentation-sites">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-design-study" data-access="open">
+<a class="pic" href="/design-study/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/design-study.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Fourteen Renderings</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">One blog drawn in 14 different design styles.</p>
+<div class="actions"><a class="btn btn-primary" href="/design-study/">Open<span class="sr"> Fourteen Renderings</span></a><a class="btn" href="/design-study/docs/">Docs<span class="sr"> for Fourteen Renderings</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-design-study">See more<span class="sr"> about Fourteen Renderings</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-design-study"><p>The same blog, rendered fourteen times, from Minimalism and Swiss Design to Brutalism, to compare how type, colour and layout change one page.</p><dl class="facts"><div><dt>Address</dt><dd><code>/design-study/</code></dd></div><div><dt>Docs</dt><dd><a href="/design-study/docs/"><code>/design-study/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/presentation-sites">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-prm" data-access="open">
+<a class="pic" href="/prm/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/public-resource-map.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>CivicMap</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">Parks, libraries, clinics and museums in Timișoara and București, with what is on.</p>
+<div class="actions"><a class="btn btn-primary" href="/prm/">Open<span class="sr"> CivicMap</span></a><a class="btn" href="/prm/docs/">Docs<span class="sr"> for CivicMap</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-prm">See more<span class="sr"> about CivicMap</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-prm"><p>A proof of concept: the places are real and the events are made up. Filter by kind of place and see the week&#x27;s listings.</p><dl class="facts"><div><dt>Address</dt><dd><code>/prm/</code></dd></div><div><dt>Docs</dt><dd><a href="/prm/docs/"><code>/prm/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/public-resource-map">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-piataro" data-access="open">
+<a class="pic" href="/piataro/" tabindex="-1" aria-hidden="true"><img src="../../../content/images/piataro.webp" alt="" width="800" height="500"></a>
+<div class="head"><h3>Mercatus</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">A demo marketplace for digital files, priced in lei.</p>
+<div class="actions"><a class="btn btn-primary" href="/piataro/">Open<span class="sr"> Mercatus</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-piataro">See more<span class="sr"> about Mercatus</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-piataro"><p>Templates, fonts, graphics and e-books with e-Factura invoices. Browsing is open and payments are simulated.</p><dl class="facts"><div><dt>Address</dt><dd><code>/piataro/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/comercial-website">Source on GitHub</a></dd></div></dl></div>
+</article>
+</div></section>
+<section class="sec" id="estate" aria-labelledby="h-estate"><header class="sec-head"><h2 id="h-estate">Behind the scenes</h2><p>What keeps the apps running. Most of it is for me only.</p></header><div class="grid compact">
+<article class="card" id="c-ward" data-access="sign-in">
+<div class="head"><h3>Ward</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">The shared sign-in. One account, and a grant per app decides who gets in.</p>
+<div class="actions"><a class="btn btn-primary" href="https://ward.example.org/">Open<span class="sr"> Ward</span></a><a class="btn" href="/ward/docs/">Docs<span class="sr"> for Ward</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-ward">See more<span class="sr"> about Ward</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-ward"><p>Most apps offer Sign in with Ward next to their own accounts. Ward is an OpenID Connect provider with a console for apps and grants.</p><dl class="facts"><div><dt>Address</dt><dd><code>ward.</code> <span class="note">own address</span></dd></div><div><dt>Docs</dt><dd><a href="/ward/docs/"><code>/ward/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/ward-auth">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-wicket" data-access="sign-in">
+<div class="head"><h3>Wicket</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Sign-in</span></div>
+<p class="blurb">One queue for every LLM call the apps make, served in ticket order.</p>
+<div class="actions"><a class="btn btn-primary" href="/wicket/">Open<span class="sr"> Wicket</span></a><a class="btn" href="/wicket/docs/">Docs<span class="sr"> for Wicket</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-wicket">See more<span class="sr"> about Wicket</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-wicket"><p>It holds the model key and runs one call at a time, so no app needs a key of its own.</p><dl class="facts"><div><dt>Address</dt><dd><code>/wicket/</code></dd></div><div><dt>Docs</dt><dd><a href="/wicket/docs/"><code>/wicket/docs/</code></a></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/wicket">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-brief-board" data-access="owner">
+<div class="head"><h3>brief-board</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Owner only</span></div>
+<p class="blurb">Where every planned change stands across all the projects.</p>
+<div class="actions"><a class="btn btn-primary" href="/brief-board/">Open<span class="sr"> brief-board</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-brief-board">See more<span class="sr"> about brief-board</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-brief-board"><p>A Jira-style board of every brief, with what is waiting on me at the top.</p><dl class="facts"><div><dt>Address</dt><dd><code>/brief-board/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/the-board">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-status" data-access="open">
+<div class="head"><h3>Status</h3><span class="chip chip-ok"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg>Public</span></div>
+<p class="blurb">Every public address on this server, checked once a minute.</p>
+<div class="actions"><a class="btn btn-primary" href="https://uptime.example.org/">Open<span class="sr"> Status</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-status">See more<span class="sr"> about Status</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-status"><p>A Gatus dashboard. Green means the address answered in the last minute.</p><dl class="facts"><div><dt>Address</dt><dd><code>uptime.</code> <span class="note">own address</span></dd></div></dl></div>
+</article>
+<article class="card" id="c-just-a-bot" data-access="docs">
+<div class="head"><h3>just-a-bot</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-file"/></svg>Docs only</span></div>
+<p class="blurb">A Discord bot for one server: play-money casino, party games, a text RPG.</p>
+<div class="actions"><a class="btn btn-primary" href="/just-a-bot/docs/">Read the docs<span class="sr"> just-a-bot</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-just-a-bot">See more<span class="sr"> about just-a-bot</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-just-a-bot"><p>It has no public invite, so its docs are what you can open here.</p><dl class="facts"><div><dt>Address</dt><dd><code>/just-a-bot/docs/</code></dd></div><div><dt>Source</dt><dd><a href="https://github.com/owner/just-a-bot">Source on GitHub</a></dd></div></dl></div>
+</article>
+<article class="card" id="c-grafana" data-access="owner">
+<div class="head"><h3>Grafana</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Owner only</span></div>
+<p class="blurb">Charts of the server: requests, memory, containers.</p>
+<div class="actions"><a class="btn btn-primary" href="https://grafana.example.org/">Open<span class="sr"> Grafana</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-grafana">See more<span class="sr"> about Grafana</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-grafana"><p>Prometheus collects the numbers and Grafana draws them.</p><dl class="facts"><div><dt>Address</dt><dd><code>grafana.</code> <span class="note">own address</span></dd></div></dl></div>
+</article>
+<article class="card" id="c-vault" data-access="owner">
+<div class="head"><h3>Vault</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Owner only</span></div>
+<p class="blurb">The password vault, a Vaultwarden server.</p>
+<div class="actions"><a class="btn btn-primary" href="https://vault.example.org/">Open<span class="sr"> Vault</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-vault">See more<span class="sr"> about Vault</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-vault"><p>Bitwarden apps on the phone and laptop sync to it.</p><dl class="facts"><div><dt>Address</dt><dd><code>vault.</code> <span class="note">own address</span></dd></div></dl></div>
+</article>
+<article class="card" id="c-mail" data-access="owner">
+<div class="head"><h3>Mail</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Owner only</span></div>
+<p class="blurb">The mail server&#x27;s admin, a Stalwart server.</p>
+<div class="actions"><a class="btn btn-primary" href="https://mail.example.org/">Open<span class="sr"> Mail</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-mail">See more<span class="sr"> about Mail</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-mail"><p>Postern reads the mail. This is where the accounts and domains are set up.</p><dl class="facts"><div><dt>Address</dt><dd><code>mail.</code> <span class="note">own address</span></dd></div></dl></div>
+</article>
+</div></section>
+<section class="sec" id="github" aria-labelledby="h-github"><header class="sec-head"><h2 id="h-github">On GitHub</h2><p>Projects that don&#x27;t run on this server. Each card opens its repo.</p></header><div class="grid compact">
+<article class="card" id="c-imbatranim-apps" data-access="repo">
+<div class="head"><h3>imbatranim-apps</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>On GitHub</span></div>
+<p class="blurb">Docs, Sheets, Slides, PDF and CAD apps for ImbatranimOS.</p>
+<div class="actions"><a class="btn btn-primary" href="https://github.com/owner/imbatranim-apps">View on GitHub<span class="sr"> imbatranim-apps</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-imbatranim-apps">See more<span class="sr"> about imbatranim-apps</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-imbatranim-apps"><p>They install from the OS&#x27;s Marketplace and run only inside it, so the repo is where you can see them.</p><dl class="facts"><div><dt>Address</dt><dd><code>github.com/owner/imbatranim-apps</code></dd></div></dl></div>
+</article>
+<article class="card" id="c-my-personal-skills" data-access="repo">
+<div class="head"><h3>my-personal-skills</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>On GitHub</span></div>
+<p class="blurb">The Claude Code skills that run every project here: wiki, briefs, design and review.</p>
+<div class="actions"><a class="btn btn-primary" href="https://github.com/owner/my-personal-skills">View on GitHub<span class="sr"> my-personal-skills</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-my-personal-skills">See more<span class="sr"> about my-personal-skills</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-my-personal-skills"><p>Each project keeps a corpus wiki and written briefs. These skills plan, split and review the work.</p><dl class="facts"><div><dt>Address</dt><dd><code>github.com/owner/my-personal-skills</code></dd></div></dl></div>
+</article>
+<article class="card" id="c-socialevents" data-access="repo">
+<div class="head"><h3>SocialEvents</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>On GitHub</span></div>
+<p class="blurb">A planner for a company&#x27;s social events, on a calendar and a map.</p>
+<div class="actions"><a class="btn btn-primary" href="https://github.com/owner/SocialEvents">View on GitHub<span class="sr"> SocialEvents</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-socialevents">See more<span class="sr"> about SocialEvents</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-socialevents"><p>Invite people or whole departments, see the weather at each place, and rate events afterwards. Runs locally only.</p><dl class="facts"><div><dt>Address</dt><dd><code>github.com/owner/SocialEvents</code></dd></div></dl></div>
+</article>
+<article class="card" id="c-hackathons" data-access="repo">
+<div class="head"><h3>hackathons</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>On GitHub</span></div>
+<p class="blurb">Three hackathon projects, among them Nutrisha, an AI meal planner from ITFest.</p>
+<div class="actions"><a class="btn btn-primary" href="https://github.com/owner/hackathons">View on GitHub<span class="sr"> hackathons</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-hackathons">See more<span class="sr"> about hackathons</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-hackathons"><p>Also an API uptime dashboard and a WhatsApp chat analyser. Several earlier repos merged into one, with their history kept.</p><dl class="facts"><div><dt>Address</dt><dd><code>github.com/owner/hackathons</code></dd></div></dl></div>
+</article>
+<article class="card" id="c-mini-projects" data-access="repo">
+<div class="head"><h3>mini-projects</h3><span class="chip chip-mute"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>On GitHub</span></div>
+<p class="blurb">Five small tools: a diff viewer, a password manager, a TSP solver and more.</p>
+<div class="actions"><a class="btn btn-primary" href="https://github.com/owner/mini-projects">View on GitHub<span class="sr"> mini-projects</span></a><button type="button" class="btn btn-quiet toggle" aria-expanded="false" aria-controls="more-mini-projects">See more<span class="sr"> about mini-projects</span><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></button></div>
+<div class="more" id="more-mini-projects"><p>A GitLab-style diff viewer, an Electron password manager, a todo app, an A* solver for the travelling salesman problem and an OpenCV tomato detector.</p><dl class="facts"><div><dt>Address</dt><dd><code>github.com/owner/mini-projects</code></dd></div></dl></div>
+</article>
+</div></section>
+</main>
+<footer class="foot"><div class="wrap"><p>Every app is TypeScript, mostly a React client on a Fastify and SQLite API, deployed from one repo. The source of most of them is on GitHub.</p><a class="btn btn-gh" href="https://github.com/owner"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-github"/></svg><span>GitHub</span></a></div></footer>
+<p class="sr" role="status" id="live"></p>
+<script>
+(function(){
+  var root=document.documentElement;
+  var seg=document.querySelectorAll('.seg button');
+  function mode(){try{var t=localStorage.getItem('theme');return t==='light'||t==='dark'?t:'system'}catch(e){return 'system'}}
+  function applyTheme(m){
+    root.classList.remove('theme-light','theme-dark');
+    if(m==='light'||m==='dark')root.classList.add('theme-'+m);
+    try{if(m==='system')localStorage.removeItem('theme');else localStorage.setItem('theme',m)}catch(e){}
+    seg.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.theme===m?'true':'false')});
+  }
+  seg.forEach(function(b){b.addEventListener('click',function(){applyTheme(b.dataset.theme)})});
+  seg.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.theme===mode()?'true':'false')});
+
+  document.querySelectorAll('.toggle').forEach(function(b){
+    b.addEventListener('click',function(){
+      var p=document.getElementById(b.getAttribute('aria-controls'));
+      var open=b.getAttribute('aria-expanded')!=='true';
+      b.setAttribute('aria-expanded',open?'true':'false');
+      p.classList.toggle('open',open);
+    });
+  });
+
+  var chips=document.querySelectorAll('.chip-btn');
+  var groups={all:null,open:['open','docs','repo'],signin:['sign-in','owner']};
+  function filter(k){
+    var allow=groups[k],shown=0;
+    chips.forEach(function(c){c.setAttribute('aria-pressed',c.dataset.filter===k?'true':'false')});
+    document.querySelectorAll('.sec').forEach(function(s){
+      var n=0;
+      s.querySelectorAll('.card').forEach(function(c){
+        var ok=!allow||allow.indexOf(c.dataset.access)>-1;
+        c.hidden=!ok;if(ok)n++;
+      });
+      s.hidden=n===0;shown+=n;
+      var cnt=document.querySelector('[data-count-for="'+s.id+'"]');
+      cnt.textContent=n;cnt.closest('.navlink').hidden=n===0;
+    });
+    document.getElementById('live').textContent='Showing '+shown+' cards';
+  }
+  function level(){
+    document.querySelectorAll('.grid').forEach(function(g){
+      ['.head','.blurb','.actions'].forEach(function(sel){
+        var els=[].slice.call(g.querySelectorAll(sel)).filter(function(e){return !e.closest('.card').hidden});
+        els.forEach(function(e){e.style.minHeight=''});
+        var rows={};
+        els.forEach(function(e){var t=Math.round(e.closest('.card').offsetTop);(rows[t]=rows[t]||[]).push(e)});
+        Object.keys(rows).forEach(function(t){
+          var m=0;rows[t].forEach(function(e){m=Math.max(m,e.offsetHeight)});
+          rows[t].forEach(function(e){e.style.minHeight=m+'px'});
+        });
+      });
+    });
+  }
+  var timer;window.addEventListener('resize',function(){clearTimeout(timer);timer=setTimeout(level,80)});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(level);
+  window.addEventListener('load',level);level();
+  chips.forEach(function(c){c.addEventListener('click',function(){filter(c.dataset.filter);level()})});
+})();
+
+</script>
+</body>
+</html>
