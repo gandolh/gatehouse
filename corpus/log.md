@@ -159,3 +159,9 @@ standard, linking `docs/owner-setup.md` and the walk on `wiki/sign-in.md`. Four 
 light as the hero, Terminal dark on a phone, Ninety-six light, the owner signed in), taken from the dev page with the
 fake API, with `shots.md` for retaking them. The header's wordmark shows in the shots: it is `content/cards.json`'s
 accepted exception. Done on the board: nothing deploys before vps-deploy's brief 34.
+
+## [2026-11-24] todo | Briefs 10 and 11 from the owner's grill
+
+The owner chose to tell a cancel at Ward from a refusal (brief 10: Ward's library maps its cancel to `cancelled`,
+version 1.2.0, re-vendored here, a quiet line on the page) and to give Tavi's new site a card in "Sites for other
+people" with its first deploy (brief 11). The owner also kept the stacked footer and the Ward-down state as built.
