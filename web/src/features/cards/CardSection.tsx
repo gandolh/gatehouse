@@ -27,12 +27,12 @@ export function CardSection({ section, access, filter, first }: CardSectionProps
       aria-labelledby={`h-${section.id}`}
       data-compact={section.compact ? "" : undefined}
       hidden={shown === 0}
-      className="scroll-mt-15 pt-7 md:scroll-mt-21"
+      className="group/section scroll-mt-15 pt-7 md:scroll-mt-21 ninety-six:max-sm:first-of-type:pt-3"
     >
       <header className="mb-4 flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4 terminal:flex-col terminal:items-stretch terminal:gap-1 terminal:border-b terminal:border-dashed terminal:border-line terminal:pb-3 ninety-six:md:flex-col ninety-six:md:items-stretch ninety-six:md:gap-3">
         <h2
           id={`h-${section.id}`}
-          className="font-display text-section font-strong tracking-section text-ink terminal:text-[1.6rem] terminal:leading-tight terminal:text-shadow-glow ninety-six:bg-bar ninety-six:px-4 ninety-six:py-2.5 ninety-six:font-[600] ninety-six:text-on-bar ninety-six:shadow-panel ninety-six:max-sm:py-2"
+          className="font-display text-section font-strong tracking-section text-ink terminal:text-[1.6rem] terminal:leading-tight terminal:text-shadow-glow terminal:max-sm:text-[1.4rem] ninety-six:bg-bar ninety-six:px-4 ninety-six:py-2.5 ninety-six:font-[600] ninety-six:text-on-bar ninety-six:shadow-panel ninety-six:max-sm:py-2"
         >
           <span
             aria-hidden="true"
@@ -47,7 +47,7 @@ export function CardSection({ section, access, filter, first }: CardSectionProps
           </span>
           <span>{section.title}</span>
         </h2>
-        <p className="text-sub text-ink-muted ninety-six:text-[1.0625rem] ninety-six:text-on-ground ninety-six:max-sm:mt-2.5">
+        <p className="text-sub text-ink-muted terminal:text-[1rem] ninety-six:text-[1.0625rem] ninety-six:text-on-ground ninety-six:max-sm:mt-2.5">
           {section.line}
         </p>
       </header>

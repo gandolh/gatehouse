@@ -54,7 +54,7 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       id={`c-${card.id}`}
       data-access={card.access}
       hidden={hidden}
-      className="group/card mb-5 flex min-w-0 flex-col self-start rounded-card border border-edge bg-surface text-ink-body shadow-card terminal:p-4 terminal:text-ink terminal:shadow-hard ninety-six:gap-2.5 ninety-six:border-0 ninety-six:p-3 ninety-six:shadow-panel"
+      className="group/card mb-5 flex min-w-0 flex-col self-start rounded-card border border-edge bg-surface text-ink-body shadow-card terminal:p-4 terminal:text-ink terminal:shadow-hard terminal:group-data-compact/section:py-3 ninety-six:gap-2.5 ninety-six:border-0 ninety-six:p-3 ninety-six:shadow-panel ninety-six:group-data-compact/section:gap-2 ninety-six:group-data-compact/section:p-2.5"
     >
       {card.image && (
         <a
@@ -76,9 +76,9 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       )}
       <div
         data-level="head"
-        className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 px-5 pt-4 terminal:px-0 terminal:pt-3 ninety-six:items-center ninety-six:gap-y-1.5 ninety-six:px-0 ninety-six:pt-0"
+        className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 px-5 pt-4 terminal:px-0 terminal:pt-3 terminal:group-data-compact/section:pt-0 ninety-six:items-center ninety-six:justify-start ninety-six:gap-x-2.5 ninety-six:gap-y-1.5 ninety-six:px-0 ninety-six:pt-0"
       >
-        <h3 className="min-w-0 flex-auto font-ui text-name font-strong tracking-name wrap-break-word text-ink terminal:font-[600] ninety-six:font-bold">
+        <h3 className="min-w-0 flex-auto font-ui text-name font-strong tracking-name wrap-break-word text-ink terminal:font-[600] ninety-six:flex-none ninety-six:font-bold ninety-six:group-data-compact/section:text-[1.125rem]">
           {card.name}
         </h3>
         <AccessLabel access={card.access} label={accessLabel} />
@@ -89,7 +89,7 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       </p>
       <p
         data-level="blurb"
-        className="px-5 pt-2 wrap-break-word sm:min-h-[calc(3em+8px)] terminal:px-0 ninety-six:px-0 ninety-six:pt-0"
+        className="px-5 pt-2 wrap-break-word sm:min-h-[calc(3em+8px)] terminal:px-0 terminal:sm:group-data-compact/section:min-h-0 ninety-six:px-0 ninety-six:pt-0 ninety-six:group-data-compact/section:text-[0.9375rem] ninety-six:sm:min-h-0"
       >
         {card.blurb}
       </p>

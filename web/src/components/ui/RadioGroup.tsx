@@ -49,7 +49,7 @@ const optionLooks = {
   chips: [
     "inline-flex min-h-11 min-w-11 flex-none items-center justify-center gap-2 rounded-full border border-line-ui px-3",
     "font-ui text-control font-medium whitespace-nowrap text-ink hover:not-pressed:bg-surface-2",
-    "terminal:rounded-none terminal:border-edge terminal:bg-surface terminal:font-normal",
+    "terminal:rounded-none terminal:border-edge terminal:bg-surface terminal:font-normal terminal:sm:not-pointer-coarse:min-h-9",
     "active:not-pressed:bg-line sm:min-h-9.5 sm:pointer-coarse:min-h-11",
     "pressed:border-button pressed:bg-button pressed:text-on-button",
     "ninety-six:rounded-none ninety-six:border-0 ninety-six:bg-face ninety-six:font-normal ninety-six:shadow-raised",
