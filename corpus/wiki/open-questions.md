@@ -1,5 +1,5 @@
 ---
-summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner when brief 06 reaches Ready for test - the look switcher in the footer and the sign-in entry, neither drawn. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - whether Vite's base, the SSR build and the prerender put every file the page loads under /gatehouse/ with the page at dist/index.html (01, again in 03), whether a closed Base UI Collapsible can show its text with scripting off (03), whether Ward's library runs with no local account and the admin role arrives through the grant (07).
+summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner when brief 06 reaches Ready for test - the look switcher in the footer and the sign-in entry, neither drawn. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (03), whether Ward's library runs with no local account and the admin role arrives through the grant (07).
 updated: 2026-11-24
 ---
 
@@ -14,16 +14,19 @@ updated: 2026-11-24
 
 ## Technical, checked by the brief that meets them
 
-- **Vite's `base` and the prerender.** Nothing here has been built yet. Brief 01 checks on a
-  scratch app, with a font, a picture with a `srcset` and a dynamic import:
-  - that `base: "/gatehouse/"` in the build only puts every file the page loads under
-    `/gatehouse/` (the path check's scope is in [architecture.md](architecture.md));
-  - that the URLs the SSR render writes name the files the client build wrote;
-  - that the page is `dist/index.html` with only the assets folder beside it, and no `public/`
-    folder is needed;
-  - where `vite preview` shows the built page.
+- **Vite's `base` and the prerender: answered 2026-11-24 (brief 01).** On a scratch app with a
+  font, two pictures in a `srcset`, an icon and a dynamic import:
+  - `base: "/gatehouse/"` for the build and the preview (`command === "build" || isPreview`), `/`
+    in dev, put every file the page loads under `/gatehouse/`; `experimental.renderBuiltUrl`
+    wasn't needed. The URL list is in [architecture.md](architecture.md), Addresses.
+  - The SSR render writes the URLs the client build wrote: the hashes come from the content.
+  - The page is `dist/index.html` with only `assets/` beside it; the SSR bundle goes to
+    `dist-ssr/`. No `public/` folder is needed (`publicDir` is off): an icon linked from
+    `index.html` as a source file is fingerprinted under the base like the rest.
+  - `vite preview` shows the built page at `http://localhost:4182/gatehouse/` and redirects `/`
+    there. Without the base in the preview, the page's files fell through to `index.html`.
 
-  Brief 03 runs the check again once the page has fonts and pictures.
+  Brief 03 runs the path check again once the page has its own fonts and pictures.
 - **See more with scripting off.** Base UI's `Collapsible` hides a closed panel with the `hidden`
   attribute, and Tailwind's Preflight makes `[hidden]` `display: none !important`. Brief 03 checks
   what a closed panel renders on the server; the fallback is a hand-built disclosure (a button with
