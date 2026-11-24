@@ -121,3 +121,13 @@ routes (`GATEHOUSE_FAKE`, `npm run dev:fake -w @gatehouse/web`). Ahead of it, br
 (Ninety-six's inline label and bold primary, Terminal's full-bleed row and spacing, compact sections). The brief is in
 done/ while its ticket waits at Ready for test for the owner's judgement and a question on the footer's layout.
 Findings in [wiki/owner-part.md](wiki/owner-part.md) and [wiki/looks.md](wiki/looks.md).
+
+## [2026-11-24] build | Brief 07: the owner API and its container
+
+Sign in with Ward as the only way in, checked first: with no local account the API starts and local sign-in fails
+for any name, and a first Ward sign-in makes the user with the grant's role, copied once (Ward refuses a user with
+no grant, so the stuck case is a first sign-in under another role). ward-auth 1.1.0 vendored in `server/vendor/ward/`
+(sums checked); the session guard and the library's routes under `/auth`; `GET /v1/owner/cards` answers `admin` the
+three owner cards with their links resolved against `PUBLIC_ORIGIN`. The container (`gatehouse-api` on 127.0.0.1:8815,
+data at `/data`), not built here; `docs/owner-setup.md` is vps-deploy's spec. The open question on Ward-only
+sign-in is closed. Findings in [wiki/sign-in.md](wiki/sign-in.md).

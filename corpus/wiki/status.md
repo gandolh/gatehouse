@@ -1,5 +1,5 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part's page side is built against a fake API and waits at Ready for test for the owner's judgement (brief 06); the owner API, the Ward wiring and the docs are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part's page side is built against a fake API and waits at Ready for test for the owner's judgement (brief 06); the owner API with Sign in with Ward only, the owner route, its container and docs/owner-setup.md are built (brief 07); the page's wiring to the real API and the README are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
 updated: 2026-11-24
 ---
 
@@ -29,11 +29,14 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
   in the footer, the owner's cards in Behind the scenes, the states (waking, signed in, refused, Ward
   unreachable, not the owner, failed, signed out again), the contract in `shared`, and
   `npm run dev:fake -w @gatehouse/web` ([owner-part.md](owner-part.md)). Ready for test: the owner
-  judges the screens and the footer's layout. Served by the API in brief 07, wired to Ward in
-  brief 08.
+  judges the screens and the footer's layout. The API's side built 2026-11-24 (brief 07): Sign in with
+  Ward only (checked: no local sign-in, the grant's role copied at the first sign-in), `GET
+  /v1/owner/cards` for `admin` with the three owner cards, the vendored ward-auth 1.1.0, and the
+  container (`docker compose ... config` parses; the image not built yet) ([sign-in.md](sign-in.md)).
+  The page is wired to it, and to a local Ward, in brief 08.
 - **README and docs**: brief 09.
 - **Deploy**: vps-deploy's brief 34 serves the page at `/`, its files, the API and checks the card
-  list against the stacks. Written 2026-11-24, not built.
+  list against the stacks. Written 2026-11-24, not built; its spec is `docs/owner-setup.md` (brief 07).
 
 ## Waiting outside the repo
 
@@ -47,4 +50,6 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
 1. Now: judge the sign-in entry, the look switcher and the owner part's states on the board (brief
    06, Ready for test), and answer its question on the footer's layout.
 2. After brief 08 and vps-deploy's brief 34: the rollout from vps-deploy, which registers the Ward
-   client, grants the owner `admin`, builds the page with the origin and starts the API.
+   client, grants the owner `admin`, builds the page with the origin and starts the API. Grant
+   `admin` itself, never another role first: the role is copied once, at the first Owner sign-in
+   (`docs/owner-setup.md`, section 6).

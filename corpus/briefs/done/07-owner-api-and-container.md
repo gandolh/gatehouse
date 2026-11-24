@@ -106,3 +106,52 @@ The plan's calls ([architecture.md](../../wiki/architecture.md)):
 - Settled 2026-11-23: the owner part comes from an API behind Sign in with Ward.
 - Settled 2026-11-24 (the plan): Ward-only sign-in, no local accounts; the owner route needs
   `admin`; the container sleeps behind Sablier; sign-out ends Gatehouse's session only.
+
+## Outcome (2026-11-24)
+
+Built; on the board at Done (Gatehouse isn't deployed yet). Details in [sign-in.md](../../wiki/sign-in.md).
+
+- **Step 1 held.** With Ward's settings against a fake discovery and an empty database, the API starts, answers
+  health, answers `POST /gatehouse-api/auth/login` 401 `invalid_credentials` for any name, and the owner route 401. A
+  first Ward sign-in makes the user with `roleFor(ward_role)`; `keepWardRole` keeps it, so `admin` arrives as
+  `admin` (read in `userForSignIn`, tested through it). The role is copied once; Ward refuses a user with no grant
+  (`access_denied`), so the stuck case is a first sign-in under another role, and the fix is deleting
+  `gatehouse.sqlite`. The open question is dropped from open-questions.md.
+- `server/vendor/ward/`: ward-auth 1.1.0, six files, `sha256sum -c` against the build's `SHA256SUMS` all OK.
+- `server/src/plugins/auth.ts` (cookie `gatehouse_session` on `/gatehouse-api`, routes under `/auth`, no
+  registration, no rename, the guard over `/v1` and `/auth` but health), `server/src/db/accounts.ts`
+  (`gatehouse.sqlite`), `server/src/features/owner-cards/` (`GET /v1/owner/cards`, `requireRole("admin")`, 200
+  declared as `ownerCardsSchema`, the card list read once at start from `GATEHOUSE_CARDS_FILE`), `config.ts` (the
+  five `WARD_OIDC_*`, `AUTH_TRUSTED_PROXIES`, `GATEHOUSE_CARDS_FILE`), `.env.example`.
+- Tests: the Ward-only start, the role, no register or rename, logout, cross-site POSTs refused (403 `cross_site`);
+  the owner route 401, 403, and 200 with the three cards bare and prefixed, host links against `PUBLIC_ORIGIN`, no
+  public card; the settings.
+- `infrastructure/Dockerfile`, `infrastructure/docker-compose.yml`, `.dockerignore`. **The image wasn't built**:
+  `docker compose -f infrastructure/docker-compose.yml config` parses, and the built server started from the image's
+  file layout outside Docker (health 200, owner route 401, exit 0 on SIGTERM).
+- `docs/owner-setup.md`, vps-deploy 34's spec, with `<production origin>` and no domain; one secret,
+  `WARD_OIDC_CLIENT_KEY`, named by variable only.
+
+Checks: `npm run check`, `npm run build` (with `GATEHOUSE_ORIGIN`), the compose config, the sums and the corpus lint
+pass. Not run: the image build and boot, and a real Ward round trip (no local Ward client for Gatehouse until brief
+08; every test session is a local one).
+
+Deviations:
+- Vendored by copying the controller's staged output of Ward's vendor script (wzd_auth 66998b7), not by running the
+  script: it rebuilds the build folder in the Ward checkout, which this brief only reads. Ward's own build output
+  matched the same sums. The React pair comes with the copy (a copy is six files); nothing imports it.
+- Steps 1, 3 and 4 are one commit: the step 1 test needs the plugin and the owner route.
+- Three owner cards, not four: Grafana left the card list on 2026-11-24.
+- 401 and 403 keep the library's bare bodies (`{ error }`, a 401 with a `reason` when a session check refused it);
+  brief 06's page reads the status, and shared's `errorBodySchema` takes them. No rewrite as Lantern's.
+- An unknown path under `/v1` answers 401 without a session (404 with one); `buildTestApp` returns `{ app, accounts }`
+  and the health and error tests changed for it (the error tests sign in).
+- `server.ts`'s `trustProxy` adds `AUTH_TRUSTED_PROXIES` to loopback.
+- The compose file differs from Lantern's: an optional `.env` (`required: false`, as imbatranimOS's), the host's data
+  folder as `GATEHOUSE_HOST_DATA_DIR` (the server's `GATEHOUSE_DATA_DIR` is pinned to `/data`), and
+  `GATEHOUSE_CARDS_FILE` pinned too.
+- Files outside the owned list: `.prettierignore` (skips `server/vendor/`), `corpus/index.md`, `corpus/.planned-roots`
+  (`docs` and `infrastructure` now exist), `server/tsconfig.json` and `server/package.json` (the reference to
+  shared and the new dependencies).
+- The vendored banners and LICENSE name the library's source account, which the root `CLAUDE.md` allows in two
+  files only; asked on the board.
