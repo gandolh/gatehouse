@@ -27,9 +27,11 @@ phone.
 
 - **`data-mode`, not `data-theme`,** on `<html>`, next to `data-look`. The `base-ui` skill's rule
   14 names `data-theme`; this page has no React, and the glossary keeps "theme" out.
-- **A first visit is System** (light unless the device asks for dark), as the sketches draw it.
-  The `base-ui` skill's rule 14 says light first; the owner hasn't ruled between the two, so it
-  is in `open-questions.md`. Build System; switching later is one default in the head script.
+- **A first visit is light**, though the sketches draw System pressed. The owner's estate-wide
+  answer of 2026-11-10 (every app with a Light / Dark / System switch opens a first visit in
+  light; the `base-ui` skill's rule 14) settles it, and Gatehouse has no ruling of its own. The
+  HTML says `data-mode="light"` until a stored pick or `?mode=` says otherwise; the mode control
+  shows Light pressed on a first visit.
 - **No Hallmark deal.** `DESIGN.md` at the root (step 1) is a locked system, so the hallmark skill
   reads it instead of dealing a theme.
 - **The sketches' `.theme-light` / `.theme-dark` classes** become the data attributes; the sloplint
@@ -70,7 +72,7 @@ phone.
    `displayAddress` (a host shows as `satchel.` and "own address"), Docs and Source on GitHub.
    With scripting off, the See more text is shown. Pictures go through `astro:assets` with width and
    height.
-4. **Looks and modes.** `<html data-look="profile" data-mode="system">` in the HTML. An inline
+4. **Looks and modes.** `<html data-look="profile" data-mode="light">` in the HTML. An inline
    script in `<head>` reads `gatehouse.look` and `gatehouse.mode` from localStorage (inside
    try/catch) and sets both before the first paint. A `?look=` or `?mode=` query parameter
    overrides the stored pick for that load without storing it, so a shot or a sloplint run can

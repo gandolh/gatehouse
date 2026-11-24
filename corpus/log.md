@@ -19,3 +19,11 @@ Fastify API on 8815 behind Sablier, visitors never calling it, and a build guard
 cards in the HTML. The repo was started with the cleaned design references in `design/`, the card
 list in `content/cards.json` with its pictures, this corpus, and briefs 01 to 09. vps-deploy's
 brief 34 covers the deploy side. Nothing built.
+
+## [2026-11-24] decision | A first visit opens in light
+
+The sketches draw the mode control with System pressed, and the planner left the first visit's
+mode open. The owner's estate-wide answer of 2026-11-10 already settles it: every app with a
+Light / Dark / System switch opens a first visit in light (the `base-ui` skill's rule 14), with
+3D-sandbox and the client sites as the only exceptions. Brief 03 now builds light first, and the
+question left `open-questions.md`. Found in the controller's design read of briefs 03 to 06.
