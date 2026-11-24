@@ -2,3 +2,4 @@
 // loader that reads the file is `@gatehouse/shared/load`.
 export * from "./cards.js";
 export * from "./links.js";
+export * from "./api.js";

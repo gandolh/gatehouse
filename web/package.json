@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:fake": "tsc -b ../shared && concurrently --names fake,web --kill-others \"npm run fake-api\" vite",
+    "fake-api": "node scripts/fake-owner-api.ts",
     "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.ts && node scripts/check-paths.ts && node scripts/check-owner-part.ts",
     "preview": "vite preview"
   },
