@@ -94,3 +94,12 @@ stronger machine exists (vps-deploy's briefs 35 and 36). The `grafana` card, one
 owner-part cards, would point at a host the box no longer serves, and vps-deploy's card check would
 flag it. It is gone from `content/cards.json`: 37 cards, and the owner part is brief-board, the vault
 and the mail admin. The tests, card-list.md, overview, decisions, glossary and brief 06 follow.
+
+## [2026-11-24] build | Brief 04: the look switcher and Terminal
+
+The footer's look switcher (a Base UI `RadioGroup`, the pick kept as `gatehouse.look`) and the Terminal look:
+tokens under `data-look="terminal"`, the skin as the `terminal:` variant on the components, IBM Plex Mono and Sans
+from `@fontsource` (latin and latin-ext only). Ahead of it, brief 03's design-critic fixes: headings at 700 with
+DESIGN.md's weight line corrected, the switch pressed from the first frame (`pressed` variants and a
+`data-hydrated` mark), a Geist preload and a favicon. The preload is an inline script that adds the link only in
+Profile, so Terminal never fetches Geist. Findings in [wiki/page.md](wiki/page.md).

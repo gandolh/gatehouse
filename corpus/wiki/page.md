@@ -1,11 +1,11 @@
 ---
-summary: The page as built on 2026-11-24 (brief 03), in Profile. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketch A.
+summary: The page as built on 2026-11-24 (briefs 03 and 04), in Profile and Terminal; the look switcher and Terminal's rules. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A and B.
 updated: 2026-11-24
 ---
 
 # The page
 
-Built by brief 03 in the Profile look. It is React 19 on Vite, rendered to HTML at build time and hydrated
+Built in the Profile look (brief 03), then Terminal and the look switcher (brief 04). It is React 19 on Vite, rendered to HTML at build time and hydrated
 ([architecture.md](architecture.md)); `DESIGN.md` at the repo root is the locked system for all three looks.
 
 ## Where things live
@@ -58,8 +58,9 @@ book; the check icon on a chosen mode or filter. See more's Address row is `term
 
 Nothing reads storage or the address during render. The mode control reads `data-theme` through
 `useSyncExternalStore` with a server snapshot of light, so the first client render matches the HTML and the control
-then moves to the stored mode. Until hydration ends, a stored Dark page is dark but its control shows Light pressed
-(visible only on a slow load; the page itself never flashes).
+then moves to the stored mode. Until hydration ends, the control shows the stored choice already pressed: the
+`pressed` and `not-pressed` variants match `[data-checked]`, and before `<html data-hydrated>` (set by the page's
+`HydrationMark`) they match the group's own option against `data-theme` or `data-look` instead.
 
 `web/src/page.test.tsx` renders the page with `renderToString`, builds a document from it, stores dark and Terminal,
 runs index.html's own head script, hydrates with `hydrateRoot`, and expects no recoverable error, no
@@ -95,7 +96,13 @@ opened, without them it shows. The button, the filters and the mode control are 
 Geist and Geist Mono are self-hosted from the variable Fontsource packages, imported into the vendor layer. The
 packages hold every subset; a browser fetches only what the page's text uses: Geist latin and latin-ext (the
 Romanian letters), and Geist Mono latin once a See more panel shows an address. The variable files draw the
-sketch's 650 weight as 650; the sketch, on Google's fixed weights, drew it as 700.
+sketch's 650 weight as 650; the sketch, on Google's fixed weights, drew it as 700, so headings are set at 700 to
+match the renders (`--font-weight-strong`, and DESIGN.md's weight line was corrected).
+
+IBM Plex Mono (400, 600, 700) and IBM Plex Sans (400, 600) come from `@fontsource`, only the latin and latin-ext
+files imported. They apply only under `data-look="terminal"`, and a browser fetches a face only when text uses it, so
+Profile downloads Geist alone and Terminal Plex alone. The Geist latin preload is a small inline script in the head
+that adds the `<link rel=preload>` only when `data-look` is profile; a static link would download Geist in Terminal.
 
 ## The prerender's head
 
@@ -135,11 +142,41 @@ mail.
 - Light is chosen on a first visit; the sketch drew System (rule 14, the decisions).
 - Behind the scenes counts 4, not 8: the owner part is off the page until brief 06.
 - No card is drawn open: the sketch opened Solstice to show See more.
-- With a stored Dark, the page is dark from the first paint but its mode control shows Light pressed until React
-  hydrates (the HTML is rendered in light).
 - Pictures after the first three load lazily; the sketch loaded all of them at once.
 - A skip link ("Skip to the cards", from sketch B), off screen until focused. sloplint failed it as `sr-only`
   (text under the header), so it sits above the page instead.
-- The title is the wordmark and the description the header's line, as in the sketch; there is no favicon.
+- The title is the wordmark and the description the header's line, as in the sketch; the favicon is emitted as a build asset.
 - The mode control and filters are radio groups: one tab stop each, arrows move and choose.
 - At 390 px the approved render sits 6 px higher than the build and `sketch.html` (above).
+
+## The look switcher
+
+`web/src/features/look/`: `look.ts` is the store (`useSyncExternalStore` over `data-look` on `<html>`, server
+snapshot Profile; a pick sets the attribute and writes `gatehouse.look`), `LookSwitcher.tsx` a Base UI `RadioGroup`
+labelled Look with Profile, Terminal and Ninety-six, drawn as a row of buttons (RadioGroup's `row` look) in the
+footer's `lookSwitcher` slot. The slot is `hidden scripted:flex`, so it is gone without scripts. Each option carries
+`data-look-option`, which the pre-hydration `pressed` variant reads.
+
+## Terminal
+
+Tokens in `index.css` under `:root[data-look="terminal"]`; the skin is the `terminal:` Tailwind variant on the
+components (Card, CardSection, SectionNav, AccessLabel, Header, Footer, RadioGroup, `looks.ts`). Rules worth knowing:
+
+- Tailwind inlines a theme shadow into its utility, so a look can't swap `--shadow-card`. Terminal's hard offset is
+  `terminal:shadow-hard`, whose colour is `--color-offset`.
+- The section row is full width in Terminal (ink rules above and below, the content aligned to the page's width), the
+  one place the row leaves the page width, as in the sketch.
+- Access labels are `[public]`, lowercased, in brackets the markup carries hidden in the other looks.
+- The pressed chip shows a check icon in Terminal; `terminal:pressed:*` beats `pressed:*`.
+- Dark: glow on the wordmark and section titles only; pictures at `brightness(.85)` until the card is hovered or
+  focused.
+
+How it was checked on 2026-11-24 (preview, headless Chrome): Terminal light 1280 x 800 and dark 390 x 844 against
+`design/shots/b-light-1280.webp` and `b-dark-390.webp`; the Terminal dark 1280 combo once. Fresh browser, Terminal:
+only Plex files download; Profile: only Geist. With the page script blocked and Dark and Terminal stored, the
+pressed Dark and Terminal chips are already amber, so the first paint is right. sloplint with `--render` on
+`?look=terminal` (light and dark): 0 FAIL, one WARN (four font weights in use: Plex 400, 500 from controls, 600, 700).
+
+Differences from sketch B: the GitHub link in the header has no underline; the card names and mono lines sit a pixel
+or two off; the sketch drew System pressed, the page defaults to Light; Behind the scenes counts 4 (the owner part is
+off the page until brief 06).
