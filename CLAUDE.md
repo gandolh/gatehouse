@@ -15,8 +15,9 @@ time and hydrated, and a Fastify API: three npm workspaces (`shared`, `server`, 
   keeps going after a failing step; the whole output stays in `node_modules/.cache/check/last.log`.
   While you work, `npm run check:fast` and the test files you touched are enough.
 - `npm run build`: the API into `server/dist`; the page's client build into `web/dist`, its SSR
-  build into `web/dist-ssr`, the prerender into `web/dist/index.html`, then the path check. Needs
-  `GATEHOUSE_ORIGIN` in the environment (`.env` doesn't reach it), and fails naming it without one.
+  build into `web/dist-ssr`, the prerender into `web/dist/index.html`, then the path check and the
+  owner-part guard. Needs `GATEHOUSE_ORIGIN` in the environment (`.env` doesn't reach it), and fails
+  naming it without one.
 - `npm run preview -w @gatehouse/web`: the built page at `http://localhost:4182/gatehouse/`.
 - `npx vitest run <file>`: one test file.
 - `npm run format`: Prettier writes every file it covers (Markdown stays out).
