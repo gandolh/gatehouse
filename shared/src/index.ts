@@ -1,3 +1,4 @@
-// The barrel the page build and the API import from. Empty until the card list's schema, its loader and the link
-// resolver land here.
-export {};
+// The barrel the page and the API import from. It holds nothing from `node:`, because the browser imports it; the
+// loader that reads the file is `@gatehouse/shared/load`.
+export * from "./cards.js";
+export * from "./links.js";

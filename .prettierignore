@@ -13,6 +13,3 @@ dist/
 dist-ssr/
 data/
 coverage/
-
-# The card list keeps its hand layout until the card-list work formats it and drops this line.
-content/cards.json
