@@ -177,3 +177,10 @@ the quiet line, a user with no grant still got the refusal, and the owner still 
 `access_denied` until each re-vendors. The 1.2.0 sums sit with the staged copy, not in a repo, because Ward ignores
 its build folder. Done on the board. Findings in [wiki/owner-part.md](wiki/owner-part.md).
 
+
+## [2026-11-24] build | Brief 12: a card for Gazette
+
+Gazette, the monthly social-media report app, is on the front page: a sign-in card in Apps for home at `/gazette/`,
+with a picture cropped from the app's own README shots so no brand or person's name is readable. The card tests and
+the counts in the card-list page moved by one (38 cards, 35 public). `npm run check`, the build guard and
+vps-deploy's card check pass. Ready for deploy after the gazette stack.

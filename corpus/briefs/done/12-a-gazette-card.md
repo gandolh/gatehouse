@@ -58,3 +58,13 @@ The influencer is a real person. The card names neither him nor the brand his re
 
 - Settled 2026-11-24 (owner): "gazzete should be on the root page". The section, access and wording are the
   controller's, by how the other sign-in apps show.
+
+## Outcome (2026-11-24)
+
+Gazette is the eleventh card in Apps for home (`gazette`, `/gazette/`, `sign-in`, part `public`, no docs, no source),
+with a blurb and a `more` line that says the page is in Romanian. The picture, `content/images/gazette.webp`, is
+the editor shot from Gazette's README images, cropped to 864 x 540 from the top of the slide area (the thumbnail strip
+with the cover slide, the toolbar above it and the slide footer line that carries the brand are all outside the crop),
+scaled to 800 x 500 and encoded as WebP at quality 82. Opened at full size: only invented Romanian table text, no
+brand and no person's name. The card tests now hold 38 cards and 35 public ones. vps-deploy's card check passes for
+`/gazette/`; its one warning is about `/tavi/`, which has no card yet.

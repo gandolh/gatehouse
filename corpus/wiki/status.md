@@ -19,7 +19,7 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
 - **The card list**: done 2026-11-24 (brief 02). 38 cards in 5 sections (Gazette added by brief 12), 3 in the owner part, now
   checked by a zod schema in `shared` (`loadCards` at `@gatehouse/shared/load`, `resolveLink`,
   `displayAddress`) and its tests. All 33 non-GitHub access labels were read live, logged out, and
-  held; the Mercatus picture was retaken ([card-list.md](card-list.md)).
+  held; the Mercatus picture was retaken ([card-list.md](card-list.md)). Gazette added 2026-11-24 (brief 12), ready for deploy.
 - **The page**: Profile done 2026-11-24 (brief 03): every public card in the prerendered HTML, hydrated; the mode
   control, filters, See more (which shows with scripting off), the phone's sticky section row, Geist self-hosted,
   and a build guard that fails on any owner card in `web/dist/`. `DESIGN.md` locks all three looks' tokens; the
