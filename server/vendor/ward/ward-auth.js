@@ -1,4 +1,4 @@
-// ward-auth 1.1.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
+// ward-auth 1.2.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
 // MIT licensed; see LICENSE beside this file. Do not edit a vendored copy: copy a newer build in.
 import { randomBytes as randomBytes$1, createHash, scrypt as scrypt$1, timingSafeEqual, webcrypto, randomUUID } from 'node:crypto';
 import { promisify } from 'node:util';
@@ -10508,6 +10508,23 @@ function retryable(err, options) {
 const retry = Symbol();
 
 /**
+ * Ward's `api/src/oidc/denials.ts`: why Ward's login step refused a sign-in,
+ * and the `error_description` the app gets beside `error=access_denied` for
+ * each (`interaction.ts`).
+ *
+ * **These words are wire contract.** The shared library tells a cancel from a
+ * refusal by comparing the description with `DENIAL_DESCRIPTIONS.cancelled`,
+ * which its build copies from this file into the server bundle, so every
+ * vendored copy holds the words of the day it was built. Changing them sends
+ * a cancel to those copies as `access_denied` until each app re-vendors.
+ *
+ * The file imports nothing, so the library's build can read it.
+ */
+const DENIAL_DESCRIPTIONS = {
+    cancelled: "the person cancelled the sign-in",
+};
+
+/**
  * The errors the Ward half throws, shaped like `client/`'s so an app moving
  * off that package keeps its `instanceof` checks.
  */
@@ -10968,9 +10985,13 @@ async function createWardClient(options) {
 /**
  * Map whatever the round trip threw to the code the browser is told.
  *
- * - The provider's own `error` (`access_denied` for no grant, a disabled
- *   account or "Back to the app"; anything else it may send) passes through,
- *   if it looks like an OAuth error code.
+ * - "Back to the app" at Ward: `cancelled`. Ward answers it with
+ *   `access_denied`, as it does a refusal, and tells the two apart in the
+ *   description, which is compared with Ward's own constant
+ *   (`api/src/oidc/denials.ts`) rather than matched as text.
+ * - The provider's own `error` otherwise (`access_denied` for no grant or a
+ *   disabled account; anything else it may send) passes through, if it looks
+ *   like an OAuth error code.
  * - Ward unreachable, or answering outside the protocol: `ward_unavailable`.
  * - Ward refusing the client credential: `ward_misconfigured`.
  * - Everything about the response itself — a `state`, `nonce` or `iss` that
@@ -10987,6 +11008,9 @@ function signInErrorFor(error) {
         return new WardSignInError("ward_unavailable", error.message, { cause: error });
     }
     if (error instanceof AuthorizationResponseError) {
+        if (error.error === "access_denied" && error.error_description === DENIAL_DESCRIPTIONS.cancelled) {
+            return new WardSignInError("cancelled", "the sign-in was cancelled at Ward", { cause: error });
+        }
         const code = /^[a-z_]{1,64}$/.test(error.error) ? error.error : "ward_error";
         return new WardSignInError(code, `Ward answered ${code}`, { cause: error });
     }

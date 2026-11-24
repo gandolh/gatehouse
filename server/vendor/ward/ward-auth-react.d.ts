@@ -1,4 +1,4 @@
-// ward-auth 1.1.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
+// ward-auth 1.2.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
 // MIT licensed; see LICENSE beside this file. Do not edit a vendored copy: copy a newer build in.
 /**
  * The browser half, without React: a small client for the plugin's routes and
@@ -38,9 +38,12 @@ interface WardStatus {
  *
  * The Ward codes, and where they appear:
  *
- * - `access_denied` — Ward said no: no grant for this app, a disabled
- *   account, or the person pressed "Back to the app". (Ward may send other
- *   OAuth error codes; they pass through as they are.)
+ * - `access_denied` — Ward said no: no grant for this app, or a disabled
+ *   account. (Ward may send other OAuth error codes; they pass through as
+ *   they are.)
+ * - `cancelled` — the person pressed "Back to the app" at Ward (1.2.0; before
+ *   it, a cancel arrived as `access_denied`). Nothing went wrong, so a quiet
+ *   word or none at all fits.
  * - `ward_unavailable` — Ward could not be reached. Also a session `reason`:
  *   a Ward-originated session is refused while Ward cannot vouch for it.
  *   Suggested words: "Ward is unreachable, sign in with your password".
@@ -66,7 +69,7 @@ interface WardStatus {
  *   reauthentication (`reauthenticate()`) from the last ten minutes. A plain
  *   Ward sign-in does not count, however recent.
  */
-type AuthErrorCode = "invalid_request" | "invalid_credentials" | "invalid_username" | "password_too_short" | "password_too_long" | "username_taken" | "too_many_attempts" | "unauthorized" | "forbidden" | "cross_site" | "network" | "unknown" | "access_denied" | "ward_unavailable" | "ward_misconfigured" | "ward_session_ended" | "invalid_callback" | "sign_in_failed" | "already_linked" | "ward_account_in_use" | "ward_account_mismatch" | "not_linked" | "no_local_password" | "reauthentication_required" | (string & {});
+type AuthErrorCode = "invalid_request" | "invalid_credentials" | "invalid_username" | "password_too_short" | "password_too_long" | "username_taken" | "too_many_attempts" | "unauthorized" | "forbidden" | "cross_site" | "network" | "unknown" | "access_denied" | "cancelled" | "ward_unavailable" | "ward_misconfigured" | "ward_session_ended" | "invalid_callback" | "sign_in_failed" | "already_linked" | "ward_account_in_use" | "ward_account_mismatch" | "not_linked" | "no_local_password" | "reauthentication_required" | (string & {});
 interface AuthError {
     code: AuthErrorCode;
     /** The HTTP status, when there was a response. */
@@ -291,8 +294,9 @@ declare function useWardResult(options?: HookOptions): WardResult & {
  *
  * When Ward sends the person back with a failure, the page loads with
  * `?ward_error=<code>` and `error` starts as that: `access_denied` (no grant,
- * a disabled account, or they pressed "Back to the app"), `invalid_callback`,
- * `ward_unavailable`, `sign_in_failed`. `reset()` dismisses it. Show the button only when
+ * or a disabled account), `cancelled` (they pressed "Back to the app", 1.2.0),
+ * `invalid_callback`, `ward_unavailable`, `sign_in_failed`. `reset()`
+ * dismisses it. Show the button only when
  * `useSession().ward.enabled`.
  *
  * `returnTo` (0.7.0) is the `returnTo` that failed attempt was started with,
@@ -312,7 +316,7 @@ declare function useWardSignIn(options?: HookOptions): ActionState & {
  * `too_many_attempts` (with `retryAfterSeconds`), `already_linked` or
  * `no_local_password`, when the server refuses the start. After Ward the
  * settings page loads with `linked` true, or with `error` set to
- * `already_linked`, `ward_account_in_use`, `access_denied`,
+ * `already_linked`, `ward_account_in_use`, `access_denied`, `cancelled`,
  * `invalid_callback`, `sign_in_failed` or `unauthorized` (the session that
  * started the link had ended). Show it, with a password field, when
  * `useSession().ward.enabled && !ward.linked`.
@@ -343,7 +347,7 @@ declare function useWardUnlink(options?: HookOptions): ActionState & {
  * count, however recent, so offer `reauthenticate()` first, or on
  * `reauthentication_required`. A failed reauthentication lands on settings
  * with `?ward_error=` (`invalid_callback`, `ward_account_mismatch`,
- * `access_denied`, `sign_in_failed`), which `useWardResult` reads; this
+ * `access_denied`, `cancelled`, `sign_in_failed`), which `useWardResult` reads; this
  * hook's `error` does not. Other errors: `invalid_credentials`,
  * `password_too_short`, `password_too_long`, `too_many_attempts`.
  */

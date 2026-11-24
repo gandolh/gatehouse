@@ -1,4 +1,4 @@
-// ward-auth 1.1.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
+// ward-auth 1.2.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
 // MIT licensed; see LICENSE beside this file. Do not edit a vendored copy: copy a newer build in.
 import { useState, useCallback, useSyncExternalStore, useEffect } from 'react';
 
@@ -455,8 +455,9 @@ function useWardResult(options) {
  *
  * When Ward sends the person back with a failure, the page loads with
  * `?ward_error=<code>` and `error` starts as that: `access_denied` (no grant,
- * a disabled account, or they pressed "Back to the app"), `invalid_callback`,
- * `ward_unavailable`, `sign_in_failed`. `reset()` dismisses it. Show the button only when
+ * or a disabled account), `cancelled` (they pressed "Back to the app", 1.2.0),
+ * `invalid_callback`, `ward_unavailable`, `sign_in_failed`. `reset()`
+ * dismisses it. Show the button only when
  * `useSession().ward.enabled`.
  *
  * `returnTo` (0.7.0) is the `returnTo` that failed attempt was started with,
@@ -488,7 +489,7 @@ function useWardSignIn(options) {
  * `too_many_attempts` (with `retryAfterSeconds`), `already_linked` or
  * `no_local_password`, when the server refuses the start. After Ward the
  * settings page loads with `linked` true, or with `error` set to
- * `already_linked`, `ward_account_in_use`, `access_denied`,
+ * `already_linked`, `ward_account_in_use`, `access_denied`, `cancelled`,
  * `invalid_callback`, `sign_in_failed` or `unauthorized` (the session that
  * started the link had ended). Show it, with a password field, when
  * `useSession().ward.enabled && !ward.linked`.
@@ -542,7 +543,7 @@ function useWardUnlink(options) {
  * count, however recent, so offer `reauthenticate()` first, or on
  * `reauthentication_required`. A failed reauthentication lands on settings
  * with `?ward_error=` (`invalid_callback`, `ward_account_mismatch`,
- * `access_denied`, `sign_in_failed`), which `useWardResult` reads; this
+ * `access_denied`, `cancelled`, `sign_in_failed`), which `useWardResult` reads; this
  * hook's `error` does not. Other errors: `invalid_credentials`,
  * `password_too_short`, `password_too_long`, `too_many_attempts`.
  */

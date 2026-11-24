@@ -1,4 +1,4 @@
-// ward-auth 1.1.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
+// ward-auth 1.2.0 — built from https://github.com/gandolh/ward-auth (shared-library/).
 // MIT licensed; see LICENSE beside this file. Do not edit a vendored copy: copy a newer build in.
 import { FastifyRequest, preHandlerAsyncHookHandler, FastifyPluginAsync } from 'fastify';
 
