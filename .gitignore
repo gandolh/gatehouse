@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-ssr/
+coverage/
+*.tsbuildinfo
+*.log
+*.local
+
+# Settings and secrets live in .env, never in git
+.env
+.env.*
+!.env.example
+
+# The API's data folder (GATEHOUSE_DATA_DIR's default)
+data/

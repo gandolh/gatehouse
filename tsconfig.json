@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // The packages `tsc -b` builds. The page has its own tsconfig, checked with `tsc -p web --noEmit`.
+  "files": [],
+  "references": [{ "path": "shared" }, { "path": "server" }]
+}

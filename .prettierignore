@@ -1,0 +1,18 @@
+# Markdown stays out of Prettier (the estate's call, 2026-11-10).
+*.md
+
+# The generated house-style copy.
+vendor/house-style/
+
+# The approved design, kept as exported and read only.
+design/
+
+# Lockfile, build output, local data.
+package-lock.json
+dist/
+dist-ssr/
+data/
+coverage/
+
+# The card list keeps its hand layout until the card-list work formats it and drops this line.
+content/cards.json
