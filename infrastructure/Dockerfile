@@ -1,0 +1,123 @@
+# Gatehouse's API (Fastify + SQLite): Sign in with Ward and the owner's cards.
+#
+# Build context is the REPO ROOT (one root lockfile covers shared, server and
+# web). Multi-stage: the TypeScript compiler and the native build toolchain
+# live in build stages and never reach the runtime image. The page is a static
+# site that the deploy builds and Caddy serves; it is not in this image. The
+# card list is: the owner route reads it once at start.
+#
+#   docker compose -f infrastructure/docker-compose.yml up -d
+#
+# ── Why this container runs as root ─────────────────────────────────────────
+#
+# On the VPS this runs under a ROOTLESS Docker daemon owned by an unprivileged
+# account, where the container's uid 0 maps to that account's own uid on the
+# host, so "root" here is already a normal unprivileged user out there.
+#
+# It has to be uid 0 because /data is a BIND MOUNT of the host's data
+# directory, which holds the sessions and the users Ward's sign-in made. Under
+# rootless Docker only container-root maps back to the owning account; a
+# non-root in-container user maps to a subuid the host sees as a stranger, and
+# the service could not write its own database.
+
+# ---------------------------------------------------------------------------
+# deps: the server's install, with the toolchain native modules may need
+# ---------------------------------------------------------------------------
+# Every stage uses one exact base. A floating `node:24-alpine` follows the tag on
+# the day of the build, so the box ends up holding several bases and every cache
+# entry keyed on the old one goes dead; the estate moves to a new patch in one
+# sweep instead.
+FROM node:24.22.1-alpine AS deps
+# better-sqlite3 13 ships Node-API prebuilds including linuxmusl-x64, so this is
+# a fallback rather than the normal path.
+RUN apk add --no-cache python3 make g++
+WORKDIR /app
+# Manifests first, for layer caching: one root lockfile, one npm ci. Every
+# workspace manifest is needed because `npm ci` validates the lockfile against
+# every workspace the root package.json declares and bails on a missing one.
+COPY package.json package-lock.json .npmrc tsconfig.base.json ./
+COPY shared/package.json ./shared/
+COPY server/package.json ./server/
+COPY web/package.json ./web/
+# Scoped to the server (shared comes with it) plus the root's dev dependencies,
+# where typescript is: this stage only runs tsc, so the page's tree would be
+# installed for nothing.
+RUN npm ci -w @gatehouse/server --include-workspace-root
+
+# ---------------------------------------------------------------------------
+# builder: compile shared and the server (tsc -b → shared/dist, server/dist)
+# ---------------------------------------------------------------------------
+FROM deps AS builder
+COPY shared ./shared
+COPY server ./server
+# server/tsconfig.json references shared, so this builds both, in order.
+RUN npx tsc -b server
+
+# ---------------------------------------------------------------------------
+# proddeps: runtime dependencies only, native modules built here
+# ---------------------------------------------------------------------------
+FROM node:24.22.1-alpine AS proddeps
+RUN apk add --no-cache python3 make g++
+WORKDIR /app
+COPY package.json package-lock.json .npmrc ./
+COPY shared/package.json ./shared/
+COPY server/package.json ./server/
+COPY web/package.json ./web/
+# Scoped to the server workspace: the page's React tree is never run here.
+RUN npm ci --omit=dev -w @gatehouse/server --include-workspace-root \
+ && mkdir -p shared/node_modules server/node_modules
+# Drop native build intermediates and the prebuilds for operating systems this
+# image can never be. A BLACKLIST of foreign platforms on purpose:
+# better-sqlite3 ships prebuilds as FILES (`prebuilds/linuxmusl-x64.node`), and
+# a whitelist of names would delete all of them.
+RUN cd node_modules \
+ && find . -name '*.o' -delete \
+ && find . -type d -name obj.target -prune -exec rm -rf {} + \
+ && rm -rf better-sqlite3/deps better-sqlite3/src \
+ && find . -type d -name prebuilds -exec sh -c \
+      'rm -f "$1"/darwin-*.node "$1"/win32-*.node "$1"/android-*.node' _ {} \;
+
+# ---------------------------------------------------------------------------
+# prod: slim runtime: no compiler, no test code, no TypeScript
+# ---------------------------------------------------------------------------
+FROM node:24.22.1-alpine AS prod
+LABEL org.opencontainers.image.title="gatehouse" \
+      org.opencontainers.image.description="Gatehouse API: the owner's cards behind Sign in with Ward"
+# wget, for the healthcheck below, ships in node:alpine's busybox.
+WORKDIR /app
+COPY --from=proddeps /app/node_modules ./node_modules
+# Today every workspace's dependencies hoist to the root; the mkdir above makes
+# these copies safe either way, should a later lockfile nest one.
+COPY --from=proddeps /app/shared/node_modules ./shared/node_modules
+COPY --from=proddeps /app/server/node_modules ./server/node_modules
+COPY package.json ./
+# node_modules/@gatehouse/shared is a symlink to ../shared, so shared must sit
+# at /app/shared with its manifest and compiled output.
+COPY shared/package.json ./shared/
+COPY --from=builder /app/shared/dist ./shared/dist
+COPY server/package.json ./server/
+COPY --from=builder /app/server/dist ./server/dist
+# The vendored ward-auth library: the server imports it by relative path
+# (../vendor/ward/ward-auth.js from dist), so it sits beside dist.
+COPY server/vendor ./server/vendor
+# The card list, where the server finds it by default: content/cards.json under
+# /app, the repo root's place in the image. Only the JSON: the pictures are the
+# page's, and the page's build fingerprints them.
+COPY content/cards.json ./content/cards.json
+# tsc compiles src/**/* including the tests and their helpers. They import a
+# runner that --omit=dev never installed, so shipping them is dead weight. The
+# helpers are src/testing/; nothing the server runs imports it.
+RUN find ./server/dist ./shared/dist \( -name '*.test.js' -o -name '*.test.js.map' -o -name '*.test.d.ts' \) -delete \
+ && rm -rf ./server/dist/testing
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=8815 \
+    GATEHOUSE_DATA_DIR=/data
+# The sessions and the users Ward's sign-in made (gatehouse.sqlite). A BIND
+# MOUNT on the VPS, so it survives every deploy.
+VOLUME /data
+EXPOSE 8815
+# Shell form, so it follows the runtime PORT rather than a baked constant.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+  CMD wget -qO- "http://127.0.0.1:${PORT}/v1/health" || exit 1
+CMD ["node", "server/dist/server.js"]

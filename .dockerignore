@@ -1,0 +1,33 @@
+# What the image build never needs. The Dockerfile copies only package
+# manifests, tsconfig.base.json, shared/ and server/ (and web/package.json),
+# and content/cards.json.
+#
+# Compiled output and build state are left out so the build always compiles
+# from source: a stale tsconfig.tsbuildinfo would let `tsc -b` skip emitting.
+**/node_modules
+**/dist
+**/dist-ssr
+**/*.tsbuildinfo
+**/coverage
+
+# Secrets and the local database
+.env
+.env.*
+infrastructure/.env
+data
+
+# The card list's pictures are the page's; only the list itself goes in.
+content/**
+!content/cards.json
+
+# Not part of the image
+.git
+.claude
+corpus
+design
+docs
+scripts
+vendor
+web/src
+web/scripts
+web/index.html
