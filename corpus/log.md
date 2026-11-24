@@ -52,3 +52,16 @@ and its See more text still work with scripting off. What changed:
   component, the answer's schema in `shared`), 07 (no Ward React hooks; the answer's schema). 08
   and 09 were checked and needed nothing.
 - vps-deploy's brief 34 now names the page as a React page rendered at build time.
+
+## [2026-11-24] done | Brief 01: the skeleton and the house-style harness
+
+Built for the React page after the stack change: the three workspaces with the house-style 1.3.0
+harness (`check-base-ui` strict from the start), the API's settings, error plugin and
+`GET /v1/health`, and a placeholder page in React on Vite, prerendered into `web/dist/index.html`
+and hydrated. Step 1 settled the open question on a scratch app: `base: "/gatehouse/"` puts every
+file the page loads under `/gatehouse/`, the SSR render names the client build's files, and no
+`public/` folder is needed. The preview needs the base too, so it applies to the build and the
+preview, and the preview shows the page at `/gatehouse/`. The build ends with a path check that
+fails on any URL outside the prefix. Node 24.2 is the floor, for `import.meta.main`. Open: the
+vendored house-style LICENSE holds the account name, asked on the board. Findings in
+[wiki/architecture.md](wiki/architecture.md) and [wiki/open-questions.md](wiki/open-questions.md).

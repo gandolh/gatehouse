@@ -1,23 +1,27 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. Nothing built; the repo holds the approved design, the card list, the corpus and briefs 01-09. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton is built (brief 01): the workspaces, the harness, the API's health route and a placeholder page prerendered with its files under /gatehouse/; the rest is not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
 updated: 2026-11-24
 ---
 
 # Status
 
-_2026-11-24._ **Nothing is built.** The repo holds the approved design (`design/`), the card list
-(`content/cards.json` and 25 pictures), this corpus, and briefs 01 to 09. It has no remote.
+_2026-11-24._ **The skeleton is built** (brief 01). Beside it the repo holds the approved design
+(`design/`), the card list (`content/cards.json` and 25 pictures), this corpus, and briefs 02 to 09.
+It has no remote.
 
 ## By area
 
-- **Skeleton and harness**: brief 01's first run stopped before its first commit on 2026-11-24,
-  when the page moved from Astro to React; its uncommitted work is in the tree for the next run.
+- **Skeleton and harness**: done 2026-11-24 (brief 01). Three workspaces and the house-style 1.3.0
+  harness (`npm run check` green, `check-base-ui` strict); the API's settings and `GET /v1/health`;
+  a placeholder React page, prerendered at build time, whose files the path check holds under
+  `/gatehouse/`. One question on the board: the vendored house-style LICENSE holds the account
+  name.
 - **The card list**: seeded from the sketches' fixture, 38 cards in 5 sections, 4 in the owner part
   ([card-list.md](card-list.md)). No schema yet; the Mercatus picture still shows the old brand, and
   no access label has been checked against the live site (brief 02).
-- **The page**: a React page on Vite, rendered at build time. Profile (brief 03), the look
-  switcher and Terminal (brief 04), Ninety-six (brief 05). Not started; the sketches in `design/`
-  are the spec.
+- **The page**: a React page on Vite, rendered at build time; a placeholder heading so far. Profile
+  (brief 03), the look switcher and Terminal (brief 04), Ninety-six (brief 05). Not started; the
+  sketches in `design/` are the spec.
 - **The owner part**: drawn against a fake API in brief 06, served by the API in brief 07, wired to
   Ward in brief 08. Not started.
 - **README and docs**: brief 09.

@@ -186,3 +186,31 @@ Exact, the estate's (Lantern, Gazette, and the first run's checks on 2026-11-24)
 - Settled 2026-11-24 (the owner): React instead of Astro. The page is rendered at build time and
   hydrated ([decisions.md](../../wiki/decisions.md)).
 - Settled 2026-11-24 (this run): Tailwind 4, as the estate's other sites use it.
+
+## Outcome
+
+_Done 2026-11-24, on the board at Done (nothing deploys before vps-deploy's brief 34)._
+
+- **Step 1.** On a scratch app (React 19.2.8, Vite 8.3.5, a `@fontsource` font, two pictures in a
+  `srcSet`, an icon linked from `index.html`, a dynamic `import()` with its own CSS), `base:
+  "/gatehouse/"` put every file the page loads under `/gatehouse/`, with no `renderBuiltUrl`. The
+  SSR render named the client build's files; `dist/` held `index.html` and `assets/`; no `public/`
+  folder was needed. The URL list is in [architecture.md](../../wiki/architecture.md), Addresses.
+- **The preview** needs the base too: with the base for the build only, `vite preview` served the
+  page's files as `index.html`. So the base is `/gatehouse/` when `command` is `build` or
+  `isPreview` is set (`web/vite.config.ts`), and the preview shows the page at
+  `http://localhost:4182/gatehouse/` and redirects `/` there. `publicDir` is off.
+- **Built:** the workspaces and the house-style 1.3.0 harness, `check-base-ui` strict; the API's
+  settings, error plugin and `GET /v1/health` (bare and prefixed); the placeholder page
+  (`App.tsx`, `main.tsx` hydrating, `entry-server.tsx`), `web/scripts/prerender.ts` and
+  `web/scripts/check-paths.ts` with its test. 24 tests.
+- **Deviations:** the base also in the preview (above); knip names `src/entry-server.tsx` as an
+  entry, since it doesn't read `vite build --ssr <file>`; `web/tsconfig.json` takes the `node`
+  types and `allowImportingTsExtensions` for the build scripts, which Node runs as TypeScript;
+  `engines` is Node 24.2 or later, where `import.meta.main` arrived; `content/cards.json` stays out
+  of Prettier until brief 02 formats it; `corpus/index.md` regenerated.
+- **Open:** `vendor/house-style/LICENSE` carries the account name, so the acceptance's `git grep`
+  finds it beside `content/cards.json`. It is the generated copy, so it stays; asked on the board.
+- **Checks:** `npm run check` exit 0; the build with and without `GATEHOUSE_ORIGIN`; dev and the
+  preview in headless Chrome (heading with scripting off, no hydration error with it on, a planted
+  mismatch caught). Not run: `npm start`, the preview's proxy, `strictPort` on 4182.
