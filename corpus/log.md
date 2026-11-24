@@ -151,3 +151,11 @@ with a live session and Ward down, the owner route answers 401 with `reason: war
 the page now shows the Ward unreachable words with Try again and Sign out and keeps the hint, where it used to drop
 it without a word. A cancel at Ward reads as the refusal (both arrive as `access_denied`). Ready for deploy with
 vps-deploy's brief 34. Findings in [wiki/sign-in.md](wiki/sign-in.md).
+
+## [2026-11-24] build | Brief 09: the README and docs
+
+Wrote `README.md` and `docs/` (an index, getting-started, architecture with a Mermaid flow, design) to the readme-docs
+standard, linking `docs/owner-setup.md` and the walk on `wiki/sign-in.md`. Four webp shots in `docs/images/` (Profile
+light as the hero, Terminal dark on a phone, Ninety-six light, the owner signed in), taken from the dev page with the
+fake API, with `shots.md` for retaking them. The header's wordmark shows in the shots: it is `content/cards.json`'s
+accepted exception. Done on the board: nothing deploys before vps-deploy's brief 34.

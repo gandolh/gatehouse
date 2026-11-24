@@ -1,5 +1,5 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part's page side, built against a fake API, was approved by the owner (brief 06); the owner API with Sign in with Ward only, the owner route, its container and docs/owner-setup.md are built (brief 07); the page and the API were walked together against the local Ward, every state matching, and wait at Ready for deploy (brief 08); the README is not started. Each area with the brief that builds it; what waits outside the repo (vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part's page side, built against a fake API, was approved by the owner (brief 06); the owner API with Sign in with Ward only, the owner route, its container and docs/owner-setup.md are built (brief 07); the page and the API were walked together against the local Ward, every state matching, and wait at Ready for deploy (brief 08); the README and docs are written (brief 09). Each area with the brief that builds it; what waits outside the repo (vps-deploy's brief 34 for the first deploy); the owner's steps in order.
 updated: 2026-11-24
 ---
 
@@ -37,7 +37,7 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
   and one with none, Ward down with and without a live session. Every state matched brief 06's screens; a 401 whose
   `reason` says Ward couldn't vouch for the session now reads as Ward unreachable with the hint kept
   ([sign-in.md](sign-in.md)). Ready for deploy, with vps-deploy's brief 34.
-- **README and docs**: brief 09.
+- **README and docs**: done 2026-11-24 (brief 09): `README.md`, `docs/` (getting started, architecture, design, an index) and four shots in `docs/images/` taken from the page with the fake API.
 - **Deploy**: vps-deploy's brief 34 serves the page at `/`, its files, the API and checks the card
   list against the stacks. Written 2026-11-24, not built; its spec is `docs/owner-setup.md` (brief 07).
 

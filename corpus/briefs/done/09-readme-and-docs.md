@@ -57,3 +57,11 @@ What Gatehouse is: [overview.md](../../wiki/overview.md). How it is built:
 ## Owner decisions
 
 - None new.
+
+## Outcome (2026-11-24)
+
+Built as written. `README.md`, `docs/README.md`, `getting-started.md`, `architecture.md` (one Mermaid diagram), `design.md`
+and `images/shots.md` plus four webp shots (hero Profile light 1280 x 800, Terminal dark 390 x 844, Ninety-six light,
+the owner part signed in from the fake API). `owner-setup.md` is unchanged and linked from the docs index. The shots show
+the wordmark from `content/cards.json`, the repo's accepted exception. No LICENSE file exists, so the README says all
+rights reserved. Not deployed; ends at Done.
