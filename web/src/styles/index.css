@@ -1,0 +1,5 @@
+/* The page's one stylesheet: Tailwind, and later the looks' and modes' tokens. */
+@import "tailwindcss";
+
+/* Tailwind scans the repo for class names; the vendored house-style copy holds none of the page's. */
+@source not "../../../vendor";
