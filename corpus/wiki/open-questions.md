@@ -1,5 +1,5 @@
 ---
-summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner at brief 06's Ready for test - the look switcher, the footer's Owner sign-in and the owner part's states, all drawn on 2026-11-24, and the footer's layout. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (answered by 03: no, so See more is a hand-built disclosure), and, dropped once brief 07 answered it on sign-in.md, whether Ward's library runs with no local account (yes) and the admin role arrives through the grant (yes, copied once at the first sign-in).
+summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste answered 2026-11-24: the owner approved brief 06's screens (the look switcher, the footer's Owner sign-in, the owner part's states), and the footer stays stacked. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (answered by 03: no, so See more is a hand-built disclosure), and, dropped once brief 07 answered it on sign-in.md, whether Ward's library runs with no local account (yes) and the admin role arrives through the grant (yes, copied once at the first sign-in).
 updated: 2026-11-24
 ---
 
@@ -7,13 +7,10 @@ updated: 2026-11-24
 
 ## Taste, for the owner
 
-- **The look switcher.** Drawn plainly in each look by brief 04 (a row of buttons in the footer);
-  the owner judges it with brief 06's screens.
-- **The sign-in entry.** Drawn by brief 06 (2026-11-24): Owner sign-in as each look's quiet button
-  after the switcher, and the owner part's states ([owner-part.md](owner-part.md)). The owner
-  judges them at Ready for test.
-- **The footer's layout.** Every look stacks the footer's line, GitHub and the row of the switcher
-  and the sign-in; sketches B and C put GitHub on the right. Judged with the same screens.
+Answered 2026-11-24: the owner approved the design after judging brief 06's screens (every state in the
+three looks). The look switcher (a row of buttons in the footer), the Owner sign-in entry as each look's
+quiet button after it, the owner part's states ([owner-part.md](owner-part.md)) and the stacked footer
+stay as built. Sketches B and C's footer (GitHub on the right) was not taken.
 
 ## Technical, checked by the brief that meets them
 

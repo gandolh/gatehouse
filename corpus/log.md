@@ -131,3 +131,11 @@ no grant, so the stuck case is a first sign-in under another role). ward-auth 1.
 three owner cards with their links resolved against `PUBLIC_ORIGIN`. The container (`gatehouse-api` on 127.0.0.1:8815,
 data at `/data`), not built here; `docs/owner-setup.md` is vps-deploy's spec. The open question on Ward-only
 sign-in is closed. Findings in [wiki/sign-in.md](wiki/sign-in.md).
+
+## [2026-11-24] decision | The owner approved the design; vendored Ward joins the naming exceptions
+
+The owner approved brief 06's screens: the look switcher, the Owner sign-in entry, the owner part's states and the
+stacked footer stay as built ([open-questions.md](wiki/open-questions.md)). Brief 07's board question answered by
+the controller: `server/vendor/ward/` joins `CLAUDE.md`'s exceptions to the no-account-names rule, because its
+banners and LICENSE name the library's source repo and its SHA256SUMS keep the copy byte-identical, as in every
+other app that vendors it.
