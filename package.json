@@ -10,7 +10,7 @@
     "web"
   ],
   "engines": {
-    "node": ">=24"
+    "node": ">=24.2"
   },
   "scripts": {
     "dev": "tsc -b shared && concurrently --names types,server,web --kill-others-on-fail \"tsc -b shared --watch --preserveWatchOutput\" \"npm run dev -w @gatehouse/server\" \"npm run dev -w @gatehouse/web\"",
