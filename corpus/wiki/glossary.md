@@ -20,8 +20,8 @@ _Avoid:_ status, badge.
 **Part:** which visitors see a card at all: `public` or `owner`. Separate from the access label.
 _Avoid:_ visibility, access (that is the label).
 
-**Owner part:** the cards that appear only after the owner signs in with Ward: the vault, Grafana,
-the mail admin and brief-board. They come from the API, never from the public HTML.
+**Owner part:** the cards that appear only after the owner signs in with Ward: the vault, the mail
+admin and brief-board. They come from the API, never from the public HTML.
 _Avoid:_ private cards, admin cards.
 
 **Owner hint:** `gatehouse.owner` in localStorage. While it is set, the page asks the API for the

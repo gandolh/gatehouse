@@ -403,18 +403,6 @@
           "source": "https://github.com/gandolh/just-a-bot"
         },
         {
-          "id": "grafana",
-          "name": "Grafana",
-          "href": "host:grafana",
-          "access": "owner",
-          "part": "owner",
-          "image": null,
-          "blurb": "Charts of the server: requests, memory, containers.",
-          "more": "Prometheus collects the numbers and Grafana draws them.",
-          "docs": null,
-          "source": null
-        },
-        {
           "id": "vault",
           "name": "Vault",
           "href": "host:vault",

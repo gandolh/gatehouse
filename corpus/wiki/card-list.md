@@ -55,8 +55,9 @@ fields (`updated`, `expandedInSketch`, a note), plus `part`. The schema in `shar
 
 They answer two questions. The access label tells a visitor what happens when they open the card;
 the part decides whether a visitor sees the card at all. ImbatranimOS is labelled Owner only (a
-visitor gets its sign-in screen) but it is in the public part. The owner part is exactly four
-cards, all in Behind the scenes: `brief-board`, `grafana`, `vault`, `mail`. Their names are public
+visitor gets its sign-in screen) but it is in the public part. The owner part is exactly three
+cards, all in Behind the scenes: `brief-board`, `vault`, `mail` (`grafana` was removed on
+2026-11-24, when monitoring left the box). Their names are public
 anyway, in the certificate transparency logs; the split keeps them off the page, not secret.
 
 ## Filters
@@ -140,7 +141,6 @@ their sign-in screen. No card answered with a 404 or an error.
 | `brief-board` | `/brief-board/` | Redirect to sign-in (account or Ward) | owner | owner |
 | `status` | `uptime.` | The health dashboard | open | open |
 | `just-a-bot` | `/just-a-bot/docs/` | The docs | docs | docs |
-| `grafana` | `grafana.` | Wakes on demand, then its sign-in | owner | owner |
 | `vault` | `vault.` | Its log-in screen | owner | owner |
 | `mail` | `mail.` | The mail admin's sign-in | owner | owner |
 

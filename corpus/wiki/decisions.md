@@ -11,8 +11,8 @@ owner's, in the grill of 2026-11-23; the rest are technical calls from the plan 
 reported to the owner, except the React page, which was the owner's call that day.
 
 ## The owner's hosts show only after Sign in with Ward, from an API
-_2026-11-23, owner._ Visitors see the public list. The owner-only hosts (the vault, Grafana, the mail
-admin, brief-board) appear only after the owner signs in with Ward, and they come from a small API,
+_2026-11-23, owner._ Visitors see the public list. The owner-only hosts (the vault, the mail admin,
+brief-board; Grafana until monitoring left the box on 2026-11-24) appear only after the owner signs in with Ward, and they come from a small API,
 never from the public HTML.
 Rejected: a page for visitors only (the owner wants one place for both), and a public launcher that
 lists everything (it tells strangers what to aim at).

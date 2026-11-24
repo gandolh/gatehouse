@@ -12,7 +12,7 @@ Ready for test so the owner judges the screens.
 
 ## Context
 
-Four cards (the vault, Grafana, the mail admin, brief-board) are the owner part: they show only
+Three cards (the vault, the mail admin, brief-board) are the owner part: they show only
 after the owner signs in with Ward, and they come from the API, never from the public HTML
 ([decisions.md](../../wiki/decisions.md)). The flow, the owner hint and the API calls are in
 [architecture.md](../../wiki/architecture.md), "The owner part". The real API arrives in brief 07;

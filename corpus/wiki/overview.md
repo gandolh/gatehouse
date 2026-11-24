@@ -47,7 +47,7 @@ The approved sketches and their token tables are in the repo's `design/` folder.
 
 ## The owner part
 
-Four cards (the vault, Grafana, the mail admin and brief-board) are for the owner alone. They are
+Three cards (the vault, the mail admin and brief-board) are for the owner alone. They are
 never in the public HTML. After the owner signs in with Ward from the footer, the page asks the API
 for them and adds them to Behind the scenes. How that works: [architecture.md](architecture.md).
 

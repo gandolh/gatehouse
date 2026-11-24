@@ -86,3 +86,11 @@ The open question is answered: Base UI's Collapsible can't show its text without
 hand-built disclosure. Geist comes from the variable Fontsource packages, so headings draw at 650 where the renders
 drew 700. Findings in [wiki/page.md](wiki/page.md).
 
+
+## [2026-11-24] change | The Grafana card leaves the card list
+
+The owner took monitoring (Prometheus, Grafana and the exporters) off the box on 2026-11-24, until a
+stronger machine exists (vps-deploy's briefs 35 and 36). The `grafana` card, one of the four
+owner-part cards, would point at a host the box no longer serves, and vps-deploy's card check would
+flag it. It is gone from `content/cards.json`: 37 cards, and the owner part is brief-board, the vault
+and the mail admin. The tests, card-list.md, overview, decisions, glossary and brief 06 follow.

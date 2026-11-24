@@ -12,20 +12,20 @@ const list = loadCards(cardsFile.pathname);
 const all = list.sections.flatMap((section) => section.cards);
 
 describe("the card list", () => {
-  it("validates and holds 38 cards in 5 sections", () => {
+  it("validates and holds 37 cards in 5 sections", () => {
     expect(list.sections).toHaveLength(5);
-    expect(all).toHaveLength(38);
+    expect(all).toHaveLength(37);
   });
 
   it("has unique ids", () => {
     expect(new Set(all.map((card) => card.id)).size).toBe(all.length);
   });
 
-  it("puts exactly brief-board, grafana, vault and mail in the owner part, all in estate", () => {
+  it("puts exactly brief-board, vault and mail in the owner part, all in estate", () => {
     const owner = ownerCards(list).map((card) => card.id);
-    expect(owner.toSorted()).toEqual(["brief-board", "grafana", "mail", "vault"]);
+    expect(owner.toSorted()).toEqual(["brief-board", "mail", "vault"]);
     const estate = list.sections.find((section) => section.id === "estate");
-    expect(estate?.cards.filter((card) => card.part === "owner")).toHaveLength(4);
+    expect(estate?.cards.filter((card) => card.part === "owner")).toHaveLength(3);
     expect(publicCards(list).flatMap((section) => section.cards)).toHaveLength(34);
   });
 
