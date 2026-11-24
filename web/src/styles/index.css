@@ -1,5 +1,168 @@
-/* The page's one stylesheet: Tailwind, and later the looks' and modes' tokens. */
+/* Hallmark · theme: profile (by request; DESIGN.md is the locked system) · genre: modern-minimal · modes: light+dark · posture: restrained · surface: tinted · data: the card list */
+/* Hallmark · pre-emit critique: P3 H4 E4 S3 R5 V3 · weakest: S, a profile README grown into a page is familiar by design; the pictures are the signature, so they get the full card width and nothing decorates them */
+
+/* The page's one stylesheet (base-ui rule 5). The layer order comes first: the first @layer statement fixes the order
+   for the whole page. */
+@layer theme, base, vendor, components, utilities;
+
 @import "tailwindcss";
+
+/* Profile's fonts, self-hosted from @fontsource, in the vendor layer (after base, so the page's own rules win). A
+   browser downloads a face only when rendered text uses it, so a look's fonts load only in that look. */
+@import "@fontsource-variable/geist/wght.css" layer(vendor);
+@import "@fontsource-variable/geist-mono/wght.css" layer(vendor);
 
 /* Tailwind scans the repo for class names; the vendored house-style copy holds none of the page's. */
 @source not "../../../vendor";
+
+/* dark: follows the mode control (base-ui rule 14), never the system alone: Dark always, System only while the system
+   is dark. data-theme holds the mode; the page says "mode". */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where([data-theme="system"], [data-theme="system"] *) {
+      @slot;
+    }
+  }
+}
+
+/* One variant per look, from data-look on <html>. A look's skin is these variants on the components' classes; an
+   element only one look draws is `hidden` with that look's variant showing it. */
+@custom-variant profile (&:where([data-look="profile"], [data-look="profile"] *));
+@custom-variant terminal (&:where([data-look="terminal"], [data-look="terminal"] *));
+@custom-variant ninety-six (&:where([data-look="ninety-six"], [data-look="ninety-six"] *));
+
+/* scripted: the head script ran. What works only with scripts (the mode control, the filters, See more's button) shows
+   under it, and what must show without them (See more's text) hides under it until opened. */
+@custom-variant scripted (&:where([data-scripted], [data-scripted] *));
+
+/* Profile's tokens are the defaults (DESIGN.md has every look's). Names say a role, never a value (base-ui rule 6).
+   light-dark() holds both modes; color-scheme on <html> (the base layer below) picks one. */
+@theme {
+  /* Tailwind's own scales are cleared, so a stray bg-red-500 or text-sm produces nothing. */
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --breakpoint-*: initial;
+  --container-*: initial;
+
+  --color-ground: light-dark(#e5e8ee, #0d0f13);
+  --color-surface: light-dark(#fbfbfd, #181b21); /* cards, the section row, the pressed mode */
+  --color-surface-2: light-dark(#eef0f4, #20242c); /* hover, the mode track */
+  --color-line: light-dark(#c4cad4, #2f3540); /* card and row hairlines */
+  --color-line-ui: light-dark(#737c8b, #7e8797); /* button, label and filter outlines */
+  --color-ink: light-dark(#14171c, #eceef2); /* names, headings */
+  --color-ink-body: light-dark(#3a414c, #c5cad3); /* blurbs, See more text */
+  --color-ink-muted: light-dark(#566070, #9aa3b1); /* lines under titles, fact labels, counts */
+  --color-accent: light-dark(#1b57c9, #7fb0ff); /* links, the focus ring */
+  --color-button: light-dark(#171a20, #eceef2); /* the primary button, the chosen filter */
+  --color-on-button: light-dark(#f6f7f9, #12151a);
+  --color-ok: light-dark(#135c2d, #7bd9a0); /* the Public label */
+  --color-ok-line: light-dark(#2f8553, #43a06c);
+  --color-shade-1: light-dark(rgb(20 28 44 / 0.1), rgb(0 0 0 / 0.4));
+  --color-shade-2: light-dark(rgb(20 28 44 / 0.04), rgb(0 0 0 / 0.25));
+
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-strong: 650;
+  --font-weight-bold: 700;
+
+  /* The type scale, each size with its line height; the page's base is 15 px on body, html keeps the reader's own. */
+  --text-wordmark: 1.5rem; /* 24 */
+  --text-wordmark--line-height: 1.2;
+  --text-section: 1.3125rem; /* 21, a section's title */
+  --text-section--line-height: 1.25;
+  --text-lead: 1.0625rem; /* 17, the header's line */
+  --text-lead--line-height: 1.45;
+  --text-lead-phone: 1rem; /* 16, the header's line on a phone */
+  --text-lead-phone--line-height: 1.45;
+  --text-name: 1.0625rem; /* 17, a card's name */
+  --text-name--line-height: 1.3;
+  --text-body: 0.9375rem; /* 15 */
+  --text-body--line-height: 1.5;
+  --text-sub: 0.90625rem; /* 14.5, the sub line and a section's line */
+  --text-sub--line-height: 1.5;
+  --text-control: 0.875rem; /* 14, buttons, links in the section row, filters */
+  --text-control--line-height: 1;
+  --text-fact: 0.84375rem; /* 13.5, See more's fact labels */
+  --text-fact--line-height: 1.5;
+  --text-label: 0.78125rem; /* 12.5, the access label */
+  --text-label--line-height: 1;
+  --text-code: 0.9em; /* an address inside text */
+
+  --tracking-wordmark: -0.02em;
+  --tracking-section: -0.015em;
+  --tracking-name: -0.01em;
+
+  --radius-control: 0.5rem; /* buttons, section links */
+  --radius-card: 0.75rem; /* cards, the section row */
+  --radius-picture: 0.6875rem; /* a picture's top corners, inside the card's hairline */
+  --radius-track: 0.625rem; /* the mode control's track */
+  --radius-segment: 0.4375rem; /* a mode button */
+
+  --shadow-card: 0 1px 2px var(--color-shade-1), 0 2px 8px var(--color-shade-2);
+
+  /* The sketch's widths: 2 columns from 640, the row sticks from 900, 3 columns from 1000, one row from 1240. */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 56.25rem;
+  --breakpoint-lg: 62.5rem;
+  --breakpoint-xl: 77.5rem;
+
+  --container-page: 77rem; /* 1232 */
+  --container-measure: 58rem; /* the header's lines */
+  --container-prose: 68ch; /* the footer's line */
+
+  --z-index-sticky: 10; /* the section row */
+  --z-index-skip: 20; /* the skip link, above the row */
+}
+
+@layer base {
+  /* Light on a first visit; the mode control sets data-theme (base-ui rule 14). */
+  :root {
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  :root[data-theme="system"] {
+    color-scheme: light dark;
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* The page's base size lives on body; html keeps the reader's own. */
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-ink-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  /* Every control shows focus at once, in the accent. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}

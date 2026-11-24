@@ -3,6 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e5e8ee" />
+    <script>
+      // The stored look and mode, set on <html> before the first paint so a stored dark never flashes light. Profile
+      // and light on a first visit, as the HTML says. ?look= and ?mode= override the stored pick for this load without
+      // storing it. data-scripted tells the stylesheet scripts run: See more's text hides until opened, and the
+      // controls that need scripts show. The page reads these attributes only after mount.
+      (function () {
+        var root = document.documentElement;
+        var looks = ["profile", "terminal", "ninety-six"];
+        var modes = ["light", "dark", "system"];
+        // Each look's page colour, light then dark, for the browser bar. src/features/mode/mode.ts holds the same.
+        var grounds = {
+          profile: ["#e5e8ee", "#0d0f13"],
+          terminal: ["#f4eee0", "#0e0905"],
+          "ninety-six": ["#008080", "#0a1033"],
+        };
+        var look = "profile";
+        var mode = "light";
+        try {
+          var storedLook = localStorage.getItem("gatehouse.look");
+          var storedMode = localStorage.getItem("gatehouse.mode");
+          if (looks.indexOf(storedLook) >= 0) look = storedLook;
+          if (modes.indexOf(storedMode) >= 0) mode = storedMode;
+        } catch (error) {
+          // Storage is blocked: Profile and light.
+        }
+        var query = new URLSearchParams(location.search);
+        if (looks.indexOf(query.get("look")) >= 0) look = query.get("look");
+        if (modes.indexOf(query.get("mode")) >= 0) mode = query.get("mode");
+        root.setAttribute("data-look", look);
+        root.setAttribute("data-theme", mode);
+        root.setAttribute("data-scripted", "");
+        var dark = mode === "dark" || (mode === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", grounds[look][dark ? 1 : 0]);
+      })();
+    </script>
     <title>Gatehouse</title>
   </head>
   <body>
