@@ -27,3 +27,12 @@ other people", added with Tavi's first deploy.
 ## Owner steps
 
 - `node cli.ts gatehouse all` from vps-deploy (a changed card list ships with `all`).
+
+## Outcome (2026-11-24)
+
+Tavi Ceasornicaru is the tenth card in Sites for other people (`tavi`, `/tavi/`, `open`, part `public`, no docs
+yet, source the presentation-sites repo), with a blurb and a `more` line. The picture, `content/images/tavi.webp`, is
+a fresh shot of the site's hero (1280 x 800, paused after the fonts), cropped to 1250 x 781 and scaled to 800 x 500,
+WebP at quality 82; the site has no social card yet. The card tests now hold 39 cards and 36 public ones, and the
+counts in the wiki moved. vps-deploy's card check shows no warning.
+

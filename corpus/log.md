@@ -184,3 +184,9 @@ Gazette, the monthly social-media report app, is on the front page: a sign-in ca
 with a picture cropped from the app's own README shots so no brand or person's name is readable. The card tests and
 the counts in the card-list page moved by one (38 cards, 35 public). `npm run check`, the build guard and
 vps-deploy's card check pass. Ready for deploy after the gazette stack.
+
+## [2026-11-24] build | Brief 11: a card for Tavi's site
+
+Tavi Ceasornicaru is on the front page: an open card in Sites for other people at `/tavi/`, with a picture from a
+fresh shot of the site's hero. The card tests and the wiki counts moved by one (39 cards, 36 public). `npm run
+check`, the build guard, the corpus lint and vps-deploy's card check pass. Ready for deploy.
