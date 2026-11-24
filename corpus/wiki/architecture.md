@@ -1,5 +1,5 @@
 ---
-summary: How Gatehouse is put together, as planned on 2026-11-24 and re-planned the same day for React; the skeleton (brief 01) and the page in Profile with its card module and build guard (brief 03) were built that day. Three npm workspaces (shared card schema and link resolver, a Fastify 5 API, a React 19 page on Vite 8 with Base UI and Tailwind 4); the addresses (the page at exactly /, its files under /gatehouse/ through Vite's base in the build and the preview, checked on a scratch app with the URLs it wrote, the API under /gatehouse-api/, /gatehouse/ itself a 404); the build (client build, SSR build, prerender, path check, guard) and hydration; the commands; the public-only card module; ports 8815, 5182 and 4182 (the preview at /gatehouse/); the settings GATEHOUSE_ORIGIN, HOST, PORT, PUBLIC_ORIGIN, GATEHOUSE_API_PREFIX and GATEHOUSE_DATA_DIR; looks and modes as data-look and data-theme set before first paint, read by React only after mount; fonts per look; the owner part (the owner hint, the API call, the Card component after mount, sign-out); the build guard (web/scripts/check-owner-part.ts, built by brief 03); the container behind Sablier.
+summary: How Gatehouse is put together, as planned on 2026-11-24 and re-planned the same day for React; the skeleton (brief 01) and the page in Profile with its card module and build guard (brief 03) were built that day. Three npm workspaces (shared card schema and link resolver, a Fastify 5 API, a React 19 page on Vite 8 with Base UI and Tailwind 4); the addresses (the page at exactly /, its files under /gatehouse/ through Vite's base in the build and the preview, checked on a scratch app with the URLs it wrote, the API under /gatehouse-api/, /gatehouse/ itself a 404); the build (client build, SSR build, prerender, path check, guard) and hydration; the commands; the public-only card module; ports 8815, 5182 and 4182 (the preview at /gatehouse/); the settings GATEHOUSE_ORIGIN, HOST, PORT, PUBLIC_ORIGIN, GATEHOUSE_API_PREFIX and GATEHOUSE_DATA_DIR; looks and modes as data-look and data-theme set before first paint, read by React only after mount; fonts per look; the owner part (the owner hint, the API call, the Card component after mount, sign-out); the build guard (web/scripts/check-owner-part.ts, built by brief 03); the API's Sign in with Ward, owner route and container (brief 07, on sign-in.md), with the settings WARD_OIDC_*, AUTH_TRUSTED_PROXIES and GATEHOUSE_CARDS_FILE; the container behind Sablier.
 updated: 2026-11-24
 ---
 
@@ -8,7 +8,8 @@ updated: 2026-11-24
 Planned on 2026-11-24, and re-planned the same day when the page moved from Astro to React
 ([decisions.md](decisions.md)). Brief 01 built the skeleton the same day: the workspaces, the
 harness, the health route, a placeholder page and its build. Brief 03 built the page in Profile, the card module
-and the build guard ([page.md](page.md)). The later briefs build the rest. Each point names the brief that settles
+and the build guard ([page.md](page.md)). Brief 07 built the API's sign-in, its owner route and its container
+([sign-in.md](sign-in.md)). The later briefs build the rest. Each point names the brief that settles
 it, and the brief's outcome note wins over this page until the page catches up.
 
 ## Workspaces
@@ -18,8 +19,8 @@ it, and the brief's outcome note wins over this page until the page catches up.
   which reads the file, sits behind a subpath of its own (brief 02). vps-deploy reads
   `content/cards.json` on its own and imports nothing from here.
 - `server` (`@gatehouse/server`): Fastify 5 with the zod type provider, laid out as the
-  `code-structure` skill says. Ward's vendored library (`ward-auth` 1.1.0) holds the sessions in
-  SQLite through better-sqlite3.
+  `code-structure` skill says. Ward's vendored library (`ward-auth` 1.1.0, `server/vendor/ward/`) holds
+  the sessions in SQLite through better-sqlite3 13.0.3 (`gatehouse.sqlite` in the data folder).
 - `web` (`@gatehouse/web`): a React 19.2.8 page on Vite 8.3.5, rendered to HTML at build time and
   hydrated in the browser. Base UI 1.9.0 for the controls, Tailwind 4.3.5 through
   `@tailwindcss/vite`, one stylesheet. One page, no client router.
@@ -122,7 +123,9 @@ a fresh clone. Built by brief 03; details in [page.md](page.md).
   (`http://localhost:5182`; written by vps-deploy's `useWard`), `GATEHOUSE_API_PREFIX`
   (`/gatehouse-api`) and `GATEHOUSE_DATA_DIR` (`data/` at the repo root, gitignored; `/data` in the
   container). An empty value counts as unset, a bad one stops the start naming the variable, and
-  the repo's `.env` fills what the environment leaves unset. Brief 07 adds the five `WARD_OIDC_*`.
+  the repo's `.env` fills what the environment leaves unset. Brief 07 added the five `WARD_OIDC_*`,
+  `AUTH_TRUSTED_PROXIES` and `GATEHOUSE_CARDS_FILE` (`content/cards.json` at the repo root), on
+  [sign-in.md](sign-in.md).
 
 ## Commands
 
@@ -170,7 +173,8 @@ format` and `npm run house-style:sync -- --check`. The root `CLAUDE.md` says wha
    the hint.
 
 The API's owner route needs the `admin` role, which the owner's Ward grant carries. No local
-accounts and no seed: Sign in with Ward is the only way in.
+accounts and no seed: Sign in with Ward is the only way in. Brief 07 checked that it holds, and
+how the routes, the guard and the bodies are wired ([sign-in.md](sign-in.md)).
 
 ## The build guard
 
@@ -184,5 +188,6 @@ its test plants leaks in the HTML, a script and a source map (brief 03).
 ## The container
 
 `gatehouse-api` on loopback 8815, data at `/srv/gatehouse-api/data` mounted as `/data`, health at
-`GET /v1/health`. It sleeps behind Sablier when idle; the page shows a waking state while the first
-request waits. `docs/owner-setup.md` (brief 07) is what vps-deploy's stack reads.
+`GET /v1/health`, from `infrastructure/Dockerfile` and `infrastructure/docker-compose.yml` (brief 07).
+It sleeps behind Sablier when idle; the page shows a waking state while the first request waits.
+`docs/owner-setup.md` is what vps-deploy's stack reads.

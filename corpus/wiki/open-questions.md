@@ -1,5 +1,5 @@
 ---
-summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner at brief 06's Ready for test - the look switcher, the footer's Owner sign-in and the owner part's states, all drawn on 2026-11-24, and the footer's layout. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (answered by 03: no, so See more is a hand-built disclosure), whether Ward's library runs with no local account and the admin role arrives through the grant (07).
+summary: What is still open for Gatehouse as of 2026-11-24, taste kept apart from technical. Taste, for the owner at brief 06's Ready for test - the look switcher, the footer's Owner sign-in and the owner part's states, all drawn on 2026-11-24, and the footer's layout. The first visit's mode is settled (light, the owner's estate-wide answer of 2026-11-10). Technical, each checked first by the brief that meets it - Vite's base, the SSR build and the prerender answered by 01 (every file under /gatehouse/ with base set for the build and the preview, the page at dist/index.html, no public/ folder, the preview at /gatehouse/; 03 checks again), whether a closed Base UI Collapsible can show its text with scripting off (answered by 03: no, so See more is a hand-built disclosure), and, dropped once brief 07 answered it on sign-in.md, whether Ward's library runs with no local account (yes) and the admin role arrives through the grant (yes, copied once at the first sign-in, so the grant comes first).
 updated: 2026-11-24
 ---
 
@@ -39,6 +39,3 @@ updated: 2026-11-24
   and `aria-controls`, the panel always rendered and hidden by `scripted:not-data-open:hidden` only
   once the head script has set `data-scripted`. With scripting off the preview shows all 34 See more
   texts ([page.md](page.md)).
-- **Sign in with Ward and nothing else.** Ward's library has no switch that turns local sign-in
-  off. Brief 07 checks that the API runs with no local account and no seed, and that the owner's
-  `admin` role arrives through Ward's grant on the first sign-in.
