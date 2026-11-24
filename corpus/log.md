@@ -109,3 +109,15 @@ Profile, so Terminal never fetches Geist. Findings in [wiki/page.md](wiki/page.m
 The third look: tokens under `data-look="ninety-six"`, the skin as the `ninety-six:` variant, bevels as theme shadows
 over colour tokens, Pixelify Sans, Arimo and Cousine from `@fontsource` (latin and latin-ext), a 3 px focus ring.
 Only its own fonts download in it. sloplint clean in light and dark. Findings in [wiki/page.md](wiki/page.md).
+
+## [2026-11-24] build | Brief 06: Owner sign-in and the owner part, against a fake API
+
+The page's side of the owner part: Owner sign-in in the footer (the look's quiet button), the owner's cards in Behind
+the scenes from the API's answer (drawn by the same Card, counted by the section, the filters and Terminal's item
+count), and the states (waking, signed in, refused, Ward unreachable, not the owner, failed, signed out again). The
+answer's schema and `ownerCardsAnswer` live in `shared` for brief 07's route. The calls load on demand, so a visitor
+downloads neither them nor zod, and a visitor's page makes no API request. A dev-only fake API answers the four
+routes (`GATEHOUSE_FAKE`, `npm run dev:fake -w @gatehouse/web`). Ahead of it, briefs 04 and 05's design-critic fixes
+(Ninety-six's inline label and bold primary, Terminal's full-bleed row and spacing, compact sections). The brief is in
+done/ while its ticket waits at Ready for test for the owner's judgement and a question on the footer's layout.
+Findings in [wiki/owner-part.md](wiki/owner-part.md) and [wiki/looks.md](wiki/looks.md).

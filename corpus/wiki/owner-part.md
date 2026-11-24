@@ -41,6 +41,8 @@ No schema has a transform, a strict object or a default, so each can stand as a 
   with shared's schemas). The store loads it with `import()`, only when the hint is set or the sign-in is pressed,
   so the visitor's main chunk holds no zod (287.6 kB before the owner part, 294.4 kB after; the calls' chunk is
   85.6 kB). Each call answers what to do next rather than throwing.
+- In dev, `web/vite.config.ts` pre-bundles zod (`optimizeDeps.include`): found only at the first sign-in, it made
+  Vite re-optimise and reload the page before the start was posted.
 - `OwnerEntry.tsx`: the footer's line and buttons, in the footer's `signIn` slot. `OwnerNote.tsx`: the waking note.
   `words.ts`: every word the states use.
 

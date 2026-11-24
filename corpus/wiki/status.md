@@ -1,5 +1,5 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part and the docs are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part's page side is built against a fake API and waits at Ready for test for the owner's judgement (brief 06); the owner API, the Ward wiring and the docs are not started. Each area with the brief that builds it; what waits outside the repo (a local Ward client entry for brief 08, vps-deploy's brief 34 for the first deploy); the owner's steps in order.
 updated: 2026-11-24
 ---
 
@@ -25,8 +25,12 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
   and a build guard that fails on any owner card in `web/dist/`. `DESIGN.md` locks all three looks' tokens; the
   markup already carries Terminal's and Ninety-six's elements, hidden ([page.md](page.md)). Terminal and the footer
   look switcher done 2026-11-24 (brief 04). Ninety-six done 2026-11-24 (brief 05).
-- **The owner part**: drawn against a fake API in brief 06, served by the API in brief 07, wired to
-  Ward in brief 08. Not started.
+- **The owner part**: the page's side built 2026-11-24 against a fake API (brief 06): Owner sign-in
+  in the footer, the owner's cards in Behind the scenes, the states (waking, signed in, refused, Ward
+  unreachable, not the owner, failed, signed out again), the contract in `shared`, and
+  `npm run dev:fake -w @gatehouse/web` ([owner-part.md](owner-part.md)). Ready for test: the owner
+  judges the screens and the footer's layout. Served by the API in brief 07, wired to Ward in
+  brief 08.
 - **README and docs**: brief 09.
 - **Deploy**: vps-deploy's brief 34 serves the page at `/`, its files, the API and checks the card
   list against the stacks. Written 2026-11-24, not built.
@@ -40,6 +44,7 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
 
 ## Owner steps, in order
 
-1. After brief 06: judge the sign-in entry and the owner part's states on the board (Ready for test).
+1. Now: judge the sign-in entry, the look switcher and the owner part's states on the board (brief
+   06, Ready for test), and answer its question on the footer's layout.
 2. After brief 08 and vps-deploy's brief 34: the rollout from vps-deploy, which registers the Ward
    client, grants the owner `admin`, builds the page with the origin and starts the API.

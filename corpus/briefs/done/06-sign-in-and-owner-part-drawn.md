@@ -116,3 +116,39 @@ never edit either repo.
 - Settled 2026-11-24 (the plan): sign-out ends Gatehouse's session only; visitors never call the
   API.
 - Open, taste: how the sign-in entry reads, and the look switcher (both judged here).
+
+## Outcome (2026-11-24)
+
+Built against the fake API; on the board at Ready for test, for the owner to judge the screens. Details in
+[owner-part.md](../../wiki/owner-part.md).
+
+- `shared/src/api.ts`: the owner answer's schema (`ownerCardsSchema`, `image` always null), the start's and the
+  error body's, `ownerCardsAnswer` for brief 07's route, and `ownerSection` (the one section the owner part joins).
+- `web/src/features/owner/`: the owner hint, a store read after mount, the three calls loaded on demand (a visitor
+  downloads neither them nor zod: the main chunk 287.6 kB before, 294.4 kB after), Owner sign-in and its live line
+  in the footer, the waking note in Behind the scenes. `web/src/lib/api.ts` is the API client.
+- `web/scripts/fake-owner-api.ts` with `GATEHOUSE_FAKE` (owner, slow, none, not-owner, ward-down, refused);
+  `dev:fake` and `fake-api` in `web/package.json`.
+- The hydration test's owner case and a no-hint case; `DESIGN.md`'s controls section has the states' rules.
+
+Also in this run: briefs 04 and 05's design-critic fixes (8297590), recorded on [looks.md](../../wiki/looks.md).
+The footer's layout (the critic's nit 10) was left as it is and asked on the board.
+
+Checks: `npm run check`, `npm run build` (the guard, and no fake file name in `web/dist`) and the corpus lint pass.
+Every scenario was opened in all three looks on the preview with the fake, and sign-in, sign-out and a refusal on
+the dev server. A visitor's loads make no request to `/gatehouse-api`. The new buttons work by keyboard with each
+look's focus ring. sloplint was not run (not in the acceptance).
+
+Deviations:
+- Three owner cards, not four: Grafana left the card list on 2026-11-24. The hydration test's fixture uses two.
+- `web/vite.config.ts`, outside the files this brief owned: the card module passes `ownerSection` (the page must
+  know where the note goes before the API answers), and `optimizeDeps` pre-bundles zod (else the dev server reloads
+  the page at the first sign-in).
+- An extra `fake-api` script, so the fake runs beside the preview, and so knip sees the file.
+- An extra state, failed (no answer in 30 s, a 5xx, a refused answer): Try again and Sign out, the hint kept. The
+  brief named none for it.
+- The fake's start sends the browser back to the page it came from, so `?look=` survives; a real round trip lands
+  on `/` and keeps only the stored look.
+- Sign out is offered once the owner route has answered, not while it is still checking or waking.
+- Corpus pages beyond the three named: `owner-part.md` and `looks.md` (new; `page.md` was past 200 lines) and
+  `open-questions.md`.
