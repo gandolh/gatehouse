@@ -1,5 +1,5 @@
 ---
-summary: The owner part on the page as built on 2026-11-24 (brief 06), against a fake API until brief 07's server and brief 08's Ward wiring. The contract in shared (the owner answer's schema, the start's answer, the error body, ownerCardsAnswer, ownerSection); the page's side in web/src/features/owner (the owner hint, a store read after mount, the three calls loaded on demand so visitors download neither them nor zod, the footer's Owner sign-in and its live line, the waking note); the nine states and their words; where the owner's cards join Behind the scenes; the fake API (web/scripts/fake-owner-api.ts, GATEHOUSE_FAKE, dev:fake and fake-api) and how to open each state; the hydration test's owner case; how it was checked; the walk against the real API (brief 08) and the 401 reason it added.
+summary: The owner part on the page as built on 2026-11-24 (brief 06), against a fake API until brief 07's server and brief 08's Ward wiring. The contract in shared (the owner answer's schema, the start's answer, the error body, ownerCardsAnswer, ownerSection); the page's side in web/src/features/owner (the owner hint, a store read after mount, the three calls loaded on demand so visitors download neither them nor zod, the footer's Owner sign-in and its live line, the waking note); the states and their words (a cancel at Ward a quiet line of its own since brief 10, on ward-auth 1.2.0); where the owner's cards join Behind the scenes; the fake API (web/scripts/fake-owner-api.ts, GATEHOUSE_FAKE, dev:fake and fake-api) and how to open each state; the hydration test's owner case; how it was checked; the walk against the real API (brief 08) and the 401 reason it added.
 updated: 2026-11-24
 ---
 
@@ -65,16 +65,18 @@ stays empty under Open to anyone.
 | failed | no answer in 30 s, a 5xx, a refused answer | "The owner's cards didn't load." Try again, Sign out | unchanged |
 | Ward can't vouch | 401 with `reason` `ward_unavailable` / `ward_misconfigured` | "Ward can't be reached right now. Try again later." Try again, Sign out | unchanged |
 | refused | back with any other `ward_error` | "Ward didn't sign you in…", Owner sign-in | unchanged |
+| cancelled | back with `ward_error=cancelled`: Back to Gatehouse at Ward | "Sign-in cancelled.", muted, Owner sign-in | unchanged |
 | Ward unreachable | the start fails, or `ward_unavailable` / `ward_misconfigured` | "Ward can't be reached right now. Try again later." | unchanged |
 | signed out again | Sign out answered | "Signed out. The owner's cards are off the page." | the cards gone |
 
 - A 401 drops the hint and shows the signed-out page with no message, unless its `reason` says Ward couldn't vouch for
   a live session: the API keeps that session, so the page keeps the hint and offers Try again and Sign out.
-- Refused, Ward unreachable and signed out again drop the hint. Not the owner, failed and Ward can't vouch keep it,
+- Refused, cancelled, Ward unreachable and signed out again drop the hint. Not the owner, failed and Ward can't vouch keep it,
   so Sign out works.
 - The footer's line is a live region, empty in the HTML; the note's cell is another. No line ever shows a code.
 - Owner sign-in, Sign out and their busy words are one `<button>` element, so focus stays on it when it changes. Back
-  from Ward with an error, the line takes focus (`tabIndex={-1}`), which scrolls the footer into view.
+  from Ward with an error, the line takes focus (`tabIndex={-1}`), which scrolls the footer into view. A cancel is not
+  an error: its line stays muted, like where the sign-in stands, and takes no focus.
 - Sign out is offered once the owner route has answered; while it is pending the button hides.
 - Back from Ward through the back-forward cache, a page still "starting" drops the hint and returns to signed out.
 
@@ -92,8 +94,8 @@ read from the Referer, where the real one goes to Ward. Logout answers 204.
   @gatehouse/web` after a build.
 
 To open a state: signed in, not the owner, failed and waking need the hint (press Owner sign-in once with `owner`, or
-set `gatehouse.owner` in localStorage); failed needs the fake stopped; refused and Ward unreachable also open
-directly with `?ward_error=access_denied` or `?ward_error=ward_unavailable`.
+set `gatehouse.owner` in localStorage); failed needs the fake stopped; refused, cancelled and Ward unreachable also
+open directly with `?ward_error=access_denied`, `?ward_error=cancelled` or `?ward_error=ward_unavailable`.
 
 ## The checks, as run on 2026-11-24
 
@@ -114,3 +116,14 @@ as a drawing aid, and doesn't show two things: the real start goes to Ward first
 so `?look=` doesn't survive a real round trip (the stored look does). The checks above gained two hydration cases: a
 plain 401 (hint dropped, no message) and a 401 with `reason: ward_unavailable` (the Ward unreachable line, Try again
 and Sign out, hint kept).
+
+## A cancel at Ward (2026-11-24, brief 10)
+
+Back to Gatehouse on Ward's login page used to land on `?ward_error=access_denied`, the refusal's code, so the footer
+said "Ward didn't sign you in" to someone who had only changed their mind. Ward's library 1.2.0 maps Ward's cancel to
+its own code, `cancelled` ([sign-in.md](sign-in.md), "The vendored copy"), and the page shows it as the cancelled row
+above: "Sign-in cancelled." in the muted style, no focus, the hint dropped, Owner sign-in offered. Every other code
+reads as before. Two hydration cases cover it: back with `cancelled` (the words, muted, not focused, the hint dropped,
+the address cleaned to its `?look=`, no request) and back with `access_denied` (the refusal's words, focused). Walked
+against the local Ward the same day: Back to Gatehouse from Ward's form and from its "Continue as …" chooser both
+landed on `/?ward_error=cancelled` and showed the quiet line; a user with no grant still got the refusal, focused.

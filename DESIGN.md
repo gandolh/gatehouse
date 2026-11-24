@@ -148,7 +148,8 @@ From `design/sketches/C/tokens.md`. The teal ground stays; the slate ground only
 - **The line** before the button says where the sign-in stands, muted ("Checking the owner sign-in…", "Signed in as
   the owner: 3 cards added to Behind the scenes."); a message (Ward didn't sign you in, Ward can't be reached, signed
   out, not the owner, the cards didn't load) is ink at medium weight (bold in Ninety-six). It is a live region and never shows a code. Back
-  from Ward with an error, the line takes focus, which scrolls it into view and draws the focus ring around it.
+  from Ward with an error, the line takes focus, which scrolls it into view and draws the focus ring around it. A cancel
+  at Ward is not an error: "Sign-in cancelled." stays muted and takes no focus.
 - **Waking:** where the owner's cards will arrive in Behind the scenes, a note the size of a card's text: an
   hourglass, the sentence in ink, the reason muted. A dashed `line-ui` outline in Profile, a dashed `rule` in
   Terminal, a raised panel in Ninety-six. Nothing moves.

@@ -1,5 +1,5 @@
 ---
-summary: Sign in with Ward on Gatehouse's API, as built on 2026-11-24 (brief 07). Ward only, checked first - the API starts with no user, local sign-in fails for any name, and a first Ward sign-in takes the grant's role (read in ward-auth 1.1.0's userForSignIn, tested through it), copied once and never refreshed (Ward refuses a user with no grant, so the stuck case is a first sign-in under another role). The wiring (plugins/auth.ts, db/accounts.ts, the gatehouse_session cookie on /gatehouse-api, the library's routes under /auth, the guard over /v1 and /auth, the library's 401 and 403 bodies kept, cross-site POSTs refused, Ward sessions rechecked every 30 s); the owner route (GET /v1/owner/cards, admin, the card list read once, three cards); the settings (five WARD_OIDC_*, AUTH_TRUSTED_PROXIES, GATEHOUSE_CARDS_FILE); the data file; the vendored copy and its sums; the tests; the container, not built here; and the walk against the local Ward on 2026-11-24 (brief 08): what the owner, a user with another grant and one with none saw, Ward down with and without a live session, and the 401 reason the page now reads.
+summary: Sign in with Ward on Gatehouse's API, as built on 2026-11-24 (brief 07). Ward only, checked first - the API starts with no user, local sign-in fails for any name, and a first Ward sign-in takes the grant's role (read in ward-auth 1.1.0's userForSignIn, tested through it), copied once and never refreshed (Ward refuses a user with no grant, so the stuck case is a first sign-in under another role). The wiring (plugins/auth.ts, db/accounts.ts, the gatehouse_session cookie on /gatehouse-api, the library's routes under /auth, the guard over /v1 and /auth, the library's 401 and 403 bodies kept, cross-site POSTs refused, Ward sessions rechecked every 30 s); the owner route (GET /v1/owner/cards, admin, the card list read once, three cards); the settings (five WARD_OIDC_*, AUTH_TRUSTED_PROXIES, GATEHOUSE_CARDS_FILE); the data file; the vendored copy and its sums (ward-auth 1.2.0 since brief 10, where a cancel at Ward arrives as cancelled); the tests; the container, not built here; and the walk against the local Ward on 2026-11-24 (brief 08): what the owner, a user with another grant and one with none saw, Ward down with and without a live session, and the 401 reason the page now reads.
 updated: 2026-11-24
 ---
 
@@ -106,18 +106,22 @@ visitor's address.
 
 ## The vendored copy
 
-`server/vendor/ward/` holds the six files of a ward-auth 1.1.0 copy: the two bundles, their types,
-the README and the LICENSE. They were copied from the controller's staged output of Ward's vendor
-script (built at wzd_auth 66998b7, no library change since) and checked with `sha256sum -c` against
-that build's `SHA256SUMS`: all six OK. Ward's own build output matched the same sums. The script itself
-wasn't run, since it rebuilds the build folder in the Ward checkout, which this brief only reads. The
+`server/vendor/ward/` holds the six files of a ward-auth 1.2.0 copy: the two bundles, their types,
+the README and the LICENSE. Brief 07 vendored 1.1.0 from a staged copy of Ward's vendor script's output.
+Brief 10 made 1.2.0 in Ward (its commit "ward-auth 1.2.0: a sign-in cancelled at Ward comes back as
+cancelled"), ran Ward's vendor script from that commit into a staging folder outside both repos, wrote the
+six files' `SHA256SUMS` there, copied the six here and checked them with `sha256sum -c`: all six OK. Ward
+ignores its build folder, so the sums live with the staged copy, not in either repo. The one change from
+1.1.0 an app sees: Back to the app at Ward lands on `ward_error=cancelled` instead of `access_denied`
+([owner-part.md](owner-part.md), "A cancel at Ward"); the library compares Ward's description of a
+cancel with a constant from Ward's own source, so the wire is unchanged and Ward needed no deploy. The
 React pair comes with any copy, and nothing imports it: the page makes its three calls itself.
 Prettier skips the folder; ESLint, knip and dependency-cruiser skip any `vendor/`. The bundles' banner
 and the LICENSE name the library's source account, which the root `CLAUDE.md` allows in only two
 files; the copies can't be edited without breaking the sums (asked on the board, 2026-11-24).
 
 To upgrade: run Ward's `npm run vendor -- <this repo>/server/vendor/ward` (or copy a staged build),
-check the sums, and read the library's CHANGELOG in the Ward repo (its shared library folder) from 1.1.0 on.
+check the sums, and read the library's CHANGELOG in the Ward repo (its shared library folder) from 1.2.0 on.
 
 ## The tests
 
@@ -166,7 +170,8 @@ matched brief 06's screens, word for word and in place; the one difference found
   grant for this app"); the browser lands on `/?ward_error=access_denied`: "Ward didn't sign you in. This sign-in is
   only for the owner of this site.", focused, the address cleaned, the hint dropped, no call to the owner route.
 - **Cancelled at Ward** (its "Back to Gatehouse" link): the same `access_denied`, so the same refusal words. The
-  library passes only the code, so the page can't tell a cancel from a refusal. Left as it is: the words hold for both.
+  library passed only the code, so the page couldn't tell a cancel from a refusal. Brief 10 changed that: with
+  ward-auth 1.2.0 a cancel lands on `/?ward_error=cancelled`, and the footer reads "Sign-in cancelled.", quietly.
 - **Ward down, a fresh sign-in** (the API restarted with `WARD_OIDC_ISSUER` on a closed local port): the start
   answers 503 `ward_unavailable`: "Ward can't be reached right now. Try again later.", hint dropped.
 - **No hint**: with the hint cleared and the owner's session cookie still in the browser, a reload makes no request

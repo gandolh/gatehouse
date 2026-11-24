@@ -19,7 +19,7 @@ it, and the brief's outcome note wins over this page until the page catches up.
   which reads the file, sits behind a subpath of its own (brief 02). vps-deploy reads
   `content/cards.json` on its own and imports nothing from here.
 - `server` (`@gatehouse/server`): Fastify 5 with the zod type provider, laid out as the
-  `code-structure` skill says. Ward's vendored library (`ward-auth` 1.1.0, `server/vendor/ward/`) holds
+  `code-structure` skill says. Ward's vendored library (`ward-auth` 1.2.0, `server/vendor/ward/`) holds
   the sessions in SQLite through better-sqlite3 13.0.3 (`gatehouse.sqlite` in the data folder).
 - `web` (`@gatehouse/web`): a React 19.2.8 page on Vite 8.3.5, rendered to HTML at build time and
   hydrated in the browser. Base UI 1.9.0 for the controls, Tailwind 4.3.5 through
