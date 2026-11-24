@@ -1,4 +1,5 @@
 import type { CardList } from "@gatehouse/shared";
+import type { ReactNode } from "react";
 import { Card } from "./Card";
 import { shows, type Filter } from "./filters";
 import type { PageSection } from "./types";
@@ -12,6 +13,11 @@ export interface CardSectionProps {
   filter: Filter;
   /** The first section: its first row's pictures load at once. */
   first: boolean;
+  /**
+   * The owner part's section only: a live region after its cards, where a note stands while the owner's cards are on
+   * their way. `null` keeps the region empty; `undefined` (any other section) leaves it out.
+   */
+  note?: ReactNode;
 }
 
 /**
@@ -19,7 +25,7 @@ export interface CardSectionProps {
  * the section too. Terminal writes the head as a command and its output (`$ ls ~/play`, `6 items`); the markup carries
  * that line, hidden in Profile and from screen readers.
  */
-export function CardSection({ section, access, filter, first }: CardSectionProps) {
+export function CardSection({ section, access, filter, first, note }: CardSectionProps) {
   const shown = section.cards.filter((card) => shows(filter, card.access)).length;
   return (
     <section
@@ -61,6 +67,11 @@ export function CardSection({ section, access, filter, first }: CardSectionProps
             eager={first && index < FIRST_ROW}
           />
         ))}
+        {note !== undefined && (
+          <div role="status" className="min-w-0 self-start">
+            {note}
+          </div>
+        )}
       </div>
     </section>
   );

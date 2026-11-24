@@ -21,9 +21,13 @@ export type PageCard = Omit<Card, "part" | "image"> & {
 
 export type PageSection = Omit<Section, "cards" | "compact"> & { compact: boolean; cards: PageCard[] };
 
-/** What the page draws: the header's and footer's words, the access labels' words, the sections. */
+/**
+ * What the page draws: the header's and footer's words, the access labels' words, the sections, and the id of the
+ * section the owner part joins after the owner signs in (`null` when the list has no owner part).
+ */
 export interface PageData {
   site: CardList["site"];
   access: CardList["access"];
   sections: PageSection[];
+  ownerSection: string | null;
 }

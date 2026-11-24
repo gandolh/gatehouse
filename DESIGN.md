@@ -140,6 +140,22 @@ From `design/sketches/C/tokens.md`. The teal ground stays; the slate ground only
 - Quiet: See more, no outline until hover, pushed to the end of the row; its chevron turns when open.
 - The mode control and the filters are radio groups drawn as buttons: the pressed look keys off `data-checked`.
 
+### The owner part's states
+
+- **Owner sign-in** sits in the footer after the look switcher: the look's quiet button with a key icon. Pressed, it
+  reads "Opening Ward…" until the browser leaves. Signed in, the same button reads Sign out (then "Signing out…"), so
+  focus stays on it; a failed load puts Try again before it. While the owner's cards are being fetched it hides.
+- **The line** before the button says where the sign-in stands, muted ("Checking the owner sign-in…", "Signed in as
+  the owner: 3 cards added to Behind the scenes."); a message (Ward didn't sign you in, Ward can't be reached, signed
+  out, not the owner, the cards didn't load) is ink at medium weight (bold in Ninety-six). It is a live region and never shows a code. Back
+  from Ward with an error, the line takes focus, which scrolls it into view and draws the focus ring around it.
+- **Waking:** where the owner's cards will arrive in Behind the scenes, a note the size of a card's text: an
+  hourglass, the sentence in ink, the reason muted. A dashed `line-ui` outline in Profile, a dashed `rule` in
+  Terminal, a raised panel in Ninety-six. Nothing moves.
+- **Signed in:** the owner's cards follow Behind the scenes' public cards and are drawn like any card behind a
+  sign-in (Owner only, Open as the secondary button, R3). The section's count, Terminal's item count and the filters
+  count them.
+
 ## Motion
 
 - Character: still. Colour transitions of 120 ms on controls and the chevron's turn; nothing else moves. Under reduced

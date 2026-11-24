@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { displayAddress, publicCards, resolveLink } from "@gatehouse/shared";
+import { displayAddress, ownerSection, publicCards, resolveLink } from "@gatehouse/shared";
 import { loadCards } from "@gatehouse/shared/load";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
@@ -59,7 +59,8 @@ function webpSize(file: string): { width: number; height: number } {
 /**
  * The page's card module, `virtual:gatehouse-cards`, in dev and in the build: the public part of the card list only
  * (the owner part never reaches the page's HTML or its scripts), each link resolved against the origin, the address
- * as the card shows it, and each picture imported, so Vite fingerprints it under the base, with its size. It also
+ * as the card shows it, and each picture imported, so Vite fingerprints it under the base, with its size; and the id
+ * of the section the owner part joins once the owner signs in (an id only, never a card). It also
  * checks `GATEHOUSE_ORIGIN` once Vite knows what it is running, so a tool that only loads this file (knip, ESLint)
  * never needs it.
  */
@@ -104,7 +105,11 @@ function cardModule(): Plugin {
           source: card.source,
         })),
       }));
-      const data = JSON.stringify({ site: list.site, access: list.access, sections }, null, 2);
+      const data = JSON.stringify(
+        { site: list.site, access: list.access, sections, ownerSection: ownerSection(list) },
+        null,
+        2,
+      );
       // Each picture's URL is the default export of its import: the placeholder string becomes that binding.
       const body = data.replace(/"\\u0000picture:(\d+)"/g, (_match, index: string) => `picture${index}`);
       const imports = pictures.map((file, index) => `import picture${index} from ${JSON.stringify(file)};`);

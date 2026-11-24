@@ -96,6 +96,16 @@ export function KeyIcon(props: IconProps) {
   );
 }
 
+export function HourglassIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M5 22h14M5 2h14" />
+      <path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22" />
+      <path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2" />
+    </Icon>
+  );
+}
+
 export function BookIcon(props: IconProps) {
   return (
     <Icon {...props}>

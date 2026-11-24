@@ -30,10 +30,11 @@ function level(root: HTMLElement): void {
 }
 
 /**
- * Levels the rows of cards under `root` after mount, again when the filter changes, when the width changes (the
- * columns may change with it) and when the fonts have loaded. Without scripts the rows are simply unlevelled.
+ * Levels the rows of cards under `root` after mount, again when `cards` changes (it names what is shown: the filter,
+ * and the owner's cards arriving or leaving), when the width changes (the columns may change with it) and when the
+ * fonts have loaded. Without scripts the rows are simply unlevelled.
  */
-export function useLevelRows(root: RefObject<HTMLElement | null>, filter: string): void {
+export function useLevelRows(root: RefObject<HTMLElement | null>, cards: string): void {
   useEffect(() => {
     const element = root.current;
     if (element === null) return undefined;
@@ -60,5 +61,5 @@ export function useLevelRows(root: RefObject<HTMLElement | null>, filter: string
       resize?.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [root, filter]);
+  }, [root, cards]);
 }
