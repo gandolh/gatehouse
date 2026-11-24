@@ -11,6 +11,17 @@
    browser downloads a face only when rendered text uses it, so a look's fonts load only in that look. */
 @import "@fontsource-variable/geist/wght.css" layer(vendor);
 @import "@fontsource-variable/geist-mono/wght.css" layer(vendor);
+/* Terminal's fonts, the same way: IBM Plex Mono for names, labels and buttons, IBM Plex Sans for the text. */
+@import "@fontsource/ibm-plex-mono/latin-400.css" layer(vendor);
+@import "@fontsource/ibm-plex-mono/latin-ext-400.css" layer(vendor);
+@import "@fontsource/ibm-plex-mono/latin-600.css" layer(vendor);
+@import "@fontsource/ibm-plex-mono/latin-ext-600.css" layer(vendor);
+@import "@fontsource/ibm-plex-mono/latin-700.css" layer(vendor);
+@import "@fontsource/ibm-plex-mono/latin-ext-700.css" layer(vendor);
+@import "@fontsource/ibm-plex-sans/latin-400.css" layer(vendor);
+@import "@fontsource/ibm-plex-sans/latin-ext-400.css" layer(vendor);
+@import "@fontsource/ibm-plex-sans/latin-600.css" layer(vendor);
+@import "@fontsource/ibm-plex-sans/latin-ext-600.css" layer(vendor);
 
 /* Tailwind scans the repo for class names; the vendored house-style copy holds none of the page's. */
 @source not "../../../vendor";
@@ -87,6 +98,9 @@
   --container-*: initial;
 
   --color-ground: light-dark(#e5e8ee, #0d0f13);
+  --color-edge: light-dark(#c4cad4, #2f3540); /* the border of a card, the section row and the footer */
+  --color-glow: transparent; /* Terminal's dark glow on headings */
+  --color-offset: transparent; /* Terminal's hard shadow */
   --color-surface: light-dark(#fbfbfd, #181b21); /* cards, the section row, the pressed mode */
   --color-surface-2: light-dark(#eef0f4, #20242c); /* hover, the mode track */
   --color-line: light-dark(#c4cad4, #2f3540); /* card and row hairlines */
@@ -104,6 +118,8 @@
 
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Names, labels, buttons and headings: the look's display face. Profile's is its text face. */
+  --font-ui: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-strong: 700;
@@ -143,6 +159,7 @@
   --radius-segment: 0.4375rem; /* a mode button */
 
   --shadow-card: 0 1px 2px var(--color-shade-1), 0 2px 8px var(--color-shade-2);
+  --shadow-hard: 3px 3px 0 var(--color-offset); /* Terminal's card: no blur, the offset in its own colour */
 
   /* The sketch's widths: 2 columns from 640, the row sticks from 900, 3 columns from 1000, one row from 1240. */
   --breakpoint-sm: 40rem;
@@ -153,6 +170,8 @@
   --container-page: 77rem; /* 1232 */
   --container-measure: 58rem; /* the header's lines */
   --container-prose: 68ch; /* the footer's line */
+
+  --text-shadow-glow: 0 0 10px var(--color-glow);
 
   --z-index-sticky: 10; /* the section row */
   --z-index-skip: 20; /* the skip link, above the row */
@@ -168,6 +187,40 @@
   }
   :root[data-theme="system"] {
     color-scheme: light dark;
+  }
+
+  /* Terminal's tokens (DESIGN.md): the same roles in paper and ink, light, and amber phosphor, dark. Its skin on the
+     components is the terminal: variant; the rest follows from these. */
+  :root[data-look="terminal"] {
+    --color-ground: light-dark(#f4eee0, #0e0905);
+    --color-surface: light-dark(#fffcf5, #1d1509);
+    --color-surface-2: light-dark(#ece4cf, #2a1e0d); /* the picture's backing, hover */
+    --color-edge: light-dark(#1c1912, #b3832a);
+    --color-line: light-dark(#857b60, #8f6a24); /* dashed rules and the picture frame */
+    --color-line-ui: light-dark(#857b60, #8f6a24); /* the secondary button's border */
+    --color-ink: light-dark(#1c1912, #ffb53d);
+    --color-ink-body: light-dark(#1c1912, #ffb53d);
+    --color-ink-muted: light-dark(#5a5242, #cc9835);
+    --color-accent: light-dark(#0b6a3a, #ffe08a);
+    --color-button: light-dark(#1c1912, #ffb53d);
+    --color-on-button: light-dark(#fffcf5, #130d03);
+    --color-ok: light-dark(#0b6a3a, #ffe08a);
+    --color-ok-line: light-dark(#0b6a3a, #ffe08a);
+    --color-glow: light-dark(transparent, rgb(255 181 61 / 0.45));
+
+    --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-ui: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --color-offset: light-dark(#1c1912, #5f4614);
+
+    /* Square corners; the hard 3 px offset shadow is --shadow-hard. */
+    --radius-control: 0;
+    --radius-card: 0;
+    --radius-picture: 0;
+    --radius-track: 0;
+    --radius-segment: 0;
+    --container-page: 75rem;
   }
 
   html,
