@@ -109,5 +109,7 @@ Deviations:
   can't read the 401's reason without it.
 - Corpus pages beyond the four named: `owner-part.md` (the new row, its "Against the real API" section) and
   `architecture.md` (the 401 line).
+- `docs/owner-setup.md`: the walk proved its "Ward down means signed out" wrong once the fix landed; it now says
+  Ward down hides the cards but keeps the session, with Try again and Sign out.
 - The test users were made by the controller (this session's permission check refused the console login), and only
   disabled: Ward's console does have `DELETE /console/accounts/:subject`, unlike the run's note.

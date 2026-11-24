@@ -153,10 +153,10 @@ matched brief 06's screens, word for word and in place; the one difference found
   After the password, Ward calls back and the browser lands on `/`; the owner route answers 200 and Behind the
   scenes gains brief-board, the vault and the mail admin (7 cards), the footer reading "Signed in as the owner: 3
   cards added to Behind the scenes." with Sign out.
-- **Reload.** The session holds. On the dev server the owner route is called about 0.2 s after the first paint and
-  answers in 10 to 25 ms, so the checking line shows for a blink and the waking note never does (no sleeping
-  container locally). A reload a minute after sign-in made the first real 30 s check: Ward logged
-  `POST /session-status` 200 and the cards stayed.
+- **Reload.** The session holds. On the dev server the owner route is called about 0.2 s after the first
+  contentful paint and answers in 10 to 25 ms, so the checking line shows for a blink and the waking note never does
+  (no sleeping container locally). Across two reloads past the first 30 s, Ward logged one `POST /session-status`
+  (200): the first real check, and the cards stayed.
 - **Sign out** answers 204: "Signed out. The owner's cards are off the page.", hint dropped, the section back to 4
   cards; a later call with the hint answers 401. Ward's session stays, so the next Owner sign-in meets Ward's chooser
   ("Continue as …" or "Use another account"), and Continue lands back with the cards.

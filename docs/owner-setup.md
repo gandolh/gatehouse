@@ -123,9 +123,10 @@ appear in Behind the scenes.
   ```
 
   The file holds only the sessions and the users; nothing else is lost. Then sign in again.
-- **Ward down means signed out.** A session made by Ward is checked against Ward at most every 30 s.
-  While Ward can't answer, the owner route answers 401 and the page shows the signed-out footer; sign
-  in again once Ward is back.
+- **Ward down hides the cards, not the session.** A session made by Ward is checked against Ward at most
+  every 30 s. While Ward can't answer, the owner route answers 401 and the page says Ward can't be
+  reached, with Try again and Sign out; the session is kept, so Try again or a reload brings the cards
+  back once Ward is back, with no new sign-in.
 - **Sign out** ends Gatehouse's session only, not your Ward session.
 
 Once after the deploy, check that the library's sign-in lockout sees each visitor's own address. Its
