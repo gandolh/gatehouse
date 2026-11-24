@@ -36,7 +36,7 @@ fields (`updated`, `expandedInSketch`, a note), plus `part`. Brief 02 adds the s
 | `name` | As the app names itself on its own page (Mercatus, not its old name) |
 | `href` | Where Open goes, in one of the three link forms below |
 | `access` | The access label: `open`, `sign-in`, `owner`, `docs` or `repo` |
-| `part` | `public` or `owner`. Only `owner` cards are kept out of the public HTML |
+| `part` | `public` or `owner`. Only `owner` cards are kept out of the built page, its HTML and its scripts alike |
 | `image` | A file in `content/images/`, or `null`. Compact sections have none |
 | `blurb` | One sentence, shown on the card |
 | `more` | The See more text |

@@ -13,7 +13,8 @@ send a question.
 | PR | None. The repo has no remote; commit on `main`. |
 | Capture and knowledge | `corpus-flow` |
 | The page's look | `DESIGN.md` at the root once brief 03 writes it, then `design/` in the order its README gives; the `hallmark` skill's floor and its `sloplint` |
-| Code layout | `house-style` (its Astro recipe for `web/`), `code-structure` for `server/` |
+| Code layout | `house-style` (its usual shape: `shared`, `server` and a React `web`), `code-structure` for `server/` and for `web/src`'s folders |
+| The page's components | `base-ui`: the wrappers under `web/src/components/ui/`, the theme switch, rules 1 to 17; `check-base-ui` runs strict |
 | Sign-in | Ward's vendored library and its README; Lantern's server is the nearest working example |
 | Diagrams | `diagram-design` |
 
@@ -31,7 +32,7 @@ send a question.
 
 | Read | Skip |
 | --- | --- |
-| `corpus/index.md`, then two or three wiki pages | `node_modules/`, `web/dist/`, `web/.astro/` |
+| `corpus/index.md`, then two or three wiki pages | `node_modules/`, `web/dist/`, and the SSR bundle the build writes beside it |
 | The brief you are building, whole | Other briefs, unless yours names them |
 | `design/README.md` before any file in `design/` | The PNG renders: there are none here, and the webp shots are enough |
 

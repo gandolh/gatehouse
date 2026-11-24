@@ -29,13 +29,16 @@ The plan's calls ([architecture.md](../../wiki/architecture.md)):
 - `roleFor` keeps Ward's grant role, so the owner, whom vps-deploy's setup grants `admin`, arrives
   as `admin`.
 - `GET /v1/health` public; `GET /v1/owner/cards` behind `requireRole("admin")`, answering the
-  owner-part cards with links resolved against `PUBLIC_ORIGIN` by `shared`'s resolver. 401 and 403
+  owner-part cards with links resolved against `PUBLIC_ORIGIN` by `shared`'s resolver, in the shape
+  the page's Card component takes. That shape's zod schema lives in `shared`: brief 06 writes it,
+  or this brief does if it runs first, and the route declares it as its response. 401 and 403
   in the API's error shape, keeping the library's codes (`unauthorized`, `forbidden`), since brief
   06's page reads them.
 - No timers, no WebSockets, so the container may sleep behind Sablier.
 
 ## Files you OWN
 
+- `shared/src/`: the owner answer's schema, if brief 06 hasn't written it
 - `server/`: the auth plugin, `server/src/features/owner-cards/`, the vendored `server/vendor/ward/`, settings
   for the five `WARD_OIDC_*` variables and `AUTH_TRUSTED_PROXIES`, tests
 - `infrastructure/Dockerfile`, `infrastructure/docker-compose.yml`, `.dockerignore`
@@ -58,7 +61,9 @@ The plan's calls ([architecture.md](../../wiki/architecture.md)):
    created by a Ward sign-in takes the grant's role. Write what you found in `sign-in.md` and drop
    the item from `open-questions.md`. If either fails, stop and report: the plan needs a change.
 2. **Vendor** ward-auth 1.1.0 into `server/vendor/ward/` and check it against the build's
-   `SHA256SUMS`. Only the server copy: the page has no React.
+   `SHA256SUMS`. Only the server copy: the page makes its three calls itself (brief 06) and needs
+   none of the library's React hooks, since the owner hint, not a session check on load, decides
+   when it calls the API.
 3. **The auth plugin and the owner route** as the Context says. The owner route reads the card list
    once at start through `loadCards`; the path comes from a setting (default `content/cards.json`
    at the repo root, `/app/content/cards.json` in the image).

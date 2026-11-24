@@ -9,7 +9,8 @@ updated: 2026-11-24
 changes tokens and skin rules, never the markup or the navigation.
 _Avoid:_ theme, skin, style.
 
-**Mode:** light, dark or system, within a look. System follows the device.
+**Mode:** light, dark or system, within a look. System follows the device. In code it is the
+`data-theme` attribute on `<html>`, the name the `base-ui` skill uses; the page and the docs say mode.
 _Avoid:_ theme.
 
 **Access label:** the label on a card saying who can open it: Public, Sign-in, Owner only, Docs only,

@@ -24,8 +24,9 @@ asked for something like their GitHub profile, "dev-ish, or maybe something retr
 - A footer with one line on how the apps are built, the GitHub link, the look switcher and the
   owner's sign-in.
 
-The page works with scripting off: every public card is in the HTML. The script adds the filters,
-See more, the look and mode controls, and the owner part.
+The page works with scripting off: it is a React page rendered to HTML at build time, so every
+public card and its See more text are in the HTML. Once React hydrates it, the filters, See more,
+the look and mode controls and the owner part work.
 
 The card list, its fields and who sees which card: [card-list.md](card-list.md).
 

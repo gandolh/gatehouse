@@ -10,12 +10,14 @@ _2026-11-24._ **Nothing is built.** The repo holds the approved design (`design/
 
 ## By area
 
-- **Skeleton and harness**: not started (brief 01).
+- **Skeleton and harness**: brief 01's first run stopped before its first commit on 2026-11-24,
+  when the page moved from Astro to React; its uncommitted work is in the tree for the next run.
 - **The card list**: seeded from the sketches' fixture, 38 cards in 5 sections, 4 in the owner part
   ([card-list.md](card-list.md)). No schema yet; the Mercatus picture still shows the old brand, and
   no access label has been checked against the live site (brief 02).
-- **The page**: Profile (brief 03), the look switcher and Terminal (brief 04), Ninety-six (brief 05).
-  Not started; the sketches in `design/` are the spec.
+- **The page**: a React page on Vite, rendered at build time. Profile (brief 03), the look
+  switcher and Terminal (brief 04), Ninety-six (brief 05). Not started; the sketches in `design/`
+  are the spec.
 - **The owner part**: drawn against a fake API in brief 06, served by the API in brief 07, wired to
   Ward in brief 08. Not started.
 - **README and docs**: brief 09.

@@ -34,8 +34,11 @@ never edit either repo.
 
 ## Files you OWN
 
-- `web/src/`: the footer's sign-in entry, the owner part's template and script, the states' words
-- `web/scripts/` (new): the dev-only fake API, and a `dev:fake` script in `web/package.json`
+- `shared/src/`: the owner answer's schema, if brief 07 hasn't written it
+- `web/src/`: the footer's sign-in entry, the owner part (its calls, its states, the owner cards
+  through the Card component), the states' words, the hydration test's owner case
+- `web/scripts/fake-owner-api.*`: the dev-only fake API, beside brief 01's build scripts, and a
+  `dev:fake` script in `web/package.json`
 - Corpus: `corpus/wiki/page.md`, `corpus/wiki/status.md`, `corpus/log.md`
 
 ## Files you must NOT touch
@@ -50,15 +53,21 @@ never edit either repo.
    the owner route and the start answer: `owner` (200 with the four cards from `ownerCards` and the
    resolver in `shared`), `slow` (the same after 4 s, for the waking state), `none` (401),
    `not-owner` (403), `ward-down` (the start answers 503 `ward_unavailable`), and `refused` (the
-   start answers a URL back to `/?ward_error=` with a refusal code). It never ships: it is outside
-   `src/`, and the build guard still passes.
+   start answers a URL back to `/?ward_error=` with a refusal code). Its owner answer has the shape
+   the Card component takes (what the card module gives a public card: links resolved, the address
+   from `displayAddress`); that shape's zod schema goes in `shared`, unless brief 07 wrote it
+   first, so the page parses the answer with it and the real route declares it. It never ships: it is outside
+   `src/`, nothing in `src/` imports it, and the build guard still passes.
 2. **The sign-in entry** in the footer's slot: words that tell a visitor it is for the owner (for
    example "Owner sign-in"), in each look's quiet link or button style. Pressing it sets
    `gatehouse.owner`, posts the start, and sends the browser to the answered URL.
-3. **The owner part.** A `<template>` the Card component renders with no card data in it. On load,
-   only when `gatehouse.owner` is set, the script calls the owner route and, on 200, clones one card
-   per answer into Behind the scenes, after the public cards, with the same markup, access label and
-   secondary Open. The section's count, the filter counts and the live region follow.
+3. **The owner part.** After mount, and only when `gatehouse.owner` is set, the page calls the
+   owner route and, on 200, renders one card per answer with brief 03's Card component, in Behind
+   the scenes after the public cards, with the same access label and secondary Open. The answer is
+   parsed with step 1's schema, as the `code-structure` skill's web client parses every answer. The section's count, the filter counts and the live region follow. The hint and
+   `?ward_error=` are read after mount, never during render, so the HTML and the first client render
+   stay equal: extend brief 03's hydration test with the hint set and a faked 200, and expect no
+   recoverable error and the four cards after the answer.
 4. **The states**, each drawn in all three looks, light and dark, on desktop and phone:
    - signed out: the footer entry, nothing else changes;
    - waking: the owner route is slow (the container sleeps behind Sablier); a quiet note in Behind
@@ -86,6 +95,8 @@ never edit either repo.
 
 - [ ] Each scenario of the fake API shows its state in all three looks; the shots in step 6 exist.
 - [ ] With no hint, no request goes to `/gatehouse-api`.
+- [ ] The hydration test passes with the hint set: no recoverable error, and the four owner cards
+      rendered by the Card component after the answer.
 - [ ] The built `web/dist` holds no owner card and no fake API code: the guard passes, and a grep
       for the fake's file name in `web/dist` finds nothing.
 - [ ] Every new control works by keyboard, with a visible focus ring in each look.

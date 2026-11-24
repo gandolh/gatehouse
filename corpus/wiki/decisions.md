@@ -1,5 +1,5 @@
 ---
-summary: Locked calls for Gatehouse, settled with the owner on 2026-11-23 and planned on 2026-11-24, each with what was rejected and why. The owner's four hosts show only after Sign in with Ward, from an API, never in the public HTML; Gatehouse is its own repo with a vps-deploy stack, not a page inside vps-deploy; three looks ship, Profile by default, look and mode stored apart; the page answers exactly / with its files under /gatehouse/ so unknown paths keep the plain 404; a static Astro page with no React; one card list read by the page, the API and vps-deploy's check; visitors never call the API (the owner hint). Read before proposing to change any of these.
+summary: Locked calls for Gatehouse, settled with the owner on 2026-11-23 and planned on 2026-11-24, each with what was rejected and why. The owner's four hosts show only after Sign in with Ward, from an API, never in the public HTML; Gatehouse is its own repo with a vps-deploy stack, not a page inside vps-deploy; three looks ship, Profile by default, look and mode stored apart; the page answers exactly / with its files under /gatehouse/ so unknown paths keep the plain 404; a React page on Vite, rendered to HTML at build time and hydrated (the owner's call, superseding the static Astro page the same day); data-theme holds the mode, the word stays mode; one card list read by the page, the API and vps-deploy's check; visitors never call the API (the owner hint). Read before proposing to change any of these.
 updated: 2026-11-24
 ---
 
@@ -8,7 +8,7 @@ updated: 2026-11-24
 Each entry passed three tests: hard to reverse, surprising without context, and a real trade-off.
 Changing one needs an explicit revisit and a [log.md](../log.md) entry. The first three were the
 owner's, in the grill of 2026-11-23; the rest are technical calls from the plan of 2026-11-24,
-reported to the owner.
+reported to the owner, except the React page, which was the owner's call that day.
 
 ## The owner's hosts show only after Sign in with Ward, from an API
 _2026-11-23, owner._ Visitors see the public list. The owner-only hosts (the vault, Grafana, the mail
@@ -44,12 +44,42 @@ catch-all that serves the page for every unknown path (a typo would land on the 
 Cost accepted: vps-deploy gains a route type that serves one file at exactly `/`.
 
 ## A static Astro page, no React
-_2026-11-24._ Astro 7.3.5, as presentation-sites pins it, builds plain HTML with every public card in
+_2026-11-24._ **Status: superseded by "A React page on Vite, rendered at build time" below**, the
+owner's call the same day. Kept for the record.
+Astro 7.3.5, as presentation-sites pins it, builds plain HTML with every public card in
 it, so the page works with scripting off and costs no framework runtime. The filters, See more, the
 look and mode controls and the owner part are a small script. Tailwind 4 as in the estate's other
 sites.
 Rejected: a React page on Vite like the estate's apps (a runtime and a blank page without scripts,
 for a page that is mostly a list).
+
+## A React page on Vite, rendered at build time
+_2026-11-24, the owner's call._ The owner asked for React instead of Astro. The page is React
+19.2.8 on Vite 8.3.5 with Base UI 1.9.0 and Tailwind 4.3.5, the estate's pins (Lantern, Gazette).
+The build renders it to HTML: a client build, an SSR build of `entry-server`, and a small script
+that writes the rendered page into `web/dist/index.html`. The browser hydrates it. Every public
+card and its See more text are in the HTML, so the page still works with scripting off. The page
+imports a public-only card module made at build time, never `content/cards.json`, and the build
+guard reads the scripts as well as the HTML.
+Rejected: a client-only single-page app (a blank page without scripts, and the owner cards one
+import away from the bundle), and Astro with React islands (the owner asked for React instead of
+Astro).
+Cost accepted: a React runtime on a page that is mostly a list; a prerender step; and a rule that
+nothing read from localStorage or the address (the stored look and mode, the owner hint) is read
+during render, only after mount.
+Supersedes: "A static Astro page, no React".
+
+## `data-theme` holds the mode; the word stays mode
+_2026-11-24._ With React and Base UI, the `base-ui` skill applies in full. Its rule 14 keys the
+`dark` variant off `data-theme` on `<html>`. Its checker doesn't test that; review does, and an app
+that bends it records an exception. Gatehouse follows the rule: `<html data-theme>` carries light,
+dark or system, as the skill's theme reference sets it, next to `data-look`. "Mode" stays the word
+in the glossary, the page's labels and the docs; `data-theme` and the `dark` variant are code names
+only. The stored key stays `gatehouse.mode`.
+Rejected: `data-mode` with a `conventions.json` exception (the skill's boot script, store and
+`@custom-variant dark` would each need translating, and every reviewer would meet a second name for
+one thing).
+Cost accepted: one code name that differs from the glossary's word.
 
 ## One card list for the page, the API and vps-deploy's check
 _2026-11-24._ `content/cards.json` holds every card, public and owner. The page build renders the

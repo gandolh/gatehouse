@@ -27,3 +27,28 @@ mode open. The owner's estate-wide answer of 2026-11-10 already settles it: ever
 Light / Dark / System switch opens a first visit in light (the `base-ui` skill's rule 14), with
 3D-sandbox and the client sites as the only exceptions. Brief 03 now builds light first, and the
 question left `open-questions.md`. Found in the controller's design read of briefs 03 to 06.
+
+## [2026-11-24] decision | The page stack moves from Astro to React (owner, 2026-11-24)
+
+The owner asked for React instead of Astro. Brief 01's first run, written for Astro, was stopped
+before its first commit; its uncommitted work stays in the tree for the next run. The page is now
+React 19.2.8 on Vite 8.3.5 with Base UI 1.9.0 and Tailwind 4.3.5, the estate's pins, rendered to
+HTML at build time (client build, SSR build, a prerender script) and hydrated, so every public card
+and its See more text still work with scripting off. What changed:
+
+- `wiki/decisions.md`: "A static Astro page, no React" is superseded by "A React page on Vite,
+  rendered at build time". A new entry: `data-theme` holds the mode, as the `base-ui` skill's rule
+  14 names it, and the word stays mode. The glossary's mode entry says so.
+- `wiki/architecture.md`: Vite's `base` (build only) in place of Astro's `assetsPrefix`; the build
+  steps and hydration; a public-only card module, so the owner cards can't reach the scripts; the
+  path check's scope; the build guard reading scripts as well as HTML; the owner part rendered by
+  the same Card component after mount, in place of the `<template>`.
+- `wiki/open-questions.md`: Vite's base and the prerender (brief 01), and See more with scripting
+  off under Base UI (brief 03). `routing.md`: the `base-ui` skill, the house-style shape for React.
+- Briefs: 01 (React on Vite, the pins, the path check, strict `check-base-ui`, nothing Astro left,
+  the root `CLAUDE.md` rewritten), 02 (a browser-safe barrel, and formatting `content/cards.json`),
+  03 (React components on Base UI, the card module, hydration, See more, the guard over every
+  built file), 04 and 05 (radio groups and look variants), 06 (the owner cards through the Card
+  component, the answer's schema in `shared`), 07 (no Ward React hooks; the answer's schema). 08
+  and 09 were checked and needed nothing.
+- vps-deploy's brief 34 now names the page as a React page rendered at build time.

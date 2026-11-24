@@ -12,8 +12,10 @@
 
 The third look, Ninety-six: a 1990s homepage done with care, drawn in `design/sketches/C/sketch.html`
 (tokens in its `tokens.md`, renders in `design/shots/c-*.webp`). Brief 03 built the markup and
-Profile, brief 04 Terminal and the look switcher. Read `design/README.md` and
-`corpus/wiki/page.md` first.
+Profile in React, brief 04 Terminal and the look switcher. Read `design/README.md` and
+`corpus/wiki/page.md` first. The skin goes where brief 04 put Terminal's: tokens in the stylesheet,
+the rest as the look's Tailwind variant (`ninety-six:`) on the components' classes, keyed off Base
+UI's state attributes where a part has state (the `base-ui` skill's rules 4 to 6).
 
 What makes it Ninety-six, from the sketch and its tokens:
 
@@ -24,7 +26,8 @@ What makes it Ninety-six, from the sketch and its tokens:
   Cousine for addresses;
 - access labels as sunken read-only fields with an icon, only Public with its green face
   (critique C2);
-- a pressed filter or mode button shows the inset bevel, a lighter face and a check icon (C3);
+- a checked filter, mode or look option shows the inset bevel, a lighter face and a check icon
+  (C3); the three controls are `RadioGroup`s, so the state is `data-checked`;
 - on a desktop the section links and the filters share one row, split by a groove (C1);
 - on a phone the mode buttons are icon-only 44 x 44 bevels beside GitHub (C4);
 - sign-in and owner cards draw Open as the plain grey bevel, so navy means "you can use this" (C5);
@@ -33,7 +36,8 @@ What makes it Ninety-six, from the sketch and its tokens:
 
 ## Files you OWN
 
-- `web/src/`: Ninety-six's tokens and skin rules in the stylesheet
+- `web/src/`: Ninety-six's tokens in the stylesheet and its skin as `ninety-six:` variants on the
+  components
 - `web/package.json` for the three fonts
 - Corpus: `corpus/wiki/page.md`, `corpus/wiki/status.md`, `corpus/log.md`
 
@@ -45,8 +49,8 @@ What makes it Ninety-six, from the sketch and its tokens:
 
 ## Steps
 
-1. **Ninety-six's tokens and rules** from `DESIGN.md` and sketch C, light and dark, under its
-   variant. The look switcher's buttons take the bevel too.
+1. **Ninety-six's tokens and skin** from `DESIGN.md` and sketch C, light and dark, under its
+   variant. The look switcher's options take the bevel too.
 2. **Fonts.** Pixelify Sans, Arimo and Cousine through `@fontsource`, used only under
    `[data-look="ninety-six"]`.
 3. **Focus.** The sketch's ring: 3 px in the inner colour with a 2 px gap, readable on the panel and

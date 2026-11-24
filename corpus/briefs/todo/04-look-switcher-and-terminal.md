@@ -10,8 +10,8 @@
 
 ## Context
 
-Brief 03 built the shared markup and Profile, and wrote every look's tokens into `DESIGN.md`. This
-brief adds the second look, Terminal, drawn in `design/sketches/B/sketch.html` (tokens in its
+Brief 03 built the shared markup and Profile in React, and wrote every look's tokens into
+`DESIGN.md`. This brief adds the second look, Terminal, drawn in `design/sketches/B/sketch.html` (tokens in its
 `tokens.md`, renders in `design/shots/b-*.webp`), and the footer control that switches looks. Read
 `design/README.md` and the page notes brief 03 wrote in `corpus/wiki/page.md` first.
 
@@ -30,13 +30,19 @@ already in the markup and hidden in Profile:
 - on a phone, the mode control as three icon-only 44 x 44 buttons in the top bar.
 
 The look switcher was never drawn. It is a taste item the owner judges later
-([open-questions.md](../../wiki/open-questions.md)), so draw it plainly: a labelled group of three
-buttons (Profile, Terminal, Ninety-six) in the footer, styled with each look's own button rules.
+([open-questions.md](../../wiki/open-questions.md)), so draw it plainly: a Base UI `RadioGroup`
+labelled Look, with Profile, Terminal and Ninety-six, drawn as a row of three buttons in the footer
+in each look's own button style. A `RadioGroup` because the look is a setting kept on the device
+(the `base-ui` skill's rule 16), like the mode control brief 03 built.
+
+A look's skin follows the `base-ui` skill: tokens in the one stylesheet, and the rest as the look's
+Tailwind variant on the components' classes (`terminal:`), never a CSS selector aimed at a Base UI
+part or a raw colour (rules 4 to 6).
 
 ## Files you OWN
 
-- `web/src/`: the Terminal tokens and skin rules in the stylesheet, the look switcher in the footer,
-  the page script's look handling
+- `web/src/`: Terminal's tokens in the stylesheet, its skin as `terminal:` variants on the
+  components, the look switcher in the footer and the look's store
 - `web/package.json` for the Plex fonts
 - Corpus: `corpus/wiki/page.md`, `corpus/wiki/status.md`, `corpus/log.md`
 
@@ -49,13 +55,14 @@ buttons (Profile, Terminal, Ninety-six) in the footer, styled with each look's o
 
 ## Steps
 
-1. **The switcher.** A group of three buttons with `aria-pressed`, labelled "Look", in the footer's
-   slot. A press sets `data-look` on `<html>` and stores `gatehouse.look`; the inline head script
-   already applies it before the first paint. With scripting off the group is hidden and the page
-   stays in Profile.
-2. **Terminal's tokens and rules** from `DESIGN.md` and sketch B, light and dark, under the
-   Terminal variant. Card edges in ink with the hard offset shadow; picture frames and secondary
-   buttons in the rule colour (critique B4).
+1. **The switcher.** The `RadioGroup` in the footer's slot. A choice sets `data-look` on `<html>`
+   and stores `gatehouse.look`; the inline head script already applies it before the first paint.
+   The chosen value is read after mount, from `<html>`, never during render, so hydration stays
+   clean with a stored look (brief 03's hydration test covers it). With scripting off the group is
+   hidden, by the head script's scripted mark, and the page stays in Profile.
+2. **Terminal's tokens and skin** from `DESIGN.md` and sketch B, light and dark: the tokens under
+   the Terminal look in the stylesheet, the skin as `terminal:` classes. Card edges in ink with the
+   hard offset shadow; picture frames and secondary buttons in the rule colour (critique B4).
 3. **Fonts.** IBM Plex Mono (400, 600, 700) and IBM Plex Sans (400, 600) through `@fontsource`,
    used only under `[data-look="terminal"]`.
 4. **The filter result** is announced in Terminal too (critique B6).

@@ -27,7 +27,10 @@ it into the repo: notes and the outcome name paths only (`/piataro/`, `ward.`).
 ## Files you OWN
 
 - `shared/src/`: the card schema, the loader, the link resolver and their tests
-- `content/cards.json` (fixes the live check finds) and `content/images/piataro.webp`
+- `shared/package.json`: the loader's subpath export
+- `content/cards.json` (fixes the live check finds, and its formatting) and
+  `content/images/piataro.webp`
+- `.prettierignore`: the `content/cards.json` line only
 - Corpus: `corpus/wiki/card-list.md`, `corpus/wiki/status.md`, `corpus/log.md`
 
 ## Files you must NOT touch
@@ -39,7 +42,10 @@ it into the repo: notes and the outcome name paths only (`/piataro/`, `ward.`).
 1. **The schema** in `shared` with zod, as [card-list.md](../../wiki/card-list.md) describes it:
    `site`, `access`, `sections` and each card's fields, `part` and `access` as unions. Export the
    types, a `loadCards(path)` that reads and validates the file (an invalid file throws, naming the
-   card id and the field), and `publicCards` / `ownerCards` helpers.
+   card id and the field), and `publicCards` / `ownerCards` helpers. The page is React and its
+   components import from `shared` in the browser, so the barrel holds nothing from `node:`:
+   `loadCards`, which reads the file, sits behind a subpath export of its own (for example
+   `@gatehouse/shared/load`), used by the page's build step and the API.
 2. **The link resolver**: `resolveLink(link, origin)` returns a path link unchanged, `host:<name>`
    as `https://<name>.<origin's host>/`, and an `https` address as it is; anything else throws.
    `displayAddress(link)` returns `/path/`, `<name>.`, or the address without `https://`. The page
@@ -59,12 +65,17 @@ it into the repo: notes and the outcome name paths only (`/piataro/`, `ward.`).
    with the card's access label. Fix a wrong label in `cards.json`; a card that answers nothing
    (404, error page) is a finding for the owner, not a fix. Write a table into `card-list.md`: card
    id, path or host, what a visitor gets, label before and after.
-6. The corpus: `card-list.md` (the schema's file names, the check's table and date), `status.md`, a
+6. **Format the list.** `content/cards.json` fails Prettier as seeded, so `.prettierignore` keeps
+   it out for now. Run Prettier on it, drop that line, and check that only whitespace changed
+   (`loadCards` reads the same 38 cards).
+7. The corpus: `card-list.md` (the schema's file names, the check's table and date), `status.md`, a
    `log.md` entry.
 
 ## Acceptance
 
 - [ ] `loadCards` validates `content/cards.json`; the tests in step 3 pass; `npm run check` exits 0.
+- [ ] The barrel imports nothing from `node:`; `loadCards` comes from its own subpath.
+- [ ] `content/cards.json` passes `npm run format:check`, and `.prettierignore` no longer names it.
 - [ ] `content/images/piataro.webp` shows the Mercatus brand, 800 px wide, webp.
 - [ ] The table in `card-list.md` has one row per non-GitHub card (33), dated, with paths only.
 - [ ] Every label change in `cards.json` matches a row in that table.
