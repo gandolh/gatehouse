@@ -2,7 +2,7 @@ import type { OwnerNotice, OwnerStatus } from "./owner";
 
 /**
  * The owner part's words. Plain, and never a code from Ward or the API: a refusal reads the same whatever Ward said,
- * and an expired round trip reads as a refusal too.
+ * and an expired round trip reads as a refusal too. A cancel at Ward is not a refusal: it gets a quiet line.
  */
 export const words = {
   signIn: "Owner sign-in",
@@ -16,6 +16,7 @@ export const words = {
 
 const NOTICES: Record<OwnerNotice, string> = {
   refused: "Ward didn't sign you in. This sign-in is only for the owner of this site.",
+  cancelled: "Sign-in cancelled.",
   unreachable: "Ward can't be reached right now. Try again later.",
   "signed-out": "Signed out. The owner's cards are off the page.",
   "sign-out-failed": "The sign-out didn't reach the server. Try again.",

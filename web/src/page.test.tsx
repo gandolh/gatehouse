@@ -134,12 +134,44 @@ async function hydrateWithHint(body: unknown, status: number): Promise<HTMLEleme
   return container;
 }
 
+/**
+ * Hydrates the page as Ward's callback lands it after a failed sign-in: the hint set (the sign-in was pressed) and
+ * `?ward_error=<code>` in the address. Any request fails the test's expectations: the page makes none on the way back.
+ */
+async function hydrateBackFromWard(
+  code: string,
+): Promise<{ container: HTMLElement; fetched: ReturnType<typeof vi.fn> }> {
+  document.head.innerHTML = '<meta name="theme-color" content="#e5e8ee">';
+  document.body.innerHTML = `<div id="root">${renderToString(page(DATA))}</div>`;
+  localStorage.setItem("gatehouse.owner", "1");
+  history.replaceState(null, "", `/?ward_error=${code}&look=terminal`);
+  new Function(headScript())();
+  const fetched = vi.fn(() => Promise.reject(new Error("no request expected")));
+  vi.stubGlobal("fetch", fetched);
+  const container = document.getElementById("root");
+  if (container === null) throw new Error("no root");
+
+  await act(async () => {
+    hydrateRoot(container, page(DATA));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  });
+  return { container, fetched };
+}
+
+/** The footer's line for the owner part. */
+function ownerLine(container: HTMLElement): HTMLElement {
+  const line = container.querySelector<HTMLElement>('footer p[role="status"]');
+  if (line === null) throw new Error("no owner line");
+  return line;
+}
+
 beforeAll(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 });
 
 afterEach(() => {
   localStorage.clear();
+  history.replaceState(null, "", "/");
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
@@ -293,6 +325,32 @@ describe("the page", () => {
     expect(status).toEqual([""]);
     expect([...container.querySelectorAll("footer button")].map((node) => node.textContent)).toContain("Owner sign-in");
     expect(localStorage.getItem("gatehouse.owner")).toBeNull();
+  });
+
+  it("says a sign-in cancelled at Ward quietly: the muted line, no focus, the hint dropped, the address cleaned", async () => {
+    const { container, fetched } = await hydrateBackFromWard("cancelled");
+
+    const line = ownerLine(container);
+    expect(line.textContent).toBe("Sign-in cancelled.");
+    expect(document.activeElement).not.toBe(line);
+    expect(line.className).toContain("text-ink-muted");
+    expect(line.className).not.toContain("font-medium");
+    expect([...container.querySelectorAll("footer button")].map((node) => node.textContent)).toEqual(["Owner sign-in"]);
+    expect(localStorage.getItem("gatehouse.owner")).toBeNull();
+    expect(`${location.pathname}${location.search}`).toBe("/?look=terminal");
+    expect(fetched).not.toHaveBeenCalled();
+  });
+
+  it("says a refusal at Ward plainly, and brings its line into focus", async () => {
+    const { container, fetched } = await hydrateBackFromWard("access_denied");
+
+    const line = ownerLine(container);
+    expect(line.textContent).toBe("Ward didn't sign you in. This sign-in is only for the owner of this site.");
+    expect(document.activeElement).toBe(line);
+    expect(line.className).toContain("font-medium");
+    expect(localStorage.getItem("gatehouse.owner")).toBeNull();
+    expect(`${location.pathname}${location.search}`).toBe("/?look=terminal");
+    expect(fetched).not.toHaveBeenCalled();
   });
 
   it("makes no request without the owner hint", async () => {

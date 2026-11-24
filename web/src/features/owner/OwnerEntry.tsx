@@ -12,7 +12,7 @@ const quiet = cn(button("quiet"), "ms-0");
  * The owner's way in, in the footer: Owner sign-in, or where the sign-in stands and Sign out. The line is a live
  * region, empty in the HTML, so each change is announced. The main button stays one element through every state, so
  * focus stays on it when Owner sign-in becomes Sign out and back. Back from Ward with an error, the line takes focus,
- * which brings it into view.
+ * which brings it into view; a cancel's quiet line doesn't.
  */
 export function OwnerEntry({ part, section }: { part: OwnerPart; section: string }) {
   const { status, notice, cards, returned } = part;
@@ -22,8 +22,8 @@ export function OwnerEntry({ part, section }: { part: OwnerPart; section: string
   }, [returned]);
 
   const busy = status === "starting" || status === "signing-out";
-  // A message the person has to act on stands out; where the sign-in stands stays muted.
-  const message = notice !== null || status === "not-owner" || status === "failed";
+  // A message the person has to act on stands out; where the sign-in stands, and a cancel, stay muted.
+  const message = (notice !== null && notice !== "cancelled") || status === "not-owner" || status === "failed";
   const signedIn = status === "owner" || status === "not-owner" || status === "failed" || status === "signing-out";
   const main = signedIn
     ? { label: status === "signing-out" ? words.signingOut : words.signOut, act: part.signOut }

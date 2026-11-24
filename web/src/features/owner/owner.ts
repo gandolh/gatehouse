@@ -18,16 +18,16 @@ export type OwnerStatus =
   "visitor" | "starting" | "checking" | "waking" | "owner" | "not-owner" | "failed" | "signing-out";
 
 /**
- * A message beside the footer's entry: a refusal on the way back from Ward, Ward unreachable, a sign-out done or
- * failed.
+ * A message beside the footer's entry: a refusal or a cancel on the way back from Ward, Ward unreachable, a sign-out
+ * done or failed.
  */
-export type OwnerNotice = "refused" | "unreachable" | "signed-out" | "sign-out-failed";
+export type OwnerNotice = "refused" | "cancelled" | "unreachable" | "signed-out" | "sign-out-failed";
 
 interface OwnerState {
   status: OwnerStatus;
   notice: OwnerNotice | null;
   cards: readonly OwnerCard[];
-  /** The page came back from Ward with an error, so the footer brings its notice into view. */
+  /** The page came back from Ward with an error to act on, so the footer brings its notice into view. */
   returned: boolean;
 }
 
@@ -47,9 +47,12 @@ const GIVE_UP_AFTER_MS = 30_000;
 
 /**
  * Ward's codes for "Ward can't be reached", in `?ward_error=` and in a 401's `reason`: the page says to try later. Any
- * other `ward_error` is a refusal, and any other 401 a quiet sign-out.
+ * other `ward_error` but a cancel is a refusal, and any other 401 a quiet sign-out.
  */
 const UNREACHABLE = new Set(["ward_unavailable", "ward_misconfigured"]);
+
+/** Ward's library's code for "Back to Gatehouse" at Ward: the person changed their mind, so nothing went wrong. */
+const CANCELLED = "cancelled";
 
 /** The calls, loaded on demand: a visitor never downloads them. */
 const loadApi = () => import("./api");
@@ -100,7 +103,10 @@ function createOwnerStore() {
     },
     get: () => state,
 
-    /** After mount: a refusal on the way back from Ward drops the hint; else, with the hint set, ask for the cards. */
+    /**
+     * After mount: back from Ward with an error, drop the hint and say so (a cancel quietly, without taking focus);
+     * else, with the hint set, ask for the cards.
+     */
     resume() {
       if (resumed) return;
       resumed = true;
@@ -111,7 +117,10 @@ function createOwnerStore() {
         set({ status: "visitor" });
       });
       const code = takeWardError();
-      if (code !== null) {
+      if (code === CANCELLED) {
+        dropHint();
+        set({ notice: "cancelled" });
+      } else if (code !== null) {
         dropHint();
         set({ notice: UNREACHABLE.has(code) ? "unreachable" : "refused", returned: true });
       } else if (hasHint()) {

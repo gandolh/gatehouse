@@ -1,6 +1,6 @@
 /**
  * The owner hint: `gatehouse.owner` in localStorage, set when the footer's sign-in is pressed and dropped on a refusal,
- * a 401 or a sign-out. The page calls the API only while it is set, so a visitor never wakes the API. Read only after
+ * a cancel, a 401 or a sign-out. The page calls the API only while it is set, so a visitor never wakes the API. Read only after
  * mount: the page's HTML was rendered without it.
  */
 const KEY = "gatehouse.owner";
