@@ -92,7 +92,7 @@ Walked; on the board at Ready for deploy, waiting for vps-deploy's brief 34. Det
   sign-in (the start answers 503).
 - **No hint, no request**: a reload with the hint cleared and the session cookie still set makes no request to
   `/gatehouse-api`.
-- **One difference, fixed** (01ad87a): with a live session and Ward down, the owner route answers 401 with
+- **One difference, fixed** (c5883df): with a live session and Ward down, the owner route answers 401 with
   `reason: ward_unavailable` and keeps the session; the page dropped the hint without a word. It now shows the Ward
   unreachable words with the failed state's Try again and Sign out, and keeps the hint. Walked live: Try again
   recovers once Ward is back with no new round trip, and Sign out works while Ward is down. Two hydration cases test

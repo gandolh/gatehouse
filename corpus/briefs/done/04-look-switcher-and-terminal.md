@@ -100,7 +100,7 @@ Built: the footer look switcher (`web/src/features/look/`, a RadioGroup row, `ga
 `data-look="terminal"`, the `terminal:` variant on the components, Plex Mono 400/600/700 and Plex Sans 400/600, latin
 and latin-ext files only). Details in [page.md](../../wiki/page.md).
 
-Also in this run: brief 03's design-critic fixes (d628cb8): headings at 700, **DESIGN.md's weight line corrected**
+Also in this run: brief 03's design-critic fixes (2dea9f1): headings at 700, **DESIGN.md's weight line corrected**
 (the 650 token was drawn as 700 in the approved renders), the switch pressed from the first frame, a favicon asset.
 
 Checks: `npm run check`, `npm run build` and the corpus lint pass. Terminal light 1280 x 800 and dark 390 x 844 read

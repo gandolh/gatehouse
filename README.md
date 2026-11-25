@@ -7,7 +7,7 @@ anyone who arrives from a link and wants to find what they were sent to.
   <img src="docs/images/hero.webp" width="100%" alt="Gatehouse in its Profile look: a header with the wordmark and the light, dark and system mode control, a row of section links with filters, and the first section, Games and toys, as cards with a picture, an access label and Open, Docs and See more buttons">
 </p>
 
-**Status:** personal project, built and checked locally; waiting for its first deploy. The repo has no remote.
+**Status:** personal project, built and checked locally; waiting for its first deploy.
 
 ## What it does
 

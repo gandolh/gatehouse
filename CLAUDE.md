@@ -55,7 +55,8 @@ time and hydrated, and a Fastify API: three npm workspaces (`shared`, `server`, 
   whose banners and LICENSE name its source repo and which its SHA256SUMS keep byte-identical.
   The domain reaches the build as `GATEHOUSE_ORIGIN` and the API as `PUBLIC_ORIGIN`. Name other repos
   by name: "vps-deploy", "Ward" (the `wzd_auth` repo).
-- **No remote, no pushes, no deploys.** The repo is local; commit on `main`. The owner deploys.
+- **No pushes, no deploys.** Commit on `main`; the owner pushes and deploys. The repo is public on GitHub.
+- **Commits carry the owner's name alone:** no `Co-Authored-By` lines (owner, 2026-11-25).
 - **No CI.** Don't add GitHub Actions, runners or other GitHub-specific automation.
 
 ## brief-board

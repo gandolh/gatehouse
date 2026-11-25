@@ -196,3 +196,11 @@ check`, the build guard, the corpus lint and vps-deploy's card check pass. Ready
 Filed from the owner's ask for a gallery-style switch between the cards and a denser view. The owner picked compact
 cards (every section drawn like Behind the scenes); the rest (View: Cards or Compact, Cards by default,
 `gatehouse.view` read by the head script, the control after the filters) follows the look and the mode.
+
+## [2026-11-25] maintenance | History rewritten without co-author lines; the repo goes public
+
+The owner made the repo public on GitHub. Before the first push, every commit message lost its `Co-Authored-By`
+line, so the owner is the only author shown. Only the messages changed: every commit keeps its files, its author,
+committer and dates. All hashes changed; the three the done briefs cite were updated (04: d628cb8 → 2dea9f1, 06:
+8297590 → 264884e, 08: 01ad87a → c5883df). Hashes quoted on brief-board tickets before this date are the old ones.
+Checked first: no version of any file and no commit message holds the domain.

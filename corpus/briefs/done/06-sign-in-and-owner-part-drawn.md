@@ -131,7 +131,7 @@ Built against the fake API; on the board at Ready for test, for the owner to jud
   `dev:fake` and `fake-api` in `web/package.json`.
 - The hydration test's owner case and a no-hint case; `DESIGN.md`'s controls section has the states' rules.
 
-Also in this run: briefs 04 and 05's design-critic fixes (8297590), recorded on [looks.md](../../wiki/looks.md).
+Also in this run: briefs 04 and 05's design-critic fixes (264884e), recorded on [looks.md](../../wiki/looks.md).
 The footer's layout (the critic's nit 10) was left as it is and asked on the board.
 
 Checks: `npm run check`, `npm run build` (the guard, and no fake file name in `web/dist`) and the corpus lint pass.

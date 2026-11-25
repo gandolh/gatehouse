@@ -7,7 +7,7 @@ updated: 2026-11-24
 
 _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleton (brief 01) and the card list
 (brief 02). Beside it the repo holds the approved design (`design/`), `DESIGN.md`, the card list
-(`content/cards.json` and 25 pictures), this corpus, and briefs 04 to 09. It has no remote.
+(`content/cards.json` and 25 pictures), this corpus, and briefs 04 to 09. It is public on GitHub since 2026-11-25.
 
 ## By area
 
