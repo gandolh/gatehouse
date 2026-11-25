@@ -1,7 +1,7 @@
 # Task 13: A compact view for every section
 
 **Depends on:** nothing.
-**Runs before:** the next `node cli.ts gatehouse all`.
+**Runs before:** the next `node cli.ts gatehouse deploy`.
 **Builder:** Opus. It touches the head script, hydration and all three looks at once.
 **Before you start:** run `brief-board guide` (the repo's `CLAUDE.md` says so).
 
@@ -61,8 +61,10 @@ All settled. None of them is open.
 1. Extend the head script: read `gatehouse.view` inside the existing `try`, set `data-view="compact"` only for
    `compact`. Extend the jsdom test that runs the real head script to cover it.
 2. Make a section compact when it is a compact section or when `<html>` has `data-view="compact"`, in CSS (a
-   variant keyed off `data-view`), so no render reads storage. Hide the pictures in compact view the same way the
-   compact sections do. Don't keep a second copy of the compact styles.
+   variant keyed off `data-view`), so no render reads storage. The compact sections have no pictures because their cards
+   have `image: null` in the card list, so Compact view hides the picture link with CSS keyed off `data-view`; the
+   markup stays the same. Lazy pictures that are hidden don't load; the first row's eager ones may, which is fine.
+   Don't keep a second copy of the compact styles.
 3. Add the View control to the section row after the filters, with the store in `web/src/features/view/` (read and write
    `gatehouse.view` with try/catch, set `data-view`), mirroring `web/src/features/mode/`.
 4. Check row levelling (`useLevelRows.ts`) in both views, after a switch and after a filter.
@@ -88,7 +90,7 @@ All settled. None of them is open.
 
 ## Owner steps
 
-- `node cli.ts gatehouse all` from vps-deploy.
+- `node cli.ts gatehouse deploy` from vps-deploy (the page only; the API doesn't change).
 
 ## Owner decisions
 
