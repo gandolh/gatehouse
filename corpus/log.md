@@ -190,3 +190,9 @@ vps-deploy's card check pass. Ready for deploy after the gazette stack.
 Tavi Ceasornicaru is on the front page: an open card in Sites for other people at `/tavi/`, with a picture from a
 fresh shot of the site's hero. The card tests and the wiki counts moved by one (39 cards, 36 public). `npm run
 check`, the build guard, the corpus lint and vps-deploy's card check pass. Ready for deploy.
+
+## [2026-11-25] todo | Brief 13: a compact view for every section
+
+Filed from the owner's ask for a gallery-style switch between the cards and a denser view. The owner picked compact
+cards (every section drawn like Behind the scenes); the rest (View: Cards or Compact, Cards by default,
+`gatehouse.view` read by the head script, the control after the filters) follows the look and the mode.
