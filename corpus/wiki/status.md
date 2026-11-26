@@ -1,6 +1,6 @@
 ---
-summary: Where Gatehouse stands, per area, as of 2026-11-24. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built; the owner part's page side, built against a fake API, was approved by the owner (brief 06); the owner API with Sign in with Ward only, the owner route, its container and docs/owner-setup.md are built (brief 07); the page and the API were walked together against the local Ward, every state matching, and wait at Ready for deploy (brief 08); the README and docs are written (brief 09). Each area with the brief that builds it; what waits outside the repo (vps-deploy's brief 34 for the first deploy); the owner's steps in order.
-updated: 2026-11-24
+summary: Where Gatehouse stands, per area, as of 2026-11-26. The skeleton (brief 01), the card list with its schema and live check (brief 02) and the public page in Profile with DESIGN.md, the card module and the build guard (brief 03), Terminal with the look switcher (brief 04) and Ninety-six (brief 05) are built, and the View control (Cards or Compact) joined the section row on 2026-11-26 (brief 13); the owner part's page side, built against a fake API, was approved by the owner (brief 06); the owner API with Sign in with Ward only, the owner route, its container and docs/owner-setup.md are built (brief 07); the page and the API were walked together against the local Ward, every state matching, and wait at Ready for deploy (brief 08); the README and docs are written (brief 09). Each area with the brief that builds it; what waits outside the repo (vps-deploy's brief 34 for the first deploy); the owner's steps in order.
+updated: 2026-11-26
 ---
 
 # Status
@@ -24,7 +24,10 @@ _2026-11-24._ **The public page is built in Profile** (brief 03), on the skeleto
   control, filters, See more (which shows with scripting off), the phone's sticky section row, Geist self-hosted,
   and a build guard that fails on any owner card in `web/dist/`. `DESIGN.md` locks all three looks' tokens; the
   markup already carries Terminal's and Ninety-six's elements, hidden ([page.md](page.md)). Terminal and the footer
-  look switcher done 2026-11-24 (brief 04). Ninety-six done 2026-11-24 (brief 05).
+  look switcher done 2026-11-24 (brief 04). Ninety-six done 2026-11-24 (brief 05). The View control done 2026-11-26
+  (brief 13): Cards or Compact after the filters, kept as `gatehouse.view` and set as `data-view` by the head script,
+  every section drawn compact in Compact; the section row is two lines at every width now. A design-critic pass on
+  its 12 shots comes before Ready for deploy (the page only).
 - **The owner part**: the page's side built 2026-11-24 against a fake API (brief 06): Owner sign-in
   in the footer, the owner's cards in Behind the scenes, the states (waking, signed in, refused, Ward
   unreachable, not the owner, failed, signed out again), the contract in `shared`, and

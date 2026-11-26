@@ -1,6 +1,6 @@
 ---
-summary: Gatehouse's vocabulary, settled in the grill of 2026-11-23 and the plan of 2026-11-24. Look (Profile, Terminal, Ninety-six) and mode (light, dark, system), never "theme"; access label (Public, Sign-in, Owner only, Docs only, On GitHub), never status or badge; part (public, owner) and the owner part; owner hint; card, section and compact section; See more.
-updated: 2026-11-24
+summary: Gatehouse's vocabulary, settled in the grill of 2026-11-23 and the plan of 2026-11-24, with View added on 2026-11-26. Look (Profile, Terminal, Ninety-six) and mode (light, dark, system), never "theme"; view (Cards, Compact), never layout or density; access label (Public, Sign-in, Owner only, Docs only, On GitHub), never status or badge; part (public, owner) and the owner part; owner hint; card, section and compact section; See more.
+updated: 2026-11-26
 ---
 
 # Glossary
@@ -12,6 +12,11 @@ _Avoid:_ theme, skin, style.
 **Mode:** light, dark or system, within a look. System follows the device. In code it is the
 `data-theme` attribute on `<html>`, the name the `base-ui` skill uses; the page and the docs say mode.
 _Avoid:_ theme.
+
+**View:** how the sections are drawn: Cards or Compact, in any look and mode. Cards is the page as a first visit
+sees it, full cards with pictures beside the two compact sections. Compact draws every section as a compact section.
+Kept on the device as `gatehouse.view`; in code it is `data-view="compact"` on `<html>`, absent for Cards.
+_Avoid:_ layout, density, grid, list.
 
 **Access label:** the label on a card saying who can open it: Public, Sign-in, Owner only, Docs only,
 On GitHub. Always words, never colour alone.

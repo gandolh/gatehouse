@@ -97,3 +97,38 @@ All settled. None of them is open.
 - Settled 2026-11-25 (owner): compact view = compact cards in every section (not list rows, not picture tiles).
 - The name, default, placement, storage and scripting-off behaviour are the controller's calls, taken from the
   approved design and how the look and the mode already work.
+
+## Outcome (2026-11-26)
+
+Built as decided: the head script reads `gatehouse.view` in its `try` and sets `data-view="compact"` only for
+`compact`; the stylesheet's new `compact` variant (a `<section data-compact>`, or any section under
+`data-view="compact"`) replaced `group-data-compact/section` everywhere, so the compact rules exist once, and the
+picture link is `compact:hidden`. The View control (`web/src/features/view/`: `view.ts`, `ViewControl.tsx`) is the
+page's `RadioGroup` in the filters' chip look, with two new icons in `components/ui/icons.tsx`; `RadioGroup`'s
+`setting` takes `view`, and the `pressed` variants match `data-view-option` before hydration. `App.tsx` passes the
+control to the section row. `useLevelRows` levels again on a `data-view` change.
+
+One call the brief didn't foresee: the row is two lines at every width. From 1240 px the links and the filters
+already filled one line, leaving 76 px in Profile, 44 in Ninety-six and 23 in Terminal at 1280, where View takes 206
+to 231 (two icon-only cells would take 92). So the links keep the first line and the filters and View share the
+second, View at its end; it wraps to a line of its own where the two don't fit (a phone, Terminal at 640 px). On a
+phone the filters fill their line, so icon-only cells wouldn't fit beside them either: View keeps its words on its own
+line. Ninety-six's groove between the links and the filters went with the one-line row. At 1280 x 800 the first row of
+cards still shows in every look (it ends at 717, 776 and 733 px); at 390 x 844 it now ends at 840 to 864 px. Sections'
+desktop scroll margin went from 84 to 92 px, so a jump clears the two-line row (84 already left Profile's row 5 px over
+the title between 900 and 1240 px).
+
+Checks: `npm run check` and `npm run build` (path check, owner-part guard) pass; the corpus lint passes. Five new jsdom
+tests in `web/src/page.test.tsx` (the head script, the same HTML for every visitor, the `compact` selector, a stored
+Compact hydrating with no error or warning, a click writing `gatehouse.view`); they fail when the head script, the
+pressed variant or the variant's view arm is broken. In the preview, headless Chrome: Cards on a first visit; Compact
+by click, filter and reload, rows level after each; the first paint right with the page script blocked, in all three
+looks; only the three eager pictures fetched in a fresh Compact visit; Tab and arrow keys; scripting off shows Cards,
+36 See more texts and no View; no console message. In Cards the header, cards and footer match the previous build
+pixel for pixel at eight widths, the row aside ([looks.md](../../wiki/looks.md)).
+
+The 12 shots, kept outside the repo: `profile-`, `terminal-` and `ninety-six-` with `cards-light-1280`,
+`cards-dark-390`, `compact-light-1280` and `compact-dark-390` (`.png`). Found, not changed: with a stored choice
+that differs from the HTML's, a `RadioGroup`'s tab stop stays on the HTML's option after hydration (Cards for View,
+Light for the mode); the arrows still move and choose. brief-board was not updated: it was not available in this
+session.

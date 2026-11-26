@@ -23,7 +23,7 @@ export interface RadioGroupProps<Value extends string> {
    * one is drawn pressed from the first frame, before React hydrates (the stylesheet's `pressed` variant). A filter
    * has no such setting.
    */
-  setting?: "mode" | "look";
+  setting?: "mode" | "look" | "view";
   className?: string;
 }
 
