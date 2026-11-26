@@ -204,3 +204,18 @@ line, so the owner is the only author shown. Only the messages changed: every co
 committer and dates. All hashes changed; the three the done briefs cite were updated (04: d628cb8 → 2dea9f1, 06:
 8297590 → 264884e, 08: 01ad87a → c5883df). Hashes quoted on brief-board tickets before this date are the old ones.
 Checked first: no version of any file and no commit message holds the domain.
+
+## [2026-11-26] build | Brief 13: a compact view for every section
+
+A View control, Cards or Compact, now follows the filters in the section row. Compact draws every section the way
+Behind the scenes and On GitHub are drawn: smaller cards, no pictures, the columns unchanged. The choice is kept as
+`gatehouse.view`; the head script sets `data-view="compact"` before the first paint, and the stylesheet's new `compact`
+variant (which replaced `group-data-compact/section`) draws the sections from it, so the HTML is the same for every
+visitor and nothing reads storage in render. The section row is two lines at every width now: from 1240 px the links
+and filters already filled one line, with 23 to 76 px left where View takes 206 to 231. The sections' desktop scroll
+margin went to 92 px so a jump clears the row. `npm run check`, the build and the corpus lint pass; the preview was
+walked in headless Chrome in both views, every look, light and dark, at 1280 and 390, and Cards' cards, header and
+footer match the previous build pixel for pixel. The tab stop of a `RadioGroup` whose stored choice differs from the
+HTML's stays on the HTML's option after hydration (View and the mode alike); noted, not changed. brief-board was not
+updated: it was not available in this session. The controller's design-critic pass on the 12 shots comes before Ready
+for deploy. Findings in [wiki/page.md](wiki/page.md) and [wiki/looks.md](wiki/looks.md).

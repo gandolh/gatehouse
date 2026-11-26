@@ -7,14 +7,17 @@ decisions in `corpus/wiki/decisions.md`, which win over the sketches where they 
 ## System
 
 - Genre: modern-minimal (Profile), with two skins over the same markup: Terminal and Ninety-six.
-- Shape of the first page: app screen. One page of grouped cards: a header, a row of section links and filters, five
-  sections, a footer. No hero.
+- Shape of the first page: app screen. One page of grouped cards: a header, a row of section links, filters and the
+  View control, five sections, a footer. No hero.
 - Theme: custom, three looks (vibe: "a GitHub profile grown into a page"; "a listing on a well-kept machine"; "a 1990s
   homepage done with care"). Profile is the default; a visitor picks another in the footer.
 - Axes: tinted cool paper / sans display / one blue accent (Profile) · posture: restrained.
 - Mode: light, dark or system within each look. A first visit is light. `<html data-theme>` holds the mode and
   `<html data-look>` the look; both are set by the head script before the first paint. Labels say "Mode", never
   "Theme".
+- View: Cards or Compact, in every look and mode. A first visit is Cards. Compact draws every section the way the
+  compact sections are drawn. The head script sets `<html data-view="compact">` before the first paint for Compact
+  and nothing for Cards, so the HTML is the same for everyone.
 
 ## The structure every look keeps
 
@@ -22,24 +25,30 @@ From `design/directions.md` and the critique. A look changes tokens and skin rul
 
 1. **Header:** the wordmark, the card list's `line` and `sub`, a GitHub link, and the mode control (Light, Dark,
    System). No hero image, no headline competing with the cards: at 1280 x 800 the first row of cards shows.
-2. **Section row:** links to the five sections with their card counts, and the filters All, Open to anyone, Needs
-   sign-in. A filter hides empty sections and their links and announces "Showing N cards". Sticky on a desktop.
+2. **Section row:** links to the five sections with their card counts on the first line; on the second, the filters
+   All, Open to anyone, Needs sign-in, and at its end the View control (Cards, Compact), which takes a line of its own
+   where the two don't fit (a phone, Terminal at 640 px). A filter hides empty sections and their links and announces
+   "Showing N cards"; it keeps the view. Sticky on a desktop. The row is two lines at every width since View joined it
+   (2026-11-26): from 1240 px the links and filters already filled one line, leaving 76 px in Profile, 44 in
+   Ninety-six and 23 in Terminal, where View takes 206 to 231.
 3. **Sections** in the list's order, each with its title, its line and its cards: 3 columns at 1000 px and up, 2 from
-   640 px, 1 on a phone, `minmax(0, 1fr)` tracks. Behind the scenes and On GitHub are compact: no pictures.
+   640 px, 1 on a phone, `minmax(0, 1fr)` tracks, in either view. Behind the scenes and On GitHub are compact in both
+   views: smaller cards, no pictures. In Compact every section is drawn that way; the pictures are hidden, not removed.
 4. **Card:** the picture (a link), the name, the access label, the blurb, then the actions: Open (Read the docs on a
    docs card, View on GitHub on a repo card), Docs when set, and See more. The whole card is never one link.
 5. **See more** opens inside the card and pushes the cards below it down: the `more` text, the address without the
    domain (a host shows as `satchel.` and "own address"), Docs and Source on GitHub. Nothing live: no date.
 6. **Access label:** words and an icon, never colour alone. Public alone carries the access colour.
 7. **Footer:** the list's `footer` line, the GitHub link, the look switcher and the owner's sign-in.
-8. **With scripting off** every public card and its See more text show; the mode control, the filters and the See more
-   buttons hide.
+8. **With scripting off** every public card and its See more text show, in Cards; the mode control, the filters, the
+   View control and the See more buttons hide.
 
 ### The critique's fixes (in every look)
 
 - **R1, the picture is a link:** `<a href tabindex="-1" aria-hidden="true">` around the `<img>`, no extra tab stop.
 - **R2, the phone keeps a way between sections:** at 390 px only the row of section links sticks (`top: 0`, the
-  look's surface behind it); the filters scroll away; sections set `scroll-margin-top` so a jump clears the row.
+  look's surface behind it); the filters and the View control scroll away; sections set `scroll-margin-top` so a jump
+  clears the row.
 - **R3, a sign-in card is not as inviting as a public one:** on `sign-in` and `owner` cards Open is drawn as the
   look's secondary button. The filled primary means the card opens for anyone (`open`, `docs`, `repo`).
 
@@ -68,7 +77,8 @@ Tokens by role. `web/src/styles/index.css` is the source of truth: each colour i
   its font file has no 650.
 - Type: wordmark 24/1.2, section title 21/1.25, the header line 17/1.45 (16 on a phone), card name 17/1.3, body
   15/1.5, sub line 14.5, controls 14, facts 13.5, access label 12.5.
-- Radii: cards and the section row 12 px, controls 8, the mode track 10 and its buttons 7, labels and filters a pill.
+- Radii: cards and the section row 12 px, controls 8, the mode track 10 and its buttons 7, labels, filters and views a
+  pill.
 - Shadow: `0 1px 2px shade-1, 0 2px 8px shade-2` on cards, the section row and the pressed mode.
 - Page: capped at 1232 px, gutters 16 / 24 (640 up) / 32 (1000 up).
 
@@ -95,7 +105,8 @@ From `design/sketches/B/tokens.md`. Light is a paper printout, dark is amber pho
   IBM Plex Sans (400, 600) for blurbs, See more text, the header lines and the footer.
 - The markup it adds, hidden in Profile: the section head's command and its output (`$ ls ~/play`, `6 items`, the
   count of cards shown), the address line under each card's name (`satchel.` with "own address"), the brackets around
-  the access words (`[public]`, lower case), the cursor after the wordmark, the check icon on the pressed filter.
+  the access words (`[public]`, lower case), the cursor after the wordmark, the check icon on the pressed filter and
+  view.
 - See more drops its Address row (the line under the name shows it). Square corners, a 1 px ink border and a 3 px
   hard shadow on cards; pictures framed in `rule`; secondary buttons boxed in `rule`.
 - Phone: the mode control is three icon-only 44 x 44 cells.
@@ -127,9 +138,11 @@ From `design/sketches/C/tokens.md`. The teal ground stays; the slate ground only
 - Access labels are sunken fields (inset bevel, no face, ink text and icon); only Public keeps its green face. Icons:
   globe (Public), lock (Sign-in), key (Owner only), book (Docs only), the GitHub mark; the markup carries these beside
   Profile's, hidden in Profile, and a book icon on the Docs button.
-- Pressed filters and modes show the inset bevel, the pressed face and a check icon (in the markup, hidden in Profile).
-- At 1024 px and up the section links and the filters share one row, split by a 2 px groove. Phone: the mode control
-  is three icon-only 44 x 44 bevel buttons beside GitHub.
+- Pressed filters, views and modes show the inset bevel, the pressed face and a check icon (in the markup, hidden in
+  Profile).
+- The section row is one panel: the section links on its first line, the filters and the View control on the second.
+  Until View joined the row (2026-11-26), the links and the filters shared one line from 1240 px, split by a 2 px
+  groove. Phone: the mode control is three icon-only 44 x 44 bevel buttons beside GitHub.
 
 ## Controls
 
@@ -138,7 +151,10 @@ From `design/sketches/C/tokens.md`. The teal ground stays; the slate ground only
 - Secondary: the look's outline on the surface, same radius and height. On `sign-in` and `owner` cards Open is the
   secondary button (R3).
 - Quiet: See more, no outline until hover, pushed to the end of the row; its chevron turns when open.
-- The mode control and the filters are radio groups drawn as buttons: the pressed look keys off `data-checked`.
+- The mode control, the filters and the View control are radio groups drawn as buttons: the pressed look keys off
+  `data-checked`, and before hydration off the value the head script set (`data-theme`, `data-look`, `data-view`).
+- View: Cards and Compact, each an icon and its word (a 2 x 2 grid; a 2 x 3 grid of short cards), drawn as the
+  filters' chips in each look, after them in the section row.
 
 ### The owner part's states
 

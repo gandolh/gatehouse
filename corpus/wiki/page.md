@@ -1,6 +1,6 @@
 ---
-summary: The page as built on 2026-11-24 (briefs 03 to 05), its structure and behaviour in every look; the look switcher, Terminal and Ninety-six are on looks.md, the owner part on owner-part.md. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme and data-scripted; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A, B and C; Ninety-six's tokens, bevels and traps.
-updated: 2026-11-24
+summary: The page as built on 2026-11-24 (briefs 03 to 05), with the View control added on 2026-11-26 (brief 13), its structure and behaviour in every look; the look switcher, Terminal and Ninety-six are on looks.md, the owner part on owner-part.md. Its components and where they live; the public card module (a Vite plugin, picture sizes from the webp header); the head script, data-look, data-theme, data-view and data-scripted; the compact variant; hydration (nothing read in render, a jsdom test that runs the real head script); See more with scripting off (Base UI's Collapsible can't, so a hand-built disclosure); the filters, the View (Cards or Compact), the two-line section row, row levelling and the phone's sticky row; fonts; the prerender's title; the build guard; how each acceptance check was run; what still differs from sketches A, B and C; Ninety-six's tokens, bevels and traps.
+updated: 2026-11-26
 ---
 
 # The page
@@ -9,7 +9,8 @@ Built in the Profile look (brief 03), then Terminal and the look switcher (brief
 owner part (brief 06: Owner sign-in, the owner's cards, their states and the fake API) is on
 [owner-part.md](owner-part.md), and its walk against the real API and the local Ward (brief 08) on
 [sign-in.md](sign-in.md); the look switcher, Terminal's and Ninety-six's rules and the design critic's fixes
-are on [looks.md](looks.md). It is React 19 on Vite, rendered to HTML at build time and hydrated
+are on [looks.md](looks.md). The View control (Cards or Compact, brief 13) joined the section row on 2026-11-26. It is
+React 19 on Vite, rendered to HTML at build time and hydrated
 ([architecture.md](architecture.md)); `DESIGN.md` at the repo root is the locked system for all three looks.
 
 ## Where things live
@@ -25,6 +26,7 @@ web/src/
   features/cards/              CardListing (filter state, live region), SectionNav, CardSection, Card,
                                AccessLabel, filters.ts, useLevelRows.ts, types.ts (PageData, PageCard)
   features/mode/               ModeControl, mode.ts (the store, the browser-bar colours)
+  features/view/               ViewControl, view.ts (the store: data-view and gatehouse.view)
   features/owner/              the owner part ([owner-part.md](owner-part.md)); lib/api.ts, the API client
   lib/cn.ts                    cn(), tailwind-merge told the page's token names
   styles/index.css             the one stylesheet: Profile's tokens, the look variants, `dark`, `scripted`
@@ -47,17 +49,23 @@ backtick ids too.
 
 ## Looks, modes and the head script
 
-`web/index.html` says `data-look="profile" data-theme="light"`. Its inline script reads `gatehouse.look` and
-`gatehouse.mode` (in a try), lets `?look=` and `?mode=` override them for one load, sets both attributes, sets
-`data-scripted`, and colours the `theme-color` meta from a table of each look's ground, light and dark. `mode.ts`
+`web/index.html` says `data-look="profile" data-theme="light"`. Its inline script reads `gatehouse.look`,
+`gatehouse.mode` and `gatehouse.view` (in a try), lets `?look=` and `?mode=` override the first two for one load, sets
+both attributes, sets `data-view="compact"` only when the stored view is `compact` (anything else, or blocked storage,
+is Cards), sets `data-scripted`, and colours the `theme-color` meta from a table of each look's ground, light and dark. `mode.ts`
 holds the same table; `mode.test.ts` keeps the two equal, and Profile's pair equal to `--color-ground`.
 
-The stylesheet's variants: `dark` (Dark, or System while the device is dark), `profile`, `terminal`, `ninety-six`
-and `scripted`. An element only one look draws is `hidden` plus that look's variant, so Profile never shows it:
+The stylesheet's variants: `dark` (Dark, or System while the device is dark), `profile`, `terminal`, `ninety-six`,
+`compact` and `scripted`. An element only one look draws is `hidden` plus that look's variant, so Profile never shows it:
 Terminal's command line and item count in each section head, the address line under a card's name, the brackets
 around the access words and the wordmark's cursor; Ninety-six's globe, key and book icons and the Docs button's
-book; the check icon on a chosen mode or filter. See more's Address row is `terminal:hidden`. Each section carries
-`data-compact` when it is compact.
+book; the check icon on a chosen mode, filter or view. See more's Address row is `terminal:hidden`.
+
+`compact` is a section drawn compact: inside a `<section data-compact>` (Behind the scenes, On GitHub), or inside any
+section while `<html>` has `data-view="compact"`. Its selector is `:is(:where(section)[data-compact] *,
+:where([data-view="compact"] section) *)`, one attribute heavier than a plain class whichever matched, the weight the
+group-data-compact variant it replaced had. The card's picture link is `compact:hidden`, so Compact hides the pictures
+of the three full sections with the markup unchanged; a hidden lazy picture never loads.
 
 ## Hydration
 
@@ -69,7 +77,13 @@ then moves to the stored mode. Until hydration ends, the control shows the store
 
 `web/src/page.test.tsx` renders the page with `renderToString`, builds a document from it, stores dark and Terminal,
 runs index.html's own head script, hydrates with `hydrateRoot`, and expects no recoverable error, no
-`console.error`, Dark chosen and the Terminal dark bar colour. A planted text change in the HTML fails it. Its owner
+`console.error`, Dark chosen and the Terminal dark bar colour. A planted text change in the HTML fails it. The View
+control does the same over `data-view` (server snapshot Cards; `data-view-option` for the pre-hydration `pressed`
+match). Its tests: the head script sets `data-view` for a stored `compact` and leaves it off for nothing, `cards`,
+an unknown value or blocked storage; the HTML is the same string with `compact` stored and has no `data-view`; a
+stored Compact hydrates with no recoverable error, `console.error` or `console.warn`, pressed before and chosen after;
+a click writes `gatehouse.view` and the attribute; the `compact` selector matches a full section's card only under
+`data-view`. Its owner
 cases (the 200, a plain 401, a 401 whose reason is `ward_unavailable`, no hint) are on [owner-part.md](owner-part.md).
 
 ## See more with scripting off
@@ -81,21 +95,30 @@ which no later layer can undo. So Collapsible can't show its text without script
 
 See more is a hand-built disclosure: a `<button aria-expanded aria-controls>` and a panel that is always rendered.
 The panel carries `data-open` while open and the class `scripted:not-data-open:hidden`: with scripts it hides until
-opened, without them it shows. The button, the filters and the mode control are `hidden scripted:…`, as the sketch's
-`.js` rules hid them.
+opened, without them it shows. The button, the filters and View (one wrapper) and the mode control are
+`hidden scripted:…`, as the sketch's `.js` rules hid them.
 
 ## Behaviour
 
 - **Filters:** a `RadioGroup` labelled Show. All; Open to anyone (`open`, `docs`, `repo`: 22 cards); Needs sign-in
   (`sign-in`, `owner`: 12). A section with no card left hides, and so does its link; counts follow the filter. The
   live region says "Showing N cards" after a change and is empty in the HTML.
+- **View:** a `RadioGroup` labelled View after the filters, Cards and Compact, each with an icon and its word, drawn
+  as the filters' chips. A choice sets or removes `data-view` and writes `gatehouse.view`; nothing re-renders the
+  sections. A filter keeps the view; the owner's cards follow it.
+- **The section row:** the links on its first line, the filters and View on the second (View at its end, by
+  `justify-between`, wrapping to a line of its own where the two don't fit: a phone, Terminal at 640 px). It was one
+  line from 1240 px until View joined it; that line had 23 to 76 px left, so the row is two lines at every width.
 - **Levelled rows:** `useLevelRows` gives each card's head, blurb and actions (`data-level`) the height of the
-  tallest in its row, after mount, on a filter change, a width change and when the fonts load. See more sits below
-  them, so an opened card grows alone. Without scripts the rows are unlevelled.
+  tallest in its row, after mount, on a filter change, a width change, a view change (a MutationObserver on
+  `data-view`) and when the fonts load. See more sits below them, so an opened card grows alone. Without scripts the
+  rows are unlevelled.
 - **Phone:** below 640 px the section row's wrappers are `display: contents`, so only the links stick (`top: 0`,
-  48 px links); the filters scroll away. Sections set `scroll-margin-top` 60 px (84 from 900 px). The row sticks
-  as a whole from 900 px. There is no phone navigation panel, so base-ui rule 15 has nothing to apply to.
-- **Pictures:** the first section's first three load eagerly (React preloads them); the rest are lazy.
+  48 px links); the filters and View scroll away, View on its own line with its words. Sections set
+  `scroll-margin-top` 60 px (92 from 900 px, where the row sticks as a whole: at 84 a jump left Profile's two-line row
+  5 px over the title). There is no phone navigation panel, so base-ui rule 15 has nothing to apply to.
+- **Pictures:** the first section's first three load eagerly (React preloads them); the rest are lazy. A fresh
+  visit in Compact fetches those three and no other, scrolled to the end.
 
 ## Fonts
 
@@ -136,6 +159,18 @@ mail.
   (the Behind the scenes count and the heading weight). The dark one differs in 13.8%, and in 0.3% once the build is
   shifted up 6 px: the approved render sits 6 px higher. Measured in Chrome at 390 px, the build's header, section
   row and first card stand where `sketch.html`'s do (the wordmark's top at 29 px in both).
+
+## The View, checked 2026-11-26
+
+In the preview, headless Chrome. A first visit is Cards with no `data-view`. Compact by a click, then a filter, then a
+reload: the view, `gatehouse.view` and no picture shown, every row level after each step (heads, blurbs and actions
+end at one height per row). With the page script blocked and Compact stored, the first paint already has
+`data-view`, no picture and Compact pressed in all three looks. A fresh visit in Compact fetches only the first row's
+three eager pictures, scrolled to the end. Tab reaches View (on its tab stop) and the arrows choose. No console error
+or warning in either view, any look, 1280 and 390. Scripting off with Compact stored: Cards, 36 See more texts, no
+View. Blocked storage: Cards, and a choice holds for the visit. With Compact stored, the group's tab stop stays on
+Cards after hydration while Compact is chosen; the mode control does the same with Dark stored (Light keeps the tab
+stop), so it is the `RadioGroup` wrapper's, left as it is.
 
 ## Where it differs from sketch A
 

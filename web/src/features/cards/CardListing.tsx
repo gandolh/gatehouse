@@ -17,6 +17,8 @@ export interface CardListingProps {
   ownerCards: readonly PageCard[];
   /** A note in that section while the owner's cards are on their way; shown where owner cards would show. */
   ownerNote: ReactNode;
+  /** The View control, which the section row shows after the filters. */
+  view?: ReactNode;
 }
 
 /**
@@ -31,6 +33,7 @@ export function CardListing({
   ownerSection,
   ownerCards,
   ownerNote,
+  view,
 }: CardListingProps) {
   const [filter, setFilter] = useState<Filter>("all");
   const [announcement, setAnnouncement] = useState("");
@@ -58,6 +61,7 @@ export function CardListing({
         filter={filter}
         onFilterChange={choose}
         filterLabels={filterLabels}
+        view={view}
       />
       <main ref={main} id="cards" className={pageWidth}>
         {sections.map((section, index) => (

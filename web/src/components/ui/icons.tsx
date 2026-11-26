@@ -123,6 +123,32 @@ export function ChevronDownIcon(props: IconProps) {
   );
 }
 
+/** The Cards view: two columns of tall cards, as a card with its picture stands. */
+export function CardsIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+    </Icon>
+  );
+}
+
+/** The Compact view: the same two columns, each card a short one with no picture. */
+export function CompactIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect width="7" height="3.5" x="3" y="3" rx="1" />
+      <rect width="7" height="3.5" x="14" y="3" rx="1" />
+      <rect width="7" height="3.5" x="3" y="10.25" rx="1" />
+      <rect width="7" height="3.5" x="14" y="10.25" rx="1" />
+      <rect width="7" height="3.5" x="3" y="17.5" rx="1" />
+      <rect width="7" height="3.5" x="14" y="17.5" rx="1" />
+    </Icon>
+  );
+}
+
 export function CheckIcon(props: IconProps) {
   return (
     <Icon {...props}>

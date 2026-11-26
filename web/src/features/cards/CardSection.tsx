@@ -33,7 +33,7 @@ export function CardSection({ section, access, filter, first, note }: CardSectio
       aria-labelledby={`h-${section.id}`}
       data-compact={section.compact ? "" : undefined}
       hidden={shown === 0}
-      className="group/section scroll-mt-15 pt-7 md:scroll-mt-21 ninety-six:max-sm:first-of-type:pt-3"
+      className="scroll-mt-15 pt-7 md:scroll-mt-23 ninety-six:max-sm:first-of-type:pt-3"
     >
       <header className="mb-4 flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4 terminal:flex-col terminal:items-stretch terminal:gap-1 terminal:border-b terminal:border-dashed terminal:border-line terminal:pb-3 ninety-six:md:flex-col ninety-six:md:items-stretch ninety-six:md:gap-3">
         <h2

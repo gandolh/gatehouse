@@ -57,24 +57,33 @@
 @custom-variant terminal (&:where([data-look="terminal"], [data-look="terminal"] *));
 @custom-variant ninety-six (&:where([data-look="ninety-six"], [data-look="ninety-six"] *));
 
+/* compact: inside a section drawn compact, smaller cards with no picture. A compact section (Behind the scenes, On
+   GitHub) carries data-compact; in the Compact view (data-view="compact" on <html>, set by the head script or the View
+   control) every section draws that way. The weight is one attribute over a plain class whichever matched, so a
+   compact rule beats the card's own and the 44 px targets stay with `sm:not-pointer-coarse:`. */
+@custom-variant compact (&:is(:where(section)[data-compact] *, :where([data-view="compact"] section) *));
+
 /* scripted: the head script ran. What works only with scripts (the mode control, the filters, See more's button) shows
    under it, and what must show without them (See more's text) hides under it until opened. */
 @custom-variant scripted (&:where([data-scripted], [data-scripted] *));
 
 /* pressed: the chosen option of a RadioGroup. Once React has hydrated (main's mark, data-hydrated on <html>) it is Base
-   UI's data-checked. Before that, a setting's option (data-mode-option, data-look-option) is pressed when <html> holds
-   its value, which the head script set before the first paint, so a stored Dark never shows Light pressed while the
-   scripts load; a filter has no stored value, so its data-checked from the HTML stands. */
+   UI's data-checked. Before that, a setting's option (data-mode-option, data-look-option, data-view-option) is pressed
+   when <html> holds its value, which the head script set before the first paint, so a stored Dark never shows Light
+   pressed while the scripts load; Cards is the view without data-view. A filter has no stored value, so its
+   data-checked from the HTML stands. */
 @custom-variant pressed {
   &:is(
     :root[data-hydrated] [data-checked],
-    :root:not([data-hydrated]) [data-checked]:not([data-mode-option], [data-look-option]),
+    :root:not([data-hydrated]) [data-checked]:not([data-mode-option], [data-look-option], [data-view-option]),
     :root:not([data-hydrated])[data-theme="light"] [data-mode-option="light"],
     :root:not([data-hydrated])[data-theme="dark"] [data-mode-option="dark"],
     :root:not([data-hydrated])[data-theme="system"] [data-mode-option="system"],
     :root:not([data-hydrated])[data-look="profile"] [data-look-option="profile"],
     :root:not([data-hydrated])[data-look="terminal"] [data-look-option="terminal"],
-    :root:not([data-hydrated])[data-look="ninety-six"] [data-look-option="ninety-six"]
+    :root:not([data-hydrated])[data-look="ninety-six"] [data-look-option="ninety-six"],
+    :root:not([data-hydrated]):not([data-view="compact"]) [data-view-option="cards"],
+    :root:not([data-hydrated])[data-view="compact"] [data-view-option="compact"]
   ) {
     @slot;
   }
@@ -84,13 +93,15 @@
   &:not(
     :is(
       :root[data-hydrated] [data-checked],
-      :root:not([data-hydrated]) [data-checked]:not([data-mode-option], [data-look-option]),
+      :root:not([data-hydrated]) [data-checked]:not([data-mode-option], [data-look-option], [data-view-option]),
       :root:not([data-hydrated])[data-theme="light"] [data-mode-option="light"],
       :root:not([data-hydrated])[data-theme="dark"] [data-mode-option="dark"],
       :root:not([data-hydrated])[data-theme="system"] [data-mode-option="system"],
       :root:not([data-hydrated])[data-look="profile"] [data-look-option="profile"],
       :root:not([data-hydrated])[data-look="terminal"] [data-look-option="terminal"],
-      :root:not([data-hydrated])[data-look="ninety-six"] [data-look-option="ninety-six"]
+      :root:not([data-hydrated])[data-look="ninety-six"] [data-look-option="ninety-six"],
+      :root:not([data-hydrated]):not([data-view="compact"]) [data-view-option="cards"],
+      :root:not([data-hydrated])[data-view="compact"] [data-view-option="compact"]
     )
   ) {
     @slot;

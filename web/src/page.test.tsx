@@ -171,6 +171,7 @@ beforeAll(() => {
 
 afterEach(() => {
   localStorage.clear();
+  document.documentElement.removeAttribute("data-view");
   history.replaceState(null, "", "/");
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
@@ -370,6 +371,150 @@ describe("the page", () => {
 
     expect(fetched).not.toHaveBeenCalled();
     expect([...container.querySelectorAll("footer button")].map((node) => node.textContent)).toEqual(["Owner sign-in"]);
+  });
+
+  it("sets data-view from a stored Compact, and leaves it off for a missing, blocked or unknown view", () => {
+    const root = document.documentElement;
+    document.head.innerHTML = '<meta name="theme-color" content="#e5e8ee">';
+    const run = (stored: string | null) => {
+      root.removeAttribute("data-view");
+      localStorage.clear();
+      if (stored !== null) localStorage.setItem("gatehouse.view", stored);
+      new Function(headScript())();
+      return root.getAttribute("data-view");
+    };
+
+    expect(run("compact")).toBe("compact");
+    expect(run(null)).toBeNull();
+    expect(run("cards")).toBeNull();
+    expect(run("list")).toBeNull();
+    expect(run("Compact")).toBeNull();
+
+    // Storage blocked, as a private window or a sandbox does: the getter throws, and the page stays in Cards.
+    root.removeAttribute("data-view");
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    new Function(headScript())();
+    expect(root.hasAttribute("data-view")).toBe(false);
+    expect(root.dataset.look).toBe("profile");
+    expect(root.hasAttribute("data-scripted")).toBe(true);
+  });
+
+  it("renders the same HTML, with no data-view, whatever view a visitor stored", () => {
+    const cards = renderToString(page(DATA));
+    localStorage.setItem("gatehouse.view", "compact");
+    document.documentElement.setAttribute("data-view", "compact");
+    const compact = renderToString(page(DATA));
+
+    expect(compact).toBe(cards);
+    expect(cards).not.toMatch(/\sdata-view=/);
+    // The View control is in the HTML, Cards chosen, for the head script's view to press before hydration.
+    expect(cards).toMatch(/aria-label="View"/);
+    expect(cards).toMatch(/data-view-option="cards"/);
+  });
+
+  it("draws every section compact from data-view, and a compact section in either view", () => {
+    document.body.innerHTML = renderToString(page(DATA));
+    const css = readFileSync(join(import.meta.dirname, "styles/index.css"), "utf8");
+    const variant = /@custom-variant compact \((&[^;]*)\);/.exec(css)?.[1];
+    if (variant === undefined) throw new Error("the stylesheet has no compact variant");
+    const compact = variant.replace(/^&/, "");
+    const name = (id: string) => {
+      const found = document.querySelector(`#c-${id} h3`);
+      if (found === null) throw new Error(`no ${id} card`);
+      return found;
+    };
+
+    expect(name("games").matches(compact)).toBe(false);
+    expect(name("ward").matches(compact)).toBe(true);
+    document.documentElement.setAttribute("data-view", "compact");
+    expect(name("games").matches(compact)).toBe(true);
+    expect(name("ward").matches(compact)).toBe(true);
+    // Only the sections follow the view: the section row and the header keep their size.
+    const header = document.querySelector("header a");
+    expect(header?.matches(compact)).toBe(false);
+  });
+
+  it("hydrates a stored Compact view without a mismatch, drawn pressed before hydration and chosen after", async () => {
+    const html = renderToString(page(DATA));
+    const root = document.documentElement;
+    root.removeAttribute("data-hydrated");
+    document.head.innerHTML = '<meta name="theme-color" content="#e5e8ee">';
+    document.body.innerHTML = `<div id="root">${html}</div>`;
+    localStorage.setItem("gatehouse.view", "compact");
+    new Function(headScript())();
+    expect(root.dataset.view).toBe("compact");
+
+    const css = readFileSync(join(import.meta.dirname, "styles/index.css"), "utf8");
+    const block = /@custom-variant pressed \{\s*&:is\(([\s\S]*?)\n\s*\) \{/.exec(css)?.[1];
+    if (block === undefined) throw new Error("the stylesheet has no pressed variant");
+    const pressed = `:is(${block})`;
+    const option = (name: string) => {
+      const found = [...document.querySelectorAll('[aria-label="View"] [role="radio"]')].find(
+        (node) => node.textContent === name,
+      );
+      if (found === undefined) throw new Error(`no ${name} option`);
+      return found;
+    };
+    // The HTML says Cards; the first frame shows Compact pressed all the same.
+    expect(option("Cards").getAttribute("aria-checked")).toBe("true");
+    expect(option("Compact").matches(pressed)).toBe(true);
+    expect(option("Cards").matches(pressed)).toBe(false);
+
+    const recoverable: unknown[] = [];
+    const logged = vi.spyOn(console, "error");
+    const warned = vi.spyOn(console, "warn");
+    const container = document.getElementById("root");
+    if (container === null) throw new Error("no root");
+    await act(async () => {
+      hydrateRoot(container, page(DATA), { onRecoverableError: (error) => recoverable.push(error) });
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
+
+    expect(recoverable).toEqual([]);
+    expect(logged).not.toHaveBeenCalled();
+    expect(warned).not.toHaveBeenCalled();
+    expect(root.hasAttribute("data-hydrated")).toBe(true);
+    expect(option("Compact").getAttribute("aria-checked")).toBe("true");
+    expect(option("Compact").matches(pressed)).toBe(true);
+    expect(option("Cards").matches(pressed)).toBe(false);
+    expect(root.dataset.view).toBe("compact");
+  });
+
+  it("keeps the chosen view on the device and on <html> when the View control changes", async () => {
+    const html = renderToString(page(DATA));
+    document.head.innerHTML = '<meta name="theme-color" content="#e5e8ee">';
+    document.body.innerHTML = `<div id="root">${html}</div>`;
+    new Function(headScript())();
+    const container = document.getElementById("root");
+    if (container === null) throw new Error("no root");
+    await act(async () => {
+      hydrateRoot(container, page(DATA));
+      await Promise.resolve();
+    });
+    const view = container.querySelector('[role="radiogroup"][aria-label="View"]');
+    const choose = async (name: string) => {
+      const radio = [...(view?.querySelectorAll<HTMLElement>('[role="radio"]') ?? [])].find(
+        (node) => node.textContent === name,
+      );
+      if (radio === undefined) throw new Error(`no ${name} option`);
+      await act(async () => {
+        radio.click();
+        await Promise.resolve();
+      });
+      return radio;
+    };
+
+    const compact = await choose("Compact");
+    expect(localStorage.getItem("gatehouse.view")).toBe("compact");
+    expect(document.documentElement.dataset.view).toBe("compact");
+    expect(compact.getAttribute("aria-checked")).toBe("true");
+
+    const cards = await choose("Cards");
+    expect(localStorage.getItem("gatehouse.view")).toBe("cards");
+    expect(document.documentElement.hasAttribute("data-view")).toBe(false);
+    expect(cards.getAttribute("aria-checked")).toBe("true");
   });
 
   it("puts every card's See more text in the HTML, and no live text", () => {

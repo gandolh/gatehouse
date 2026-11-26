@@ -31,8 +31,9 @@ function level(root: HTMLElement): void {
 
 /**
  * Levels the rows of cards under `root` after mount, again when `cards` changes (it names what is shown: the filter,
- * and the owner's cards arriving or leaving), when the width changes (the columns may change with it) and when the
- * fonts have loaded. Without scripts the rows are simply unlevelled.
+ * and the owner's cards arriving or leaving), when the width changes (the columns may change with it), when the view
+ * changes (`data-view` on `<html>`: Compact draws every card smaller) and when the fonts have loaded. Without scripts
+ * the rows are simply unlevelled.
  */
 export function useLevelRows(root: RefObject<HTMLElement | null>, cards: string): void {
   useEffect(() => {
@@ -56,9 +57,12 @@ export function useLevelRows(root: RefObject<HTMLElement | null>, cards: string)
             later();
           });
     resize?.observe(element);
+    const view = new MutationObserver(later);
+    view.observe(document.documentElement, { attributeFilter: ["data-view"] });
     if ("fonts" in document) void document.fonts.ready.then(later);
     return () => {
       resize?.disconnect();
+      view.disconnect();
       cancelAnimationFrame(frame);
     };
   }, [root, cards]);

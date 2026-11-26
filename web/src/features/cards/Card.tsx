@@ -39,8 +39,10 @@ const code = "font-mono text-code wrap-anywhere text-ink";
 /**
  * A card: the picture (a link, outside the tab order), the name, the access label, one sentence, and the actions.
  * The filled Open is for cards anyone can use; behind a sign-in it is the outlined button, so a visitor isn't invited
- * into a sign-in wall. See more opens inside the card: its text is in the HTML and shows without scripts; with them it
- * stays hidden until opened. The owner part's cards come from the API in this same shape.
+ * into a sign-in wall. In a compact section, or any section in the Compact view, the stylesheet's `compact` variant
+ * draws it smaller and hides the picture; the markup is the same, so the HTML doesn't depend on the view. See more
+ * opens inside the card: its text is in the HTML and shows without scripts; with them it stays hidden until opened.
+ * The owner part's cards come from the API in this same shape.
  */
 export function Card({ card, accessLabel, hidden = false, eager = false }: CardProps) {
   const [open, setOpen] = useState(false);
@@ -54,14 +56,14 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       id={`c-${card.id}`}
       data-access={card.access}
       hidden={hidden}
-      className="group/card mb-5 flex min-w-0 flex-col self-start rounded-card border border-edge bg-surface text-ink-body shadow-card terminal:p-4 terminal:text-ink terminal:shadow-hard terminal:group-data-compact/section:py-3 ninety-six:gap-2.5 ninety-six:border-0 ninety-six:p-3 ninety-six:shadow-panel ninety-six:group-data-compact/section:gap-2 ninety-six:group-data-compact/section:p-2.5"
+      className="group/card mb-5 flex min-w-0 flex-col self-start rounded-card border border-edge bg-surface text-ink-body shadow-card terminal:p-4 terminal:text-ink terminal:shadow-hard ninety-six:gap-2.5 ninety-six:border-0 ninety-six:p-3 ninety-six:shadow-panel terminal:compact:py-3 ninety-six:compact:gap-2 ninety-six:compact:p-2.5"
     >
       {card.image && (
         <a
           href={card.href}
           tabIndex={-1}
           aria-hidden="true"
-          className="group/picture block overflow-hidden rounded-t-picture border-b border-line bg-surface-2 terminal:border ninety-six:border-0 ninety-six:bg-frame ninety-six:p-0.75 ninety-six:shadow-sunken"
+          className="group/picture block overflow-hidden rounded-t-picture border-b border-line bg-surface-2 terminal:border ninety-six:border-0 ninety-six:bg-frame ninety-six:p-0.75 ninety-six:shadow-sunken compact:hidden"
         >
           <img
             src={card.image.src}
@@ -76,9 +78,9 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       )}
       <div
         data-level="head"
-        className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 px-5 pt-4 terminal:px-0 terminal:pt-3 terminal:group-data-compact/section:pt-0 ninety-six:items-center ninety-six:justify-start ninety-six:gap-x-2.5 ninety-six:gap-y-1.5 ninety-six:px-0 ninety-six:pt-0"
+        className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 px-5 pt-4 terminal:px-0 terminal:pt-3 ninety-six:items-center ninety-six:justify-start ninety-six:gap-x-2.5 ninety-six:gap-y-1.5 ninety-six:px-0 ninety-six:pt-0 terminal:compact:pt-0"
       >
-        <h3 className="min-w-0 flex-auto font-ui text-name font-strong tracking-name wrap-break-word text-ink terminal:font-[600] ninety-six:flex-none ninety-six:font-bold ninety-six:group-data-compact/section:text-[1.125rem]">
+        <h3 className="min-w-0 flex-auto font-ui text-name font-strong tracking-name wrap-break-word text-ink terminal:font-[600] ninety-six:flex-none ninety-six:font-bold ninety-six:compact:text-[1.125rem]">
           {card.name}
         </h3>
         <AccessLabel access={card.access} label={accessLabel} />
@@ -89,7 +91,7 @@ export function Card({ card, accessLabel, hidden = false, eager = false }: CardP
       </p>
       <p
         data-level="blurb"
-        className="px-5 pt-2 wrap-break-word sm:min-h-[calc(3em+8px)] terminal:px-0 terminal:sm:group-data-compact/section:min-h-0 ninety-six:px-0 ninety-six:pt-0 ninety-six:group-data-compact/section:text-[0.9375rem] ninety-six:sm:min-h-0"
+        className="px-5 pt-2 wrap-break-word sm:min-h-[calc(3em+8px)] terminal:px-0 ninety-six:px-0 ninety-six:pt-0 ninety-six:sm:min-h-0 terminal:sm:compact:min-h-0 ninety-six:compact:text-[0.9375rem]"
       >
         {card.blurb}
       </p>

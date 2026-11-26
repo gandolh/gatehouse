@@ -7,10 +7,10 @@ const buttonBase = [
   "whitespace-nowrap no-underline select-none sm:min-h-9.5 sm:pointer-coarse:min-h-11",
   "motion-safe:transition-colors motion-safe:duration-120",
   "ninety-six:border-0 ninety-six:shadow-raised ninety-six:active:shadow-sunken",
-  // Inside a compact section (Behind the scenes, On GitHub) Terminal and Ninety-six draw smaller buttons, as their
-  // sketches do; a phone or a coarse pointer keeps the 44 px target.
-  "terminal:sm:not-pointer-coarse:group-data-compact/section:min-h-9",
-  "ninety-six:sm:group-data-compact/section:text-[0.875rem] ninety-six:sm:not-pointer-coarse:group-data-compact/section:min-h-8.5",
+  // Inside a section drawn compact (Behind the scenes, On GitHub, every section in the Compact view) Terminal and
+  // Ninety-six draw smaller buttons, as their sketches do; a phone or a coarse pointer keeps the 44 px target.
+  "terminal:sm:not-pointer-coarse:compact:min-h-9",
+  "ninety-six:sm:compact:text-[0.875rem] ninety-six:sm:not-pointer-coarse:compact:min-h-8.5",
 ].join(" ");
 
 const buttonLooks = {
